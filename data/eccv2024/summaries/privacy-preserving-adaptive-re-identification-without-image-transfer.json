@@ -1,0 +1,34 @@
+{
+  "nutshell": "Unsupervised domain adaptation for person ReID usually assumes images can be centralized on a server, which conflicts with privacy regulations like GDPR. This paper introduces a stricter federated setting (DUDA-Rid) where each single camera is its own client and no images - not even target images - can ever leave the device, and proposes Fed-Protoid, which aligns source and target domains by sharing only per-identity source feature prototypes (never images) combined with a federated teacher-student architecture.",
+  "contributions": [
+    "Formalizes DUDA-Rid: a privacy-preserving Distributed UDA setting for person ReID stricter than prior federated ReID work - each client is a single camera (not an edge server aggregating multiple cameras), and no images are transmitted between clients or to any server at any point, only model weights and lightweight prototypes.",
+    "Fed-Protoid algorithm: computes source-domain identity prototypes (mean feature per identity) from the globally aggregated model and distributes only these prototypes to clients, enabling a distributed Maximum Mean Discrepancy (MMD) loss for source-target alignment without ever comparing raw source and target samples directly.",
+    "A teacher-student architecture applied uniformly to every client (including a server-side 'pseudo-client' trained on the labeled source domain) with EMA-updated teacher weights used for aggregation, plus a 'Personalized Pseudo-Epoch' that equalizes how often each identity is seen per federated round regardless of how many identities a given camera-client happens to have.",
+    "Fed-Protoid++ variant: shows that a ViT backbone with LUPerson self-supervised pretraining (instead of ResNet-50/ImageNet) substantially improves results even under this federated, zero-image-transfer constraint."
+  ],
+  "deficiencies": [
+    "All baselines (FedReID, FedUnReID, and the adapted UDA methods SpCL/MMT) had to be modified by the authors themselves to fit the never-transfer-images constraint, since none were designed for it - this leaves open how much of Fed-Protoid's margin reflects the method versus less-optimized adaptations of the competitors.",
+    "The 'far fewer communication rounds' claim is only visualized as a full accuracy-vs-round curve for one configuration (Fig. 3, MS→M); the other three configurations in Table 1 report only single best-round snapshots per method, so the round-efficiency advantage can't be fully verified across all settings.",
+    "The federated constraint is only tested at small scale - 6 clients (Market) and 2 clients (CUHK03-NP) - so how Fed-Protoid's convergence and communication cost scale to real deployments with dozens or hundreds of cameras per client is untested.",
+    "RP→C is the weakest result relative to baselines (Fed-Protoid mAP 25.1 vs. FedPav+MMT's 19.0, a real gap, but Fed-Protoid's own Rank-1 24.7 is close to MMT's 19.7 only by a moderate margin, and reaching it took 253 rounds versus MMT's 9) - the paper doesn't discuss this configuration's comparatively higher round cost despite it being the setting where the round-efficiency story is weakest."
+  ],
+  "notable": "The distributed MMD trick is shown in the supplementary material to tolerate reducing to just 2-5% of the original source prototypes with minimal mAP loss (Fig. 1 supp), a cheap lever for controlling communication overhead in similar federated setups. Also notable in the supplementary: the paper reports seed variance for its own method (±0.1-0.4 mAP across 3 seeds, Table 2 supp) - a level of repeated-run rigor that's fairly rare across this batch of papers and worth flagging as a genuine positive rather than a gap.",
+  "results": [
+    {"dataset": "MSMT17→Market1501 (DUDA-Rid)", "metric": "mAP", "value": "51.0", "setting": "Fed-Protoid, ResNet-50, 288 rounds"},
+    {"dataset": "MSMT17→Market1501 (DUDA-Rid)", "metric": "Rank-1", "value": "76.8", "setting": "Fed-Protoid, ResNet-50, 288 rounds"},
+    {"dataset": "MSMT17→CUHK03-NP (DUDA-Rid)", "metric": "mAP", "value": "23.8", "setting": "Fed-Protoid, ResNet-50, 22 rounds"},
+    {"dataset": "MSMT17→CUHK03-NP (DUDA-Rid)", "metric": "Rank-1", "value": "23.1", "setting": "Fed-Protoid, ResNet-50, 22 rounds"},
+    {"dataset": "RandPerson→Market1501 (DUDA-Rid)", "metric": "mAP", "value": "39.2", "setting": "Fed-Protoid, ResNet-50, 22 rounds"},
+    {"dataset": "RandPerson→Market1501 (DUDA-Rid)", "metric": "Rank-1", "value": "66.4", "setting": "Fed-Protoid, ResNet-50, 22 rounds"},
+    {"dataset": "RandPerson→CUHK03-NP (DUDA-Rid)", "metric": "mAP", "value": "25.1", "setting": "Fed-Protoid, ResNet-50, 253 rounds"},
+    {"dataset": "RandPerson→CUHK03-NP (DUDA-Rid)", "metric": "Rank-1", "value": "24.7", "setting": "Fed-Protoid, ResNet-50, 253 rounds"},
+    {"dataset": "MSMT17→Market1501 (DUDA-Rid)", "metric": "mAP", "value": "61.7", "setting": "Fed-Protoid++, ViT-S + LUPerson self-supervised pretrain, 170 rounds"},
+    {"dataset": "MSMT17→Market1501 (DUDA-Rid)", "metric": "Rank-1", "value": "82.6", "setting": "Fed-Protoid++, ViT-S + LUPerson self-supervised pretrain, 170 rounds"},
+    {"dataset": "MSMT17→CUHK03-NP (DUDA-Rid)", "metric": "mAP", "value": "43.8", "setting": "Fed-Protoid++, ViT-S + LUPerson self-supervised pretrain, 24 rounds"},
+    {"dataset": "MSMT17→CUHK03-NP (DUDA-Rid)", "metric": "Rank-1", "value": "42.4", "setting": "Fed-Protoid++, ViT-S + LUPerson self-supervised pretrain, 24 rounds"},
+    {"dataset": "RandPerson→Market1501 (DUDA-Rid)", "metric": "mAP", "value": "45.2", "setting": "Fed-Protoid++, ViT-S + LUPerson self-supervised pretrain, 186 rounds"},
+    {"dataset": "RandPerson→Market1501 (DUDA-Rid)", "metric": "Rank-1", "value": "71.8", "setting": "Fed-Protoid++, ViT-S + LUPerson self-supervised pretrain, 186 rounds"},
+    {"dataset": "RandPerson→CUHK03-NP (DUDA-Rid)", "metric": "mAP", "value": "25.7", "setting": "Fed-Protoid++, ViT-S + LUPerson self-supervised pretrain, 212 rounds"},
+    {"dataset": "RandPerson→CUHK03-NP (DUDA-Rid)", "metric": "Rank-1", "value": "24.9", "setting": "Fed-Protoid++, ViT-S + LUPerson self-supervised pretrain, 212 rounds"}
+  ]
+}

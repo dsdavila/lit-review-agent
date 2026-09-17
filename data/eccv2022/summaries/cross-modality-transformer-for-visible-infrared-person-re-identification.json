@@ -1,0 +1,42 @@
+{
+  "nutshell": "VI-ReID methods that learn only modality-shared features throw away useful modality-specific cues (like color from RGB). CMT instead uses a Transformer encoder-decoder to compensate for the missing modality via learned global 'modality prototypes' (rather than per-mini-batch compensation like prior work), and adds an instance-level module that adaptively modulates gallery features toward the query's own discriminative channels at test time.",
+  "contributions": [
+    "Modality-level alignment module: a Transformer encoder refines part-level features per modality via self-attention, then a decoder uses cross-attention between learnable per-modality prototype tokens and the other modality's part features to generate 'compensated' features for the missing modality, combined with the original features into a shared-space representation.",
+    "Two learnable sets of modality prototypes (RGB and IR) that store global modality information across the whole training distribution, trained with a modality consistency loss that pulls compensated features toward the real same-identity, same-modality centroid within each mini-batch - addressing the batch-dependent randomness of prior compensation methods that condition only on the current mini-batch.",
+    "Instance-level alignment module: a query-adaptive feature modulator generates channel-wise scale/shift parameters from a query sample and applies them to other gallery samples at test time, dynamically re-weighting query-relevant channels to better align same-identity cross-modal instances even for unseen test identities.",
+    "Reports new SOTA on SYSU-MM01 all-search (71.88% Rank-1 / 68.57% mAP single-shot) and strong RegDB results (95.17%/87.3% and 91.97%/84.46% Rank-1/mAP for the two query directions), with an ablation showing both modules contribute independently."
+  ],
+  "deficiencies": [
+    "The modality consistency loss trains compensated features to match the real same-identity centroid of the target modality within the training mini-batch - meaning the 'compensation' for genuinely modality-specific appearance (e.g. color, which the paper explicitly motivates as lost in IR) is learned as a function of identity-conditioned training statistics, not recovered from any true cross-modal correspondence (none exists in these datasets). This is a reasonable approximation but the paper doesn't discuss how this generalizes to distinguishing unseen test identities whose true appearance wasn't observed in either modality during training.",
+    "On the indoor-search setting (Table 1), CMT is not actually best across the board despite the framing implying broad SOTA: MPANet beats CMT on indoor-search single-shot Rank-10 (98.21 vs. 97.68) and mAP (80.95 vs. 79.91), and on multi-shot mAP (75.11 vs. 74.11) - the paper only claims CMT 'performs comparably' here, which is accurate, but this softer claim sits right next to the much stronger all-search claims in a way that could read as broader superiority than the numbers support.",
+    "The text states the Rank-1/mAP comparison against cm-SSFT is 'in a multi-query setting,' but the actual table entry used is labeled 'cm-SSFT(sq)' - sq conventionally denotes single-query in this literature, not multi-query - so either the table label or the prose description of the comparison setting is incorrect.",
+    "SYSU-MM01 results (the primary benchmark for all ablations and most analysis) are reported as single-run numbers with no stated repetition, unlike RegDB which is properly averaged over 10 trials - the paper's own ablation conclusions rest entirely on this unrepeated benchmark."
+  ],
+  "notable": "The instance-level feature modulator shares its architecture with SENet's squeeze-and-excitation block but is explicitly repurposed to modulate *other* samples rather than recalibrate its own input - an interesting inversion of a well-known building block. Also notable: because the query-adaptive modulation happens at test time using the actual query features, this module could in principle help even on completely unseen identities (no retraining needed to benefit from it), which is a nice practical property the paper doesn't strongly emphasize relative to its architectural description.",
+  "results": [
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "71.88", "setting": "all-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "96.45", "setting": "all-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-20", "value": "98.87", "setting": "all-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "68.57", "setting": "all-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "80.23", "setting": "all-search, multi-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "97.91", "setting": "all-search, multi-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-20", "value": "99.53", "setting": "all-search, multi-shot"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "63.13", "setting": "all-search, multi-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "76.9", "setting": "indoor-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "97.68", "setting": "indoor-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-20", "value": "99.64", "setting": "indoor-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "79.91", "setting": "indoor-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "84.87", "setting": "indoor-search, multi-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "99.41", "setting": "indoor-search, multi-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-20", "value": "99.97", "setting": "indoor-search, multi-shot"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "74.11", "setting": "indoor-search, multi-shot"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "95.17", "setting": "visible-to-infrared, averaged over 10 trials"},
+    {"dataset": "RegDB", "metric": "Rank-10", "value": "98.82", "setting": "visible-to-infrared, averaged over 10 trials"},
+    {"dataset": "RegDB", "metric": "Rank-20", "value": "99.51", "setting": "visible-to-infrared, averaged over 10 trials"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "87.3", "setting": "visible-to-infrared, averaged over 10 trials"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "91.97", "setting": "infrared-to-visible, averaged over 10 trials"},
+    {"dataset": "RegDB", "metric": "Rank-10", "value": "97.92", "setting": "infrared-to-visible, averaged over 10 trials"},
+    {"dataset": "RegDB", "metric": "Rank-20", "value": "99.07", "setting": "infrared-to-visible, averaged over 10 trials"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "84.46", "setting": "infrared-to-visible, averaged over 10 trials"}
+  ]
+}

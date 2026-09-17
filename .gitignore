@@ -1,0 +1,12 @@
+# Downloaded PDFs are re-derivable via `python main.py` / downloader.py -
+# large binaries, not source, don't belong in git (one is 112MB, over
+# GitHub's 100MB hard file limit on its own).
+data/*/papers/
+
+# Python
+__pycache__/
+*.pyc
+
+# Local env / OS cruft
+.env
+.DS_Store

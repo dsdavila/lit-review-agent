@@ -1,0 +1,44 @@
+{
+  "nutshell": "Long-term person ReID with clothing changes and diverse activities (not just walking/standing) is hard because 2D appearance cues are unreliable across pose and outfit changes. 3DInvarReID reconstructs a textured 3D clothed human via a joint two-layer implicit model (naked body shape + clothing shape + texture, all disentangled), using the learned naked-body identity code as the ReID feature, trained semi-supervised from 3D scans plus 2D images with only identity labels.",
+  "contributions": [
+    "A joint two-layer neural implicit model that jointly represents 3D naked body shape, clothing shape, and texture in a shared canonical space, disentangling an identity-only latent code from pose/clothing/texture latents - unlike prior 3D human models that either don't model texture or don't optimize for discriminative identity features.",
+    "A semi-supervised training pipeline: supervised pre-training on 3D scan datasets (CAPE + THuman2.0) to learn the shape/texture decoders, followed by self-supervised fine-tuning on 2D in-the-wild images (with only identity labels, no 3D ground truth) via a differentiable renderer and photometric/silhouette/classification losses.",
+    "CCDA: a new long-term ReID dataset of 1,555 web-crawled images of 100 athletes/artists, explicitly covering diverse body activities (not just walking) alongside clothing changes, with 'challenging' and 'normal' pose subsets.",
+    "Shows the learned 3D identity feature is complementary to 2D appearance features: score-level fusion with existing 2D cloth-changing methods (ReIDCaps, CAL) improves their standalone results across multiple benchmarks."
+  ],
+  "deficiencies": [
+    "As a standalone method, 3DInvarReID underperforms the existing SOTA baseline CAL on nearly every benchmark it's compared against: Celeb-reID (11.8/55.2 vs. CAL's 13.7/59.2 mAP/Rank-1), LTCC (16.7/37.8 vs. 18.0/40.1), PRCC (52.5/51.6 vs. 55.8/55.2), Market-1501/MSMT17 (85.5/94.2 and 55.1/76.3 vs. CAL's 87.5/94.7 and 57.3/79.7), and most starkly CCVID, where it trails CAL by roughly 15 points on both mAP and Rank-1 in both the general and cloth-changing settings (66.1/70.8 vs. 81.3/82.6 general). The paper's 'superior performance' framing rests almost entirely on score-level fusion with CAL/ReIDCaps rather than the proposed 3D method replacing them.",
+    "The CCDA dataset - the one benchmark where 3DInvarReID does outperform baselines standalone - uses a single gallery image per subject (100 gallery images total for 1,455 queries across 100 subjects), an unusually thin single-shot gallery protocol for a benchmark introduced specifically to validate the method, and all four ablation-study conclusions (Table 8: effect of the 3D module, the two-layer model, and pre-training) are drawn only on this same small, self-collected 100-subject dataset rather than any standard benchmark.",
+    "The 3D reconstruction evaluation against LVD and SHAPY (Table 7) uses only 10 subjects / 237 images from the HBW validation set, and the reported improvement is marginal (CD-L2 0.610 vs. 0.632 and 0.654) - too small a sample and too small a margin to be confident this generalizes.",
+    "The paper acknowledges clothing reconstruction quality 'remains challenging as evidenced by the visual quality of the published models and our models' (Limitations section) but doesn't quantify texture/clothing reconstruction accuracy anywhere - only naked-body shape (Chamfer distance) and downstream ReID accuracy are measured, leaving the paper's own stated core technical contribution (textured 3D clothing modeling) unevaluated directly."
+  ],
+  "notable": "The paper is unusually candid in a short Limitations & Potential Negative Impacts section, explicitly naming unethical surveillance and privacy invasion as a potential negative impact of the work - a more direct acknowledgment than most ReID papers in this literature review give. Also notable: ReID inference doesn't use the 3D reconstruction module at all at test time (only the identity encoder), so the heavy 3D machinery is training-time only - relevant for anyone considering deployment cost of a similar approach.",
+  "results": [
+    {"dataset": "Celeb-reID", "metric": "mAP", "value": "11.8", "setting": "3DInvarReID standalone, ResNet-50"},
+    {"dataset": "Celeb-reID", "metric": "Rank-1", "value": "55.2", "setting": "3DInvarReID standalone, ResNet-50"},
+    {"dataset": "Celeb-reID-light", "metric": "mAP", "value": "15.0", "setting": "3DInvarReID standalone, ResNet-50"},
+    {"dataset": "Celeb-reID-light", "metric": "Rank-1", "value": "30.1", "setting": "3DInvarReID standalone, ResNet-50"},
+    {"dataset": "Celeb-reID", "metric": "Rank-1", "value": "65.5", "setting": "fused with ReIDCaps at score level"},
+    {"dataset": "Celeb-reID-light", "metric": "Rank-1", "value": "42.2", "setting": "fused with ReIDCaps at score level"},
+    {"dataset": "LTCC", "metric": "mAP", "value": "16.7", "setting": "3DInvarReID standalone, ResNet-50"},
+    {"dataset": "LTCC", "metric": "Rank-1", "value": "37.8", "setting": "3DInvarReID standalone, ResNet-50"},
+    {"dataset": "PRCC", "metric": "mAP", "value": "52.5", "setting": "3DInvarReID standalone, ResNet-50"},
+    {"dataset": "PRCC", "metric": "Rank-1", "value": "51.6", "setting": "3DInvarReID standalone, ResNet-50"},
+    {"dataset": "LTCC", "metric": "mAP", "value": "18.9", "setting": "fused with CAL at score level"},
+    {"dataset": "LTCC", "metric": "Rank-1", "value": "40.9", "setting": "fused with CAL at score level"},
+    {"dataset": "PRCC", "metric": "mAP", "value": "57.2", "setting": "fused with CAL at score level"},
+    {"dataset": "PRCC", "metric": "Rank-1", "value": "56.5", "setting": "fused with CAL at score level"},
+    {"dataset": "CCVID", "metric": "mAP", "value": "66.1", "setting": "3DInvarReID standalone, general setting"},
+    {"dataset": "CCVID", "metric": "Rank-1", "value": "70.8", "setting": "3DInvarReID standalone, general setting"},
+    {"dataset": "CCVID", "metric": "mAP", "value": "82.6", "setting": "fused with CAL, general setting"},
+    {"dataset": "CCVID", "metric": "Rank-1", "value": "83.9", "setting": "fused with CAL, general setting"},
+    {"dataset": "CCDA", "metric": "mAP", "value": "21.7", "setting": "3DInvarReID standalone, trained on Celeb-reID"},
+    {"dataset": "CCDA", "metric": "Rank-1", "value": "11.1", "setting": "3DInvarReID standalone, trained on Celeb-reID"},
+    {"dataset": "CCDA", "metric": "Rank-5", "value": "30.5", "setting": "3DInvarReID standalone, trained on Celeb-reID"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "85.5", "setting": "3DInvarReID standalone, ResNet-50, short-term"},
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "94.2", "setting": "3DInvarReID standalone, ResNet-50, short-term"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "55.1", "setting": "3DInvarReID standalone, ResNet-50, short-term"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "76.3", "setting": "3DInvarReID standalone, ResNet-50, short-term"},
+    {"dataset": "HBW", "metric": "Chamfer distance (CD-L2)", "value": "0.610", "setting": "3D naked body reconstruction, lower is better, 10 subjects/237 images"}
+  ]
+}

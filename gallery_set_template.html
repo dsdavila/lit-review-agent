@@ -1,0 +1,499 @@
+<title>Gallery Set</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --page:#F1F3F6;
+    --surface:#FFFFFF;
+    --surface-sunken:#F5F7FA;
+    --ink:#14181F;
+    --ink-2:#4B5565;
+    --ink-3:#848D9C;
+    --border:rgba(20,24,31,0.11);
+    --border-strong:rgba(20,24,31,0.22);
+    --accent:#0F7A72;
+    --accent-strong:#0B5C56;
+    --accent-soft:#E1F2EF;
+    --accent-ink:#063632;
+    --critical:#B4392F;
+    --critical-soft:#FBEAE8;
+
+    --cat-1:#2a78d6; --cat-2:#eb6834; --cat-3:#1baf7a; --cat-4:#b98600;
+    --cat-5:#e87ba4; --cat-6:#1c8a1c; --cat-7:#4a3aa7; --cat-8:#e34948;
+    --cat-other:#6b7280;
+
+    --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --shadow-card: 0 1px 2px rgba(20,24,31,0.06), 0 1px 1px rgba(20,24,31,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --page:#0D1015; --surface:#171B22; --surface-sunken:#12151B;
+      --ink:#ECEFF4; --ink-2:#B7BFCC; --ink-3:#7C8496;
+      --border:rgba(255,255,255,0.12); --border-strong:rgba(255,255,255,0.22);
+      --accent:#3FCCBF; --accent-strong:#57D9CD; --accent-soft:rgba(63,204,191,0.15); --accent-ink:#CFF6F1;
+      --critical:#E37066; --critical-soft:rgba(227,112,102,0.14);
+      --cat-1:#3987e5; --cat-2:#d95926; --cat-3:#199e70; --cat-4:#c98500;
+      --cat-5:#d55181; --cat-6:#2fae2f; --cat-7:#9085e9; --cat-8:#e66767;
+      --cat-other:#8b93a3;
+      --shadow-card: 0 1px 2px rgba(0,0,0,0.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --page:#0D1015; --surface:#171B22; --surface-sunken:#12151B;
+    --ink:#ECEFF4; --ink-2:#B7BFCC; --ink-3:#7C8496;
+    --border:rgba(255,255,255,0.12); --border-strong:rgba(255,255,255,0.22);
+    --accent:#3FCCBF; --accent-strong:#57D9CD; --accent-soft:rgba(63,204,191,0.15); --accent-ink:#CFF6F1;
+    --critical:#E37066; --critical-soft:rgba(227,112,102,0.14);
+    --cat-1:#3987e5; --cat-2:#d95926; --cat-3:#199e70; --cat-4:#c98500;
+    --cat-5:#d55181; --cat-6:#2fae2f; --cat-7:#9085e9; --cat-8:#e66767;
+    --cat-other:#8b93a3;
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--page); color:var(--ink); font-family:var(--sans);
+    padding-inline:16px; padding-block:28px 64px;
+  }
+  .wrap{max-width:1180px; margin-inline:auto;}
+  a{color:var(--accent);}
+  h1,h2,h3{font-family:var(--serif); font-weight:600; letter-spacing:-0.01em; text-wrap:balance; margin:0;}
+
+  /* ---------- header ---------- */
+  header.top{display:flex; flex-direction:column; gap:18px; margin-bottom:28px;}
+  .eyebrow{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:0.09em; text-transform:uppercase;
+    color:var(--accent); font-weight:600;
+  }
+  h1.title{font-size:clamp(28px,4vw,40px); line-height:1.05;}
+  .dek{color:var(--ink-2); font-size:15px; max-width:62ch; line-height:1.55;}
+
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px;}
+  .stat{
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px; box-shadow:var(--shadow-card);
+  }
+  .stat .n{font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:22px; font-weight:600; color:var(--ink);}
+  .stat .l{font-size:11.5px; color:var(--ink-3); margin-top:2px;}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex; gap:4px; border-bottom:1px solid var(--border); margin-bottom:20px;}
+  .tab{
+    font-family:var(--sans); font-weight:600; font-size:14.5px; color:var(--ink-3);
+    background:none; border:none; padding:10px 4px; cursor:pointer; position:relative;
+    border-bottom:2px solid transparent; margin-right:22px;
+  }
+  .tab:hover{color:var(--ink);}
+  .tab.active{color:var(--ink); border-bottom-color:var(--accent);}
+
+  .view{display:none;}
+  .view.active{display:block;}
+
+  /* ---------- filter bar ---------- */
+  .filterbar{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:14px; margin-bottom:16px; box-shadow:var(--shadow-card);
+  }
+  .field{display:flex; flex-direction:column; gap:5px; min-width:0;}
+  .field label{font-size:11px; font-weight:600; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em;}
+  select, input[type="search"]{
+    font-family:var(--sans); font-size:13.5px; color:var(--ink);
+    background:var(--surface-sunken); border:1px solid var(--border); border-radius:7px;
+    padding:7px 10px; min-width:0;
+  }
+  select:focus, input:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .field.grow{flex:1 1 200px;}
+  .field.dataset-f{flex:1 1 240px;}
+  .field.task-f{flex:1 1 220px;}
+  .field.metric-f{flex:1 1 160px;}
+  .hint-count{font-size:11px; color:var(--ink-3); font-family:var(--mono);}
+
+  /* ---------- leaderboard table ---------- */
+  .board-note{font-size:12.5px; color:var(--ink-3); line-height:1.5; margin:0 0 14px; max-width:74ch;}
+  .board-note b{color:var(--ink-2); font-weight:600;}
+  table.board{width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:var(--shadow-card);}
+  table.board thead th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; font-weight:600;
+    color:var(--ink-3); padding:10px 12px; border-bottom:1px solid var(--border); background:var(--surface-sunken);
+  }
+  table.board td{padding:10px 12px; border-bottom:1px solid var(--border); font-size:13.5px; vertical-align:top;}
+  table.board tbody tr:last-child td{border-bottom:none;}
+  table.board tbody tr:hover{background:var(--surface-sunken); cursor:pointer;}
+  td.rank{font-family:var(--mono); color:var(--ink-3); width:34px;}
+  td.val{font-family:var(--mono); font-variant-numeric:tabular-nums; font-weight:600; font-size:15px; width:70px;}
+  td.paper-cell{max-width:0;}
+  .paper-title-link{font-weight:600; color:var(--ink); background:none; border:none; text-align:left; padding:0; font-family:var(--sans); font-size:13.5px; cursor:pointer; text-decoration:none;}
+  .paper-title-link:hover{color:var(--accent);}
+  .venue-tag{font-family:var(--mono); font-size:11.5px; color:var(--ink-3); white-space:nowrap;}
+  .setting-txt{color:var(--ink-3); font-size:12px;}
+  .row-empty{padding:36px 12px; text-align:center; color:var(--ink-3); font-size:13.5px;}
+
+  /* ---------- chips ---------- */
+  .chip{
+    display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600;
+    padding:3px 8px; border-radius:100px; white-space:nowrap; font-family:var(--sans);
+  }
+  .chip .dot{width:6px; height:6px; border-radius:50%; flex:none;}
+
+  /* ---------- browse view ---------- */
+  .browse-toolbar{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px;}
+  .paper-list{display:flex; flex-direction:column; gap:10px;}
+  .paper-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:14px 16px; box-shadow:var(--shadow-card); cursor:pointer;
+  }
+  .paper-card:hover{border-color:var(--border-strong);}
+  .pc-head{display:flex; justify-content:space-between; gap:12px; align-items:baseline;}
+  .pc-title{font-family:var(--serif); font-weight:600; font-size:16.5px; line-height:1.3;}
+  .pc-meta{font-size:12px; color:var(--ink-3); margin-top:4px;}
+  .pc-nutshell{font-size:13px; color:var(--ink-2); margin-top:8px; line-height:1.5;}
+  .result-count{font-family:var(--mono); font-size:11px; color:var(--ink-3); white-space:nowrap;}
+
+  /* ---------- detail panel ---------- */
+  .detail{
+    margin-top:8px; padding:16px 18px; background:var(--surface-sunken);
+    border:1px solid var(--border); border-radius:10px; font-size:13.5px; line-height:1.6;
+  }
+  .detail h4{font-family:var(--sans); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-3); margin:14px 0 6px;}
+  .detail h4:first-child{margin-top:0;}
+  .detail ul{margin:0; padding-left:18px;}
+  .detail li{margin-bottom:5px;}
+  .detail .authors{font-size:12.5px; color:var(--ink-2);}
+  .detail .institutions{font-size:11.5px; color:var(--ink-3); font-style:italic;}
+  .detail table.results-mini{width:100%; border-collapse:collapse; margin-top:4px; font-size:12.5px;}
+  .detail table.results-mini th{text-align:left; font-size:10.5px; text-transform:uppercase; color:var(--ink-3); padding:4px 8px; border-bottom:1px solid var(--border);}
+  .detail table.results-mini td{padding:4px 8px; border-bottom:1px solid var(--border); font-family:var(--mono);}
+  .detail table.results-mini td.d-metric,.detail table.results-mini td.d-set{font-family:var(--sans);}
+  .detail-link{font-size:12px; margin-top:12px; display:inline-block;}
+
+  footer.pagefoot{margin-top:40px; padding-top:16px; border-top:1px solid var(--border); font-size:12px; color:var(--ink-3); line-height:1.6; max-width:70ch;}
+
+  @media (max-width:640px){
+    table.board thead{display:none;}
+    table.board, table.board tbody, table.board tr, table.board td{display:block; width:100%;}
+    table.board tr{border-bottom:1px solid var(--border); padding:10px 12px;}
+    table.board td{border:none; padding:2px 0;}
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Person Re-Identification &middot; Literature Tracker</div>
+    <h1 class="title">Gallery Set</h1>
+    <p class="dek">A leaderboard and literature browser for <span id="stat-papers-inline">&mdash;</span> person/object re-identification papers pulled from CVPR, ICCV, ECCV, WACV, and BMVC (2022&ndash;2026). Filter to a benchmark and metric to see what's been reported against it, or search the full set and read the critical summary behind any single result.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="leaderboard">Leaderboard</button>
+    <button class="tab" data-view="browse">Browse papers</button>
+  </nav>
+
+  <section class="view active" id="view-leaderboard">
+    <div class="filterbar">
+      <div class="field task-f">
+        <label for="f-task">Task</label>
+        <select id="f-task"></select>
+      </div>
+      <div class="field dataset-f">
+        <label for="f-dataset">Dataset</label>
+        <select id="f-dataset"></select>
+      </div>
+      <div class="field metric-f">
+        <label for="f-metric">Metric</label>
+        <select id="f-metric"></select>
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <span class="hint-count" id="board-count"></span>
+      </div>
+    </div>
+    <p class="board-note"><b>Auto-extracted, not ground truth.</b> Values come straight from each paper's own results table via an LLM read &mdash; protocols, backbones, and splits vary even within one dataset+metric pair. Check the setting column, and the paper itself, before citing across rows. Dataset/metric names are normalized for exact-match spelling variants only (e.g. &ldquo;Market-1501&rdquo; / &ldquo;Market1501&rdquo;); genuinely different protocols are kept separate on purpose.</p>
+    <div style="overflow-x:auto;">
+      <table class="board">
+        <thead>
+          <tr>
+            <th style="width:34px;">#</th>
+            <th style="width:70px;">Value</th>
+            <th id="metric-col-head">Metric</th>
+            <th>Paper</th>
+            <th>Venue</th>
+            <th>Setting</th>
+          </tr>
+        </thead>
+        <tbody id="board-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="view" id="view-browse">
+    <div class="browse-toolbar">
+      <div class="field grow">
+        <label for="b-search">Search title or author</label>
+        <input type="search" id="b-search" placeholder="e.g. clothes-changing, Zheng, CLIP&hellip;">
+      </div>
+      <div class="field task-f">
+        <label for="b-task">Task</label>
+        <select id="b-task"></select>
+      </div>
+      <div class="field">
+        <label for="b-sort">Sort</label>
+        <select id="b-sort">
+          <option value="score">Relevance score</option>
+          <option value="year">Year, newest</option>
+          <option value="title">Title, A&ndash;Z</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <span class="hint-count" id="browse-count"></span>
+      </div>
+    </div>
+    <div class="paper-list" id="paper-list"></div>
+  </section>
+
+  <footer class="pagefoot">
+    Built from a metadata-first scrape of CVPR/ICCV/ECCV/WACV/BMVC 2022&ndash;2026 proceedings, filtered to person/object re-identification relevance, then read paper-by-paper for contributions, deficiencies, and headline results. One source PDF was excluded as corrupted. &ldquo;Other CV Research&rdquo; papers were pulled in by broader search terms (tracking, segmentation, wildlife monitoring, etc.) rather than being re-identification work themselves.
+  </footer>
+</div>
+
+<script id="data-json" type="application/json">__DATA_JSON__</script>
+<script>
+(function(){
+  "use strict";
+  const DATA = JSON.parse(document.getElementById('data-json').textContent);
+
+  const CAT_VARS = ['--cat-1','--cat-2','--cat-3','--cat-4','--cat-5','--cat-6','--cat-7','--cat-8'];
+  const taskOrder = [];
+  DATA.forEach(p => { if(!taskOrder.includes(p.task)) taskOrder.push(p.task); });
+  // stable, deterministic order: sort by frequency desc so the biggest categories get the earliest (most-tested) slots
+  const taskCounts = {};
+  DATA.forEach(p => { taskCounts[p.task] = (taskCounts[p.task]||0)+1; });
+  taskOrder.sort((a,b)=> taskCounts[b]-taskCounts[a]);
+  const taskColor = {};
+  taskOrder.forEach((t,i)=>{ taskColor[t] = t==='Other CV Research' ? 'var(--cat-other)' : `var(${CAT_VARS[i % CAT_VARS.length]})`; });
+
+  function splitAuthor(a){
+    const m = a.match(/^(.*?)\s*\(([^)]*)\)\s*$/);
+    if(!m) return {name:a.trim(), institution:null};
+    return {name:m[1].trim(), institution:(m[2].trim()||null)};
+  }
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function chip(task){
+    return `<span class="chip" style="background:color-mix(in srgb, ${taskColor[task]} 16%, transparent); color:${taskColor[task]};"><span class="dot" style="background:${taskColor[task]}"></span>${esc(task)}</span>`;
+  }
+
+  function venueYear(p){ return [p.venue, p.year].filter(Boolean).join(' '); }
+
+  function renderDetail(p){
+    const authors = (p.authors||[]).map(splitAuthor);
+    const names = authors.map(a=>a.name).join(', ');
+    const institutions = [...new Set(authors.map(a=>a.institution).filter(Boolean))].join(', ');
+    let html = '';
+    if(names) html += `<div class="authors">${esc(names)}</div>`;
+    if(institutions) html += `<div class="institutions">${esc(institutions)}</div>`;
+    html += `<div style="margin-top:8px;">${chip(p.task)} <span class="venue-tag">${esc(venueYear(p))}</span>${p.score!=null ? ` <span class="venue-tag">&middot; relevance ${p.score.toFixed ? p.score.toFixed(1) : p.score}</span>` : ''}</div>`;
+    html += `<h4>Nutshell</h4><p>${esc(p.nutshell)}</p>`;
+    if(p.contributions && p.contributions.length){
+      html += `<h4>Contributions</h4><ul>${p.contributions.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>`;
+    }
+    if(p.deficiencies && p.deficiencies.length){
+      html += `<h4>Deficiencies</h4><ul>${p.deficiencies.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>`;
+    }
+    if(p.notable){
+      html += `<h4>Notable</h4><p>${esc(p.notable)}</p>`;
+    }
+    if(p.results && p.results.length){
+      html += `<h4>Reported results (${p.results.length})</h4><table class="results-mini"><thead><tr><th>Dataset</th><th>Metric</th><th>Value</th><th>Setting</th></tr></thead><tbody>`;
+      html += p.results.map(r=>`<tr><td>${esc(r.dataset)}</td><td class="d-metric">${esc(r.metric)}</td><td>${esc(r.value)}</td><td class="d-set">${esc(r.setting||'')}</td></tr>`).join('');
+      html += `</tbody></table>`;
+    }
+    html += `<a class="detail-link" href="${esc(p.url)}" target="_blank" rel="noopener">Open paper &rarr;</a>`;
+    return html;
+  }
+
+  // ---------------- stats ----------------
+  const uniqueDatasets = new Set(); let totalRows = 0; const years = [];
+  const confSet = new Set();
+  DATA.forEach(p=>{
+    confSet.add(p.conference_dir);
+    if(p.year) years.push(p.year);
+    (p.results||[]).forEach(r=>{ uniqueDatasets.add(r.dataset); totalRows++; });
+  });
+  document.getElementById('stat-papers-inline').textContent = DATA.length;
+  const yrMin = Math.min(...years), yrMax = Math.max(...years);
+  const stats = [
+    [DATA.length, 'papers reviewed'],
+    [confSet.size, 'conference editions'],
+    [uniqueDatasets.size, 'benchmarks tracked'],
+    [totalRows, 'result rows extracted'],
+    [`${yrMin}–${yrMax}`, 'publication span'],
+  ];
+  document.getElementById('stats').innerHTML = stats.map(([n,l])=>`<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+
+  // ---------------- tabs ----------------
+  document.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('view-'+btn.dataset.view).classList.add('active');
+    });
+  });
+
+  // ---------------- leaderboard ----------------
+  const fTask = document.getElementById('f-task');
+  const fDataset = document.getElementById('f-dataset');
+  const fMetric = document.getElementById('f-metric');
+
+  fTask.innerHTML = `<option value="">All tasks</option>` + taskOrder.map(t=>`<option value="${esc(t)}">${esc(t)} (${taskCounts[t]})</option>`).join('');
+
+  function datasetOptionsFor(task){
+    const counts = {};
+    DATA.forEach(p=>{
+      if(task && p.task!==task) return;
+      (p.results||[]).forEach(r=>{ counts[r.dataset]=(counts[r.dataset]||0)+1; });
+    });
+    return Object.entries(counts).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]));
+  }
+  function metricOptionsFor(task, dataset){
+    const counts = {};
+    DATA.forEach(p=>{
+      if(task && p.task!==task) return;
+      (p.results||[]).forEach(r=>{
+        if(dataset && r.dataset!==dataset) return;
+        counts[r.metric]=(counts[r.metric]||0)+1;
+      });
+    });
+    return Object.entries(counts).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]));
+  }
+
+  function refreshDatasetOptions(preferred){
+    const opts = datasetOptionsFor(fTask.value);
+    fDataset.innerHTML = opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
+    if(preferred && opts.some(o=>o[0]===preferred)) fDataset.value = preferred;
+    else if(opts.length) fDataset.value = opts[0][0];
+  }
+  function refreshMetricOptions(preferred){
+    const opts = metricOptionsFor(fTask.value, fDataset.value);
+    fMetric.innerHTML = `<option value="">All metrics</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
+    if(preferred && opts.some(o=>o[0]===preferred)) fMetric.value = preferred;
+  }
+
+  function renderBoard(){
+    const task = fTask.value, dataset = fDataset.value, metric = fMetric.value;
+    const rows = [];
+    DATA.forEach(p=>{
+      if(task && p.task!==task) return;
+      (p.results||[]).forEach(r=>{
+        if(dataset && r.dataset!==dataset) return;
+        if(metric && r.metric!==metric) return;
+        rows.push({p, r});
+      });
+    });
+    rows.sort((a,b)=>{
+      const av=a.r.value_numeric, bv=b.r.value_numeric;
+      if(av==null && bv==null) return 0;
+      if(av==null) return 1;
+      if(bv==null) return -1;
+      return bv-av;
+    });
+    document.getElementById('metric-col-head').style.display = metric ? 'none' : '';
+    document.getElementById('board-count').textContent = `${rows.length} result${rows.length===1?'':'s'}`;
+    const tbody = document.getElementById('board-body');
+    if(!rows.length){
+      tbody.innerHTML = `<tr><td colspan="6" class="row-empty">No extracted results match this filter yet.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = rows.map(({p,r}, i)=>{
+      const idx = DATA.indexOf(p);
+      return `<tr data-idx="${idx}" class="board-row">
+        <td class="rank">${i+1}</td>
+        <td class="val">${esc(r.value)}</td>
+        ${metric ? '' : `<td class="setting-txt">${esc(r.metric)}</td>`}
+        <td class="paper-cell"><button class="paper-title-link">${esc(p.title)}</button></td>
+        <td class="venue-tag">${esc(venueYear(p))}</td>
+        <td class="setting-txt">${esc(r.setting||'')}</td>
+      </tr>
+      <tr class="detail-row" data-detail-for="${idx}" style="display:none;"><td colspan="6"><div class="detail">${renderDetail(p)}</div></td></tr>`;
+    }).join('');
+
+    tbody.querySelectorAll('tr.board-row').forEach(tr=>{
+      tr.addEventListener('click', ()=>{
+        const idx = tr.dataset.idx;
+        const dr = tbody.querySelector(`tr.detail-row[data-detail-for="${idx}"]`);
+        dr.style.display = dr.style.display==='none' ? '' : 'none';
+      });
+    });
+  }
+
+  fTask.addEventListener('change', ()=>{ refreshDatasetOptions(); refreshMetricOptions(); renderBoard(); });
+  fDataset.addEventListener('change', ()=>{ refreshMetricOptions(); renderBoard(); });
+  fMetric.addEventListener('change', renderBoard);
+
+  refreshDatasetOptions('Market1501');
+  refreshMetricOptions('Rank-1');
+  renderBoard();
+
+  // ---------------- browse ----------------
+  const bSearch = document.getElementById('b-search');
+  const bTask = document.getElementById('b-task');
+  const bSort = document.getElementById('b-sort');
+  bTask.innerHTML = `<option value="">All tasks</option>` + taskOrder.map(t=>`<option value="${esc(t)}">${esc(t)} (${taskCounts[t]})</option>`).join('');
+
+  function renderBrowse(){
+    const q = bSearch.value.trim().toLowerCase();
+    const task = bTask.value;
+    let list = DATA.filter(p=>{
+      if(task && p.task!==task) return false;
+      if(!q) return true;
+      const hay = (p.title + ' ' + (p.authors||[]).join(' ')).toLowerCase();
+      return hay.includes(q);
+    });
+    const sort = bSort.value;
+    if(sort==='year') list = list.slice().sort((a,b)=> (b.year||0)-(a.year||0));
+    else if(sort==='title') list = list.slice().sort((a,b)=> a.title.localeCompare(b.title));
+    else list = list.slice().sort((a,b)=> (b.score||0)-(a.score||0));
+
+    document.getElementById('browse-count').textContent = `${list.length} paper${list.length===1?'':'s'}`;
+    const container = document.getElementById('paper-list');
+    container.innerHTML = list.map(p=>{
+      const idx = DATA.indexOf(p);
+      return `<div class="paper-card" data-idx="${idx}">
+        <div class="pc-head">
+          <div class="pc-title">${esc(p.title)}</div>
+          <div class="result-count">${(p.results||[]).length} result row${(p.results||[]).length===1?'':''}</div>
+        </div>
+        <div class="pc-meta">${esc((p.authors||[]).map(a=>splitAuthor(a).name).join(', '))} &middot; ${esc(venueYear(p))}</div>
+        <div style="margin-top:8px;">${chip(p.task)}</div>
+        <div class="pc-nutshell">${esc(p.nutshell)}</div>
+        <div class="detail" data-detail-for="${idx}" style="display:none; margin-top:12px;">${renderDetail(p)}</div>
+      </div>`;
+    }).join('');
+
+    container.querySelectorAll('.paper-card').forEach(card=>{
+      card.addEventListener('click', (e)=>{
+        if(e.target.closest('a')) return;
+        const d = card.querySelector('.detail');
+        d.style.display = d.style.display==='none' ? '' : 'none';
+      });
+    });
+  }
+  bSearch.addEventListener('input', renderBrowse);
+  bTask.addEventListener('change', renderBrowse);
+  bSort.addEventListener('change', renderBrowse);
+  renderBrowse();
+})();
+</script>

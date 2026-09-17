@@ -1,0 +1,45 @@
+{
+  "nutshell": "Lifelong person ReID (LReID) models suffer catastrophic forgetting and semantic drift as they're trained on a sequence of domains without replaying old data. PAD addresses this asymmetrically: a frozen CLIP text encoder plus a lightly-distilled text prompt (TA-Prompt) acts as a stable cross-domain semantic anchor, while the visual branch adapts more aggressively via an EMA teacher and a growing pool of frozen/active visual prompts (VA-Prompt), balancing stability (text side) against plasticity (visual side).",
+  "contributions": [
+    "An exemplar-free LReID framework where a frozen pretrained text encoder (not the visual branch) provides the primary cross-domain semantic anchor, with only a lightweight TA-Prompt trained via weak KL distillation from a frozen per-domain text teacher - explicitly kept weak because strong text-side regularization was found to over-constrain adaptation.",
+    "VA-Prompt: a DualPrompt-inspired General+Expert prompt pool inserted into the visual transformer that activates new expert slots per incoming domain while freezing previous slots' prompts, combined with EMA-teacher visual distillation (3-way feature MSE across token levels + vision-text logit KL) to regulate the partially-unfrozen visual backbone.",
+    "State-of-the-art results on the standard AKA-order1/AKA-order2 lifelong ReID benchmarks (5 seen + 7 unseen domains), with the largest single-dataset margin over the next-best method (DAFC, an arXiv preprint) on MSMT17 (mAP 46.9 vs. 27.1 on order1)."
+  ],
+  "deficiencies": [
+    "The paper's own Table 4 shows the 'keep text distillation weak' design choice rests on comparing only two hyperparameter configurations (weak vs. strong), not a sweep - and in that comparison, strong TEXKD alone actually underperforms no distillation at all (67.6 vs. 68.2 mAP), and combined TEXKD+VISKD drops from 70.7 to 69.5 mAP when TEXKD is switched to strong. The asymmetric weak/strong framing is a real finding but a narrow one.",
+    "Per-seed variance (±0.49 mAP / ±0.31 R1 over 7 seeds) is reported only for PAD's own final-stage numbers, in prose, not for any competing method in Table 1/2 - so the reported margin over the next-best method (DAFC) can't be checked against a comparable noise band for either method.",
+    "Table 3's ablation shows adding VA-Prompt (S1→S2) actually reduces retention specifically on the first-seen domain, Market-1501 (mAP 81.9→78.2, R1 92.8→90.7), even though it improves the overall seen-domain average - a real stability cost on the earliest domain that the text frames only positively ('restores plasticity') without discussing the per-domain trade-off visible in its own table.",
+    "The 'high computational efficiency' and reduced-parameter claims (13.71M prompt params, dropping the text encoder at inference) are never benchmarked against any competitor's actual training time, inference latency, or memory footprint - efficiency is argued from parameter counts alone, not measured comparably."
+  ],
+  "notable": "The paper explicitly diagnoses why it uses a frozen (not EMA) teacher on the text side: since only the TA-Prompt is trainable and the text encoder itself is frozen, an EMA teacher would collapse to the student within a few iterations, causing the distillation KL term to vanish - a reusable design lesson for anyone building EMA-based distillation on a component with very few trainable parameters. Also worth flagging: the closest competitor across both benchmark tables (DAFC) is cited as an arXiv 2025 preprint, not a peer-reviewed publication - PAD's 'beats SOTA' margin over the next-best row is noticeably tighter against DAFC than against any peer-reviewed baseline in the same tables.",
+  "results": [
+    {"dataset": "Market-1501", "metric": "mAP", "value": "81.2", "setting": "AKA-order1 (Market-1501→CUHK-SYSU→DukeMTMC→MSMT17→CUHK03), final-stage seen-domain"},
+    {"dataset": "Market-1501", "metric": "R1", "value": "92.0", "setting": "AKA-order1, final-stage seen-domain"},
+    {"dataset": "CUHK-SYSU", "metric": "mAP", "value": "92.6", "setting": "AKA-order1, final-stage seen-domain"},
+    {"dataset": "CUHK-SYSU", "metric": "R1", "value": "93.5", "setting": "AKA-order1, final-stage seen-domain"},
+    {"dataset": "DukeMTMC", "metric": "mAP", "value": "64.9", "setting": "AKA-order1, final-stage seen-domain"},
+    {"dataset": "DukeMTMC", "metric": "R1", "value": "77.8", "setting": "AKA-order1, final-stage seen-domain"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "46.9", "setting": "AKA-order1, final-stage seen-domain"},
+    {"dataset": "MSMT17", "metric": "R1", "value": "72.0", "setting": "AKA-order1, final-stage seen-domain"},
+    {"dataset": "CUHK03", "metric": "mAP", "value": "68.1", "setting": "AKA-order1, final-stage seen-domain"},
+    {"dataset": "CUHK03", "metric": "R1", "value": "69.5", "setting": "AKA-order1, final-stage seen-domain"},
+    {"dataset": "Seen-Avg", "metric": "mAP", "value": "70.7", "setting": "AKA-order1, average over 5 seen domains at final stage"},
+    {"dataset": "Seen-Avg", "metric": "R1", "value": "81.0", "setting": "AKA-order1, average over 5 seen domains at final stage"},
+    {"dataset": "Unseen-Avg", "metric": "mAP", "value": "78.6", "setting": "AKA-order1, average over 7 unseen domains at final stage"},
+    {"dataset": "Unseen-Avg", "metric": "R1", "value": "71.4", "setting": "AKA-order1, average over 7 unseen domains at final stage"},
+    {"dataset": "DukeMTMC", "metric": "mAP", "value": "71.1", "setting": "AKA-order2 (DukeMTMC→MSMT17→Market-1501→CUHK-SYSU→CUHK03), final-stage seen-domain"},
+    {"dataset": "DukeMTMC", "metric": "R1", "value": "82.6", "setting": "AKA-order2, final-stage seen-domain"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "37.7", "setting": "AKA-order2, final-stage seen-domain"},
+    {"dataset": "MSMT17", "metric": "R1", "value": "64.0", "setting": "AKA-order2, final-stage seen-domain"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "77.5", "setting": "AKA-order2, final-stage seen-domain"},
+    {"dataset": "Market-1501", "metric": "R1", "value": "89.8", "setting": "AKA-order2, final-stage seen-domain"},
+    {"dataset": "CUHK-SYSU", "metric": "mAP", "value": "93.9", "setting": "AKA-order2, final-stage seen-domain"},
+    {"dataset": "CUHK-SYSU", "metric": "R1", "value": "94.9", "setting": "AKA-order2, final-stage seen-domain"},
+    {"dataset": "CUHK03", "metric": "mAP", "value": "66.4", "setting": "AKA-order2, final-stage seen-domain"},
+    {"dataset": "CUHK03", "metric": "R1", "value": "68.5", "setting": "AKA-order2, final-stage seen-domain"},
+    {"dataset": "Seen-Avg", "metric": "mAP", "value": "69.3", "setting": "AKA-order2, average over 5 seen domains at final stage"},
+    {"dataset": "Seen-Avg", "metric": "R1", "value": "80.0", "setting": "AKA-order2, average over 5 seen domains at final stage"},
+    {"dataset": "Unseen-Avg", "metric": "mAP", "value": "76.2", "setting": "AKA-order2, average over 7 unseen domains at final stage"},
+    {"dataset": "Unseen-Avg", "metric": "R1", "value": "68.6", "setting": "AKA-order2, average over 7 unseen domains at final stage"}
+  ]
+}

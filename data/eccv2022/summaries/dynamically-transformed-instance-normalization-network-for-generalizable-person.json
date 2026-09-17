@@ -1,0 +1,38 @@
+{
+  "nutshell": "Domain-generalizable person ReID relies on Instance Normalization (IN) to strip domain-specific statistics, but IN also throws away discriminative patterns useful for matching. DTIN-Net fixes this by using the unnormalized features to generate the weights of a dynamic 1x1 convolution that then recalibrates the IN-normalized features, letting the network learn per-domain/per-instance how much to keep versus discard, trained with a multi-task strategy that treats each source domain as its own classification task.",
+  "contributions": [
+    "DTIN module: integrates IN with dynamic convolution (DyConv) where the DyConv filter weights are generated from the unnormalized (pre-IN) features rather than the normalized ones, then applied to recalibrate the normalized features - explicitly different from the naive 'IN then DyConv-on-normalized-features' ordering, which the paper shows performs much worse (Fig. 3/4, 'Base+IN+DyConv').",
+    "A 'dynamic control path' that aggregates multi-level (low- and high-level) unnormalized features as the signal fed into the DyConv parameter predictor, adding semantic richness beyond using only the immediately-preceding layer's features.",
+    "A multi-task training strategy that gives each source domain its own ID classifier (rather than pooling all domains into one global classifier + triplet loss), motivated by the concern that a shared classifier/triplet setup lets the network exploit domain-distinguishing (not identity-distinguishing) features.",
+    "State-of-the-art or comparable results across two multi-source domain-generalization protocols and a single-source cross-domain setting (M<->D), achieved with comparable or fewer parameters/FLOPs than compared methods (RaMoE, MetaBIN)."
+  ],
+  "deficiencies": [
+    "On the i-LIDS dataset specifically, DTIN-Net is worse than RaMoE under both protocols (Table 1: mAP 87.2 vs 90.2 and 89.2 vs 92.3), a consistent pattern across both evaluation settings that the paper only acknowledges in a single sentence without investigating why this one dataset behaves differently.",
+    "All ablation studies (Tables 3 and 4, isolating DTIN, multi-task training, and the dynamic control path) are run only on GRID and VIPeR - the two datasets where the method wins clearly - so there's no evidence on whether these components help or hurt on PRID/i-LIDS, including the i-LIDS case where the full method underperforms.",
+    "Results are reported as the mean of only two repetitive experiments with no variance or confidence intervals given anywhere, which makes several close margins (e.g., PRID CMC-1 79.7 vs 74.2 for MetaBIN in Table 1, or Protocol-2 VIPeR mAP 71.9 vs 72.2 for RaMoE, where DTIN-Net is actually marginally behind on that one cell) hard to interpret as reliably significant.",
+    "The central design claim - that generating DyConv filters from unnormalized rather than normalized features is what makes DTIN work - rests on one qualitative activation-map figure (Fig. 4, a handful of example images) and aggregate CMC curves (Fig. 3); there's no ablation table with exact numeric deltas isolating just that ordering choice the way Tables 3/4 do for the other components."
+  ],
+  "notable": "The paper explicitly tested the 'obvious' alternative design - running DyConv after IN, with filters generated from normalized features - and found it performs much worse ('Base+IN+DyConv' in Fig. 3/4, which even highlights background regions incorrectly); this is a useful negative result for anyone building similar normalization+dynamic-conv architectures, since the naive ordering is the one many would try first. Table 5's capacity comparison also shows DTIN-Net actually uses fewer FLOPs (3.7 vs 4.1 GMac) than the compared methods despite adding a dynamic module, which runs against the usual assumption that dynamic/adaptive components are computationally heavier.",
+  "results": [
+    {"dataset": "GRID", "metric": "mAP", "value": "60.6", "setting": "multi-source domain generalization, Protocol-1"},
+    {"dataset": "GRID", "metric": "CMC-1", "value": "51.8", "setting": "multi-source domain generalization, Protocol-1"},
+    {"dataset": "VIPeR", "metric": "mAP", "value": "70.7", "setting": "multi-source domain generalization, Protocol-1"},
+    {"dataset": "VIPeR", "metric": "CMC-1", "value": "62.9", "setting": "multi-source domain generalization, Protocol-1"},
+    {"dataset": "PRID", "metric": "mAP", "value": "79.7", "setting": "multi-source domain generalization, Protocol-1"},
+    {"dataset": "PRID", "metric": "CMC-1", "value": "71.0", "setting": "multi-source domain generalization, Protocol-1"},
+    {"dataset": "QMUL i-LIDS", "metric": "mAP", "value": "87.2", "setting": "multi-source domain generalization, Protocol-1"},
+    {"dataset": "QMUL i-LIDS", "metric": "CMC-1", "value": "81.8", "setting": "multi-source domain generalization, Protocol-1"},
+    {"dataset": "GRID", "metric": "mAP", "value": "58.4", "setting": "multi-source domain generalization, Protocol-2"},
+    {"dataset": "GRID", "metric": "CMC-1", "value": "49.4", "setting": "multi-source domain generalization, Protocol-2"},
+    {"dataset": "VIPeR", "metric": "mAP", "value": "71.9", "setting": "multi-source domain generalization, Protocol-2"},
+    {"dataset": "VIPeR", "metric": "CMC-1", "value": "64.0", "setting": "multi-source domain generalization, Protocol-2"},
+    {"dataset": "PRID", "metric": "mAP", "value": "77.4", "setting": "multi-source domain generalization, Protocol-2"},
+    {"dataset": "PRID", "metric": "CMC-1", "value": "67.8", "setting": "multi-source domain generalization, Protocol-2"},
+    {"dataset": "QMUL i-LIDS", "metric": "mAP", "value": "89.2", "setting": "multi-source domain generalization, Protocol-2"},
+    {"dataset": "QMUL i-LIDS", "metric": "CMC-1", "value": "85.3", "setting": "multi-source domain generalization, Protocol-2"},
+    {"dataset": "DukeMTMC-reID", "metric": "mAP", "value": "36.1", "setting": "single-source cross-domain, trained on Market1501 (M to D)"},
+    {"dataset": "DukeMTMC-reID", "metric": "CMC-1", "value": "57.0", "setting": "single-source cross-domain, trained on Market1501 (M to D)"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "37.4", "setting": "single-source cross-domain, trained on DukeMTMC-reID (D to M)"},
+    {"dataset": "Market1501", "metric": "CMC-1", "value": "69.8", "setting": "single-source cross-domain, trained on DukeMTMC-reID (D to M)"}
+  ]
+}

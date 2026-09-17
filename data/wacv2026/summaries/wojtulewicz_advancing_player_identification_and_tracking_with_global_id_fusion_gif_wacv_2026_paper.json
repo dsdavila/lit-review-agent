@@ -1,0 +1,44 @@
+{
+  "nutshell": "Broadcast sports video is a uniquely hard multi-object tracking setting: frequent camera switches (zoom-ins, replays, angle changes), long re-association gaps, and appearance changes across seasons/teams/jerseys break standard trackers. The paper introduces MuPNIT, the first multi-perspective NBA tracking+ReID benchmark with persistent global player identities, and Global ID Fusion (GIF), an online tracking-with-identification framework that maintains a global ID embedding database and re-links fragmented tracklets to it in a single pass, without offline post-processing.",
+  "contributions": [
+    "MuPNIT: the first large-scale multi-perspective MOT+ReID benchmark for sports (2.19M boxes, 283K frames, 78.5 min of broadcast NBA video across six seasons), explicitly capturing broadcast-style camera switches, long re-association gaps, and cross-season appearance changes (teams, jerseys, lighting) that single-camera MOT datasets like MOT17/MOT20/DanceTrack/SportsMOT do not.",
+    "MuPNIT-ReID and MuPNIT-ReID-light: companion ReID datasets (396K / 55K images, 211 identity-disjoint players) with a gallery deliberately sourced from a different domain (public team/media photos) than the in-game query tracklets, enabling zero-shot cross-domain ReID evaluation with text, uniform, and pose attributes not present in prior ReID benchmarks.",
+    "Global ID Fusion (GIF): a modular tracker + ID module + global-linking architecture that maintains one fixed embedding per identity in a global ID database and re-associates tracklets that fail motion/IoU matching via cosine similarity to that database - an online, single-pass alternative to prior offline tracklet-merging approaches (e.g., GTA).",
+    "Five new 'Global ID' metrics (FTFI, FTFIc, IDsw, MCorr, mAP) that separately quantify how fast a correct identity is established versus how stable it stays over a tracklet, surfacing a tradeoff that standard HOTA/IDF1 does not capture on its own."
+  ],
+  "deficiencies": [
+    "The headline abstract claim ('+25.3% HOTA, +79.5% IDF1 over OC-SORT') comes specifically from the easier 'game context' evaluation in Table 5, where the candidate identity pool is restricted to only the players actually in that specific game (requiring a known roster in advance) - in the harder, more realistic 'global context' (all identities in the test set), the same method's gains are much smaller (+13.6% HOTA, +44.0% IDF1), and the abstract does not disclose which setting its headline numbers come from.",
+    "The paper's own Table 10 shows the existing offline method GTA clearly beats GIF on the three primary tracking-identity metrics (HOTA 48.740 vs. 41.520, AssA 30.570 vs. 22.138, IDF1 52.169 vs. 42.666), with GIF only ahead on DetA and MOTA - GIF's real advantage is being online/real-time (39.47ms vs. GTA's offline post-processing) rather than being more accurate, a distinction the abstract's 'achieves state-of-the-art' framing does not make explicit.",
+    "In the cross-sport generalization test (Table 9), adding Global Linking on SoccerNet actually decreases HOTA (-1.8%), AssA (-3.3%), and MOTA (-0.8%), with only IDF1 improving (+1.3%) - the text describes this as GL 'still yield[ing] clear gains,' which understates that half of the reported metrics got worse on this dataset, not merely showing 'limited' improvement.",
+    "The global-context evaluation drops the text-attribute signal entirely ('text is omitted in the global context since it already encodes video-specific cues'), while the easier game-context evaluation keeps it - meaning the two settings being compared throughout the paper aren't just differing in candidate-pool size, they also differ in which input modalities are available, confounding the game-vs-global comparison.",
+    "All reported tracking and ReID results are single-run figures with no variance or seed reporting, despite several generalization gains in Table 9 being under 2 points (e.g., SportsMOT basketball HOTA: 73.361 -> 73.502)."
+  ],
+  "notable": "Table 5's own Global ID metrics surface a genuine, underexplored tradeoff: configurations with fewer ID switches, higher MCorr, and higher mAP (i.e., more stable, more accurate identification) consistently take longer to establish the correct identity in the first place (worse FTFI/FTFIc) - useful for anyone designing similar detect-then-identify pipelines, since it means 'fast to decide' and 'stable once decided' pull in opposite directions and can't be jointly maximized by the same design choice (e.g., feature-averaging window size). Also notable: the comparison with GTA (Table 10) is handled more honestly than the abstract - it directly shows an offline competitor winning on the core metrics and frames GIF's real contribution as the online/real-time property (only 19.5% latency overhead vs. the base tracker) rather than raw accuracy.",
+  "results": [
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "HOTA", "value": "41.959", "setting": "game context (candidate pool = players in that game), AP3D+GL, window=60"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "AssA", "value": "22.655", "setting": "game context, AP3D+GL60"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "IDF1", "value": "42.489", "setting": "game context, AP3D+GL60"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "MOTA", "value": "93.452", "setting": "game context, AP3D+GL60"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "FTFI (lower=faster)", "value": "85.004", "setting": "game context, AP3D+GL60"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "FTFIc (lower=faster)", "value": "133.528", "setting": "game context, AP3D+GL60"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "IDsw (lower=better)", "value": "15.416", "setting": "game context, AP3D+GL60"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "MCorr", "value": "68.8", "setting": "game context, AP3D+GL60"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "mAP", "value": "46.1", "setting": "game context, AP3D+GL60"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "HOTA", "value": "38.384", "setting": "global context (candidate pool = all test identities), CLIP/AP3D+GL"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "AssA", "value": "18.900", "setting": "global context"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "IDF1", "value": "35.512", "setting": "global context"},
+    {"dataset": "MuPNIT-ReID (via MuPNIT tracking benchmark)", "metric": "mAP", "value": "23.8", "setting": "global context"},
+    {"dataset": "MuPNIT-ReID-light", "metric": "ReID mAP (AP3D)", "value": "48.1", "setting": "best ReID backbone tested, standalone ReID benchmark"},
+    {"dataset": "MuPNIT-ReID-light", "metric": "ReID Top-1 (AP3D)", "value": "30.3", "setting": ""},
+    {"dataset": "MuPNIT (generalization)", "metric": "HOTA (Base+GL)", "value": "35.053", "setting": "500 synthetic text-based gallery IDs"},
+    {"dataset": "MuPNIT (generalization)", "metric": "IDF1 (Base+GL)", "value": "27.866", "setting": "500 synthetic text-based gallery IDs"},
+    {"dataset": "SportsMOT-basketball", "metric": "HOTA (Base+GL)", "value": "73.502", "setting": "500 synthetic text-based gallery IDs, val split"},
+    {"dataset": "SportsMOT-basketball", "metric": "IDF1 (Base+GL)", "value": "75.169", "setting": ""},
+    {"dataset": "SportsMOT-football", "metric": "HOTA (Base+GL)", "value": "68.243", "setting": "500 synthetic text-based gallery IDs, val split"},
+    {"dataset": "SportsMOT-football", "metric": "IDF1 (Base+GL)", "value": "67.816", "setting": ""},
+    {"dataset": "SportsMOT-volleyball", "metric": "HOTA (Base+GL)", "value": "71.104", "setting": "500 synthetic text-based gallery IDs, val split"},
+    {"dataset": "SportsMOT-volleyball", "metric": "IDF1 (Base+GL)", "value": "72.943", "setting": ""},
+    {"dataset": "SoccerNet", "metric": "HOTA (Base+GL)", "value": "51.917", "setting": "500 synthetic text-based gallery IDs; HOTA/AssA/MOTA all decreased vs. baseline here"},
+    {"dataset": "SoccerNet", "metric": "IDF1 (Base+GL)", "value": "56.171", "setting": "one of the few metrics that improved on this dataset"}
+  ]
+}

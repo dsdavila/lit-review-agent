@@ -1,0 +1,568 @@
+2026-09-08 14:03:45,321 INFO     lit_review_agent: === bmvc2025 (https://bmvc2025.bmva.org/proceedings/conference-proceedings/) ===
+2026-09-08 14:03:45,321 INFO     lit_review_agent: Fetching metadata using scraper=bmvc (limit=none, titles_only=True) ...
+2026-09-08 14:03:45,543 INFO     lit_review_agent: Saved metadata for 276 papers to data/bmvc2025/metadata.json
+2026-09-08 14:03:45,543 INFO     lit_review_agent: Prefilter: matching 276 papers against 2 search term(s) (match ANY) in title+abstract
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Part Segmentation and Motion Estimation for Articulated Objects with Dynamic 3D Gaussians' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Volumetric Temporal Texture for Smoke Stylization using Dynamic Radiance Fields' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Learning from Synthetic Data for Visual Grounding' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'MSMVD: Exploiting Multi-scale Image Features via Multi-scale BEV Features for Multi-view Pedestrian Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Guiding a diffusion model with itself using sliding windows' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Gen4Gen: Generative Data Pipeline for Generative Multi-Concept Composition' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'SPARTAN: Spatiotemporal Pose-Aware Retrieval for Text-guided Autonomous Navigation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Cross-Modal Scene Semantic Alignment for Image Complexity Assessment' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'GC-Font: Few-Shot Font Generation via Global Contextual Feature Modelling' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'DocAttentionRect: Attention-Guided Document Image Rectification' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Split Matching for Inductive Zero-shot Semantic Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Piezoelectric Acoustic Sensing for Sitting Pose Classification' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Pointly-Supervised Weak-Shot Semantic Segmentation via Dual Mapping Transfer' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'CMAMRNet: A Contextual Mask-Aware Network Enhancing Mural Restoration Through Comprehensive Mask Guidance' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'ST-GDance: Long-Term and Collision-Free Group Choreography from Music' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'TACTFL: Temporal Contrastive Training for Multi-modal Federated Learning with Similarity-guided Model Aggregation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Training-Free Synthetic Data Generation with Dual IP-Adapter Guidance' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'SSNeRF: Sparse View Semi-supervised Neural Radiance Fields with Augmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'RPD-Diff: Region-Adaptive Physics-Guided Diffusion Model for Visibility Enhancement under Dense and Non-Uniform Haze' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Continual Vision-and-Language Navigation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'CRCE: Coreference-Retention Concept Erasure in Text-to-Image Diffusion Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'STAIN: Smooth Tile-Aware Instance Normalisation for Virtual Staining' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Prompt-Based Exemplar Super-Compression and Regeneration for Class-Incremental Learning' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'RAPrivacy: a Readable Anonymizer for Privacy Preserving Action Recognition' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'BOTM: Echocardiography Segmentation via Bi-directional Optimal Token Matching' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Distribution-guided Generative Replay with Semantic Prompts for Class-Incremental Chest X-ray Diagnosis' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Mask2Act: Predictive Multi-Object Tracking as Video Pre-Training for Robot Manipulation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'CLAIR: CLIP-Aided Weakly Supervised Zero-Shot Cross-Domain Image Retrieval' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Uncertainty Diffusion: Parameter-Efficient Depth Refinement via Uncertainty-Guided Diffusion Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Dual-Stream Attention with Multi-Modal Queries for Object Detection in Transportation Applications' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'M$^2$StyleGS: Multi-Modality 3D Style Transfer with Gaussian Splatting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Lang4D: Weakly Supervised Learning of 4D Language Splatting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'SemanticControl: A Training-Free Approach for Handling Loosely Aligned Visual Conditions in ControlNet' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Spatial-Frequency Domain Aggregation for Visual Place Recognition' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'WTNet: A Weather Transfer Network for Domain-Adaptive All-In-One Adverse Weather Image Restoration' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Seed-to-Seed: Unpaired Image Translation in Diffusion Seed Space' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Identity-Motion Trade-offs in Text-to-Video Generation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'Four eyes see more than two: Dataset Distillation with Mixture-of-Experts' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'PSScreen: Partially Supervised Multiple Retinal Disease Screening' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'CellMamba: Adaptive Mamba for Accurate and Efficient Cell Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'LuKAN: A Kolmogorov-Arnold Network Framework for 3D Human Motion Prediction' (score 0.0): No search terms matched
+2026-09-08 14:03:45,543 DEBUG    lit_review_agent: Prefilter cut 'eXtended Multimodal Composite Association Score (xMCAS): A Gender Inclusive Approach to Measurement of Bias in Text-To-Image Diffusion Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Graph Similarity Learning of Floor Plans' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Proto-FG3D: Prototype-based Interpretable Fine-Grained 3D Shape Classification' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Efficient Image Restoration via Latent Consistency Flow Matching' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Bridging Visual-Textual Modalities: Weakly Supervised Histopathology Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'LiDAR MOT-DETR: A LiDAR-based Two-Stage Transformer for 3D Multiple Object Tracking' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Dual-Expert Collaborative Network for Fake News Detection with External Knowledge Integration' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Unsupervised Video Continual Learning via Non-Parametric Deep Embedded Clustering' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Capture and Reconstruct 3D Clothed Human from Images' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'REACT: Real-time Efficiency and Accuracy Compromise for Tradeoffs in Scene Graph Generation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'S$^2$V2V: Training-Free Video-to-Video with Sparse Points and Motion Guidance' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Revisiting Entropy Minimization for Long-Sequence Continual Test-Time Adaptation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'ADIR: Adaptive Diffusion for Image Reconstruction' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Enhancing Visual Tracking by Leveraging High-frequency Information within Event Signals' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'FaceGCD: Generalized Face Discovery via Dynamic Prefix Generation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'B-RIGHT: Benchmark Re-evaluation for Integrity in Generalized Human-Object Interaction Testing' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Learning Event-guided Exposure-agnostic Video Frame Interpolation via Adaptive Feature Blending' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'CFFlow: An Optical Flow Estimation Hinging on Cross-Frequency Attention' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'CLIP meets DINO for Tuning Zero-Shot Classifier using Unlabeled Image Collections' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'AegisRF: Adversarial Perturbations Guided with Sensitivity for Protecting Intellectual Property of Neural Radiance Fields' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Multimodal Feature Collaboration and Fusion for Fine-Grained Action Recognition' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Benchmarking Microsaccade Recognition with Event Cameras: A Novel Dataset and Evaluation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'CHIP: A multi-sensor dataset for 6D pose estimation of chairs in industrial settings' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Detection Transformers Under the Knife: A Neuroscience-Inspired Approach to Ablations' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'SVAC: Scaling Is All You Need For Referring Video Object Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Task Progressive Curriculum Learning for Robust Visual Question Answering' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'PME3D: An Adaptive and Efficient Multi-modal Feature Extraction Plug-in for 3D Object Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'OctreeNCA: Single-Pass 184 MP Segmentation on Consumer Hardware' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Extreme Model Compression with Structured Sparsity at Low Precision' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'DepthHMR: Leveraging Depth Around Humans for Multi-Human Mesh Generation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'FaceCrafter: Identity-Conditional Diffusion with Disentangled Control over Facial Pose, Expression, and Emotion' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Fast Self-Supervised depth and mask aware Association for Multi-Object Tracking' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'DAOVI: Distortion-Aware Omnidirectional Video Inpainting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'GLip: A Global-Local Integrated Progressive Framework for Robust Visual Speech Recognition' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Events Meet Dynamic Mode Decomposition: Capturing the Spatiotemporal Dynamics of Moving Objects' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Flatness-aware Curriculum Learning via Adversarial Difficulty' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'PosBridge: Multi-View Positional Embedding Transplant for Identity-Aware Image Editing' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Dual-Branch Network via Multiple Illumination-Aware Representation Learning for Steel Surface Defect Classification' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'What Can We Learn from Harry Potter? An Exploratory Study of Visual Representation Learning from Atypical Videos' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Pose-Robust Calibration Strategy for Point-of-Gaze Estimation on Mobile Phones' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'SteerPose: Simultaneous Extrinsic Camera Calibration and Matching from Articulation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Learning from Silence and Noise for Visual Sound Source Localization' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'HuGeDiff: 3D Human Generation via Diffusion with Gaussian Splatting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'RUSplatting: Robust 3D Gaussian Splatting for Sparse-View Underwater Scene Reconstruction' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'RGB-Event Fusion for Robust Lane Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Back To The Drawing Board: Rethinking Scene-Level Sketch-Based Image Retrieval' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Multi-Rationale Explainable Object Recognition via Contrastive Conditional Inference' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Permutation-Invariant Polar Harmonic Pooling for Point-based Neural Networks' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Depth Inconsistency-based spatial-channel attention gate for Mirror Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'UMM: A Unified Multi-Modal Model for Low-Level Vision Tasks with Dual-Driven Prompting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Knowledge Distillation via Cross Supervising with Attention for Remote Sensing Object Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut '3D Shape Reconstruction from Autonomous Driving Radars' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Log NeRF: Comparing Spaces for Learning Radiance Fields' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Exploring Histogram-based Color Constancy' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'HVLO-YOLO: An Ultra-Lightweight Detection Model for High-voltage Line Obstacles' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Multimodal Hate Detection Using Dual-Stream Graph Neural Networks' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Beyond Softmax: Dual-Branch Sigmoid Architecture for Accurate Class Activation Maps' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'JDATT: A Joint Distillation Framework for Atmospheric Turbulence Mitigation and Target Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,544 DEBUG    lit_review_agent: Prefilter cut 'Interactive Occlusion Boundary Estimation through Exploitation of Synthetic Data' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Answering from Sure to Uncertain: Uncertainty-Aware Curriculum Learning for Video Question Answering' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Frequency-Temporal Feature Integration for Compressed Video Action Recognition' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'HalfMix Augmentation and Regularized Dual-Path Learning for Cross-Domain Gaze Estimation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'A Novel Local Focusing Mechanism for Deepfake Detection Generalization' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Intra-Modal Divergence-Weighted Distillation for Vision-Language Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'FSF3A: Federated Spatial Feature Alignment and Adaptive Aggregation for Heterogeneous Brain Tumor Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Bézier Curve-Based Stroke Extraction for Handwritten Characters' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'CleverDistiller: Simple and Spatially Consistent Cross-modal Distillation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'FreqSelect: Frequency-Aware fMRI-to-Image Reconstruction' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Audio-Visual Separation with Hierarchical Fusion and Representation Alignment' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'An Explorative Study on Abstract Images and Visual Representations Learned from Them' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'One target to align them all: LiDAR, RGB and event cameras extrinsic calibration for Autonomous Driving' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'UFD-KD: Unified Frequency Decoupled Knowledge Distillation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'DefectGPT: Towards Multi-Class Defect Detection with Limited Electrical Samples' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Robust and Label-efficient Deep Waste Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Dynamic Convolution and Graph-Coupled Attention for Cross-Subject EEG-Vision Decoding' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'LieMorph: Transformer-based Image Registration Using Flows on Lie Groups' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Making Rotation Averaging Fast and Robust with Anisotropic Coordinate Descent' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Catching the Unknown with Limited Data: Bi-Directional Prompt Tuning in CLIP for Few-Shot Open-Set Adaptation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'OmniSegNet: Towards Scalable, Efficient & Universal Medical Image Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'OptSplat: Recurrent Optimization for Generalizable Reconstruction and Novel View Renderings' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Temporally Compressed 3D Gaussian Splatting for Dynamic Scenes' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Multi-Method Ensemble for Out-of-Distribution Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Pandora: Articulated 3D Scene Graphs from Egocentric Vision' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'EZIGen: Enhancing zero-shot personalized image generation with precise subject encoding and decoupled guidance' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'OpenHuman4D: Open-Vocabulary 4D Human Parsing' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Zero-Shot Anomaly Detection with Dual-Branch Prompt Selection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Zero-Shot CFC: Fast Real-World Image Denoising based on Cross-Frequency Consistency' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'CoT-SD: Chain-of-Thought Semantic Denoising' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'PanoHair: Detailed Hair Strand Synthesis on Volumetric Heads' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Video Dataset Condensation with Diffusion Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'TopoMortar: A Dataset to Evaluate Topology Accuracy in Image Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Dynamic Try-On: Taming Video Virtual Try-on with Dynamic Attention Mechanism' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Dual-Stream Adapters for Open-Set Segmentation in Driving Scenes' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'HERO-VQL: Hierarchical, Egocentric and Robust Visual Query Localization' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'PerSense: Training-Free Personalized Instance Segmentation in Dense Images' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Beyond Gloss: A Hand-Centric Framework for Gloss-Free Sign Language Translation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'TopoDiT-3D: Topology-Aware Diffusion Transformer with Bottleneck Structure for 3D Point Cloud Generation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'MuDG: Taming Multi-modal Diffusion with Gaussian Splatting for Urban Scene Reconstruction' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Incremental Multi-Scene Modeling via Continual Neural Graphics Primitives' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Segmentation Assisted Incremental Test Time Adaptation in an Open World' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Solving Zero-Shot 3D Visual Grounding as Constraint Satisfaction Problems' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Towards Data-Efficient Medical Imaging: A Generative and Semi-Supervised Framework' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Towards Open-Vocabulary Multimodal 3D Object Detection with Attributes' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Prompt-Informed Reinforcement Learning for Visual Coverage Path Planning' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut '3D Curvix: From Multiview 2D Edges to 3D Curve Segments' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Leveraging Sparsity for Efficient Inference of High-Resolution Vision Foundation Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Canonical Makeup Transfer' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Mitigating Hallucinations in Multimodal LLMs via Object-aware Preference Optimization' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'MLoRQ: Bridging Low-Rank and Quantization for Transformer Compression' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Jack of many Faces: A Step Towards Facial Expression and Physiological State Analysis with a Single Network' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'On the Role of Individual Differences in Current Approaches to Computational Image Aesthetics' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'MonoGSDF: Exploring Monocular Geometric Cues for Gaussian Splatting-Guided Implicit Surface Reconstruction' (score 0.0): No search terms matched
+2026-09-08 14:03:45,545 DEBUG    lit_review_agent: Prefilter cut 'Occam’s LGS: An Efficient Approach for Language Gaussian Splatting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'SAMWave: Adapting Segment Anything Model to difficult tasks' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Q-Align: Alleviating Attention Leakage in Zero-Shot Appearance Transfer via Query-Query Alignment' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Category-level Text-to-Image Retrieval Improved: Bridging the Domain Gap with Diffusion Models and Vision Encoders' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'JOG3R: Towards 3D-Consistent Video Generators' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'ALSA: Anchors in Logit Space for Out-of-Distribution Accuracy Estimation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Catch Your Concepts: A Flexible Concept Locator for Interpretable Visual Recognition' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'TAPM-Net: Trajectory-Aware Perturbation Modeling for Infrared Small Target Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Size-aware Contrastive Imitation Learning for Language-conditioned Multi-task Robotic Manipulation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'From Open Vocabulary to Open World: Teaching Vision Language Models to Detect Novel Objects' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'PADS: Plug-and-Play 3D Human Pose Analysis via Diffusion Generative Modeling' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Gromov Wasserstein Optimal Transport for Semantic Correspondences' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Unsupervised Multimodal Deepfake Detection Through Explicit Intra-Modal and Cross-Modal Inconsistency Discovery' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'TryOffDiff: Virtual-Try-Off via High-Fidelity Garment Reconstruction using Diffusion Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'EWMBench: Evaluating Scene, Motion, and Semantic Quality in Embodied World Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Self-Intersection-Aware 3D Human Motion Generation Using an Efficient Human Sphere Proxy' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Mapping like a Skeptic: Probabilistic BEV Projection for Online HD Mapping' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'TPA: Temporal Prompt Alignment for Fetal Congenital Heart Defect Classification' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Boosting Camera Motion Control for Video Diffusion Transformers' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Audio-Guided Visual Editing with Complex Multi-Modal Prompts' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Learning a Neural Association Network for Self-supervised Multi-Object Tracking' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Specify and Edit: Overcoming Ambiguity in Text-Based Image Editing' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Interpretable Text-Guided Image Clustering via Iterative Search' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'DTFSal: Audio-Visual Dynamic Token Fusion for Video Saliency Prediction' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Is Safety Checker Still Safe? A Study on the Covert NSFW Text' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'UDT : Unsupervised Discovery of Transformations between Fine-Grained Classes in Diffusion Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'TAG: A Simple Yet Effective Temporal-Aware Approach for Zero-Shot Video Temporal Grounding' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut '${C}^{3}$-GS: Learning Context-aware, Cross-dimension, Cross-scale Feature for Generalizable Gaussian Splatting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Vision Backbone Efficient Selection for Image Classification in Low-Data Regimes' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'DEAD: Data-Efficient Audiovisual Dubbing using Neural Rendering Priors' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'A Unified Framework for High-Frame-Rate HDR Video Synthesis' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Modular Embedding Recomposition for Incremental Learning' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'MonoTracker: Monocular RGB-Only 6D Tracking of Unknown Object' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Leveraging Modality Tags for Enhanced Cross-Modal Video Retrieval' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'LOGen: Toward LiDAR Object Generation by Point Diffusion' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'SIMULDITEX: Single Image Multiscale & Lightweight Diffusion for Texture Modelling' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Cloud-Stereo: A Dataset and Benchmark for Reconstructing Atmospheric Clouds from Stereo Images' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'C-SWAP: Explainability-Aware Structured Pruning for Efficient Neural Networks Compression' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Asymmetric Event-Image Stereo with Temporal Feature Gating and Iterative Structure-Detail Refinement' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'LoFT: LoRA-fused Training Dataset Generation with Few-shot Guidance' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Lost in Time: A New Temporal Benchmark for VideoLLMs' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Improving Multimodal Distillation for 3D Semantic Segmentation under Domain Shift' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Geometry-Aware Diffusion Models for Multiview Scene Inpainting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'FootFormer: Estimating Stability from Visual Input' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Image Recognition with Vision and Language Embeddings of VLMs' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Exploring Image Representation with Decoupled Classical Visual Descriptors' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Lost in Translation? Vocabulary Alignment for Source-Free Adaptation in Open-Vocabulary Semantic Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Distortion-Aware Multi-Object Tracking via Virtual Plane Projection in Overhead Fisheye Cameras' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'QWD-GAN: Quality-aware Wavelet-driven GAN for Unsupervised Medical Microscopy Images Denoising' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Llama Learns to Direct: DirectorLLM for Human-Centric Video Generation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'FaceCPT: Toward Cross-Modal Facial Representation Learning with Face-Caption Pre-Training' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Time-Scaling State-Space Models for Dense Video Captioning' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'ITC-RWKV: Interactive Tissue–Cell Modeling with Recurrent Key-Value Aggregation for Histopathological Subtyping' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Toward Robust Audio-Visual Synchronization Detection in Egocentric Video with Sparse Synchronization Events' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'Improving Human Motion Plausibility with Body Momentum' (score 0.0): No search terms matched
+2026-09-08 14:03:45,546 DEBUG    lit_review_agent: Prefilter cut 'DualDistill: A Unified Cross-Modal Knowledge Distillation Framework for Camera-Based BEV Representation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'FSLC: Fast Scoring with Learnable Coreset for Zero-shot Industrial Anomaly Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Diffusion Transformer-to-Mamba Distillation for High-Resolution Image Generation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Grad-CL: Source Free Domain Adaptation with Gradient Guided Feature Disalignment' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Semi-MoE: Mixture-of-Experts meets Semi-Supervised Histopathology Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'HEAL: Learning-Free Source Free Unsupervised Domain Adaptation for Cross-Modality Medical Image Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Tracking Meets Large Multimodal Models for Driving Scenario Understanding' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Prompt Image to Watch and Hear: Multimodal Prompting for Parameter-Efficient Audio-Visual Learning' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Clean Sample Selection and Noisy Sample Rematching for Text-Based Pedestrian Retrieval' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'A Hybrid Framework Bridging CNN and ViT based on Theory of Evidence for Diabetic Retinopathy Grading' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'LaMamba-Diff: Linear-Time High-Fidelity Diffusion Models Based on Local Attention and Mamba' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Advancing Utility Pole and Sign Detection Through Deep Learning' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Ev4DGS: Novel-view Rendering of Non-Rigid Objects from Monocular Event Streams' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Visible Structure Retrieval for Lightweight Image-Based Relocalisation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Spatiotemporal Event Spotting via 3D Heatmaps with Dynamically Shifted Gaussian Kernels' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Ink Enhancement for Ancient Bamboo Manuscripts Using Iterative Restoration-Degradation Adversarial Learning' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'MedOpenSeg: Open-World Medical Segmentation with Memory-Augmented Transformers' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Dual Polarity Prompts with Stochastic Entropy Perturbation for Label Noise' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Lid-Lab-NeRF: Generating Temporally Consistent, Labelled LiDAR Point Clouds using Neural Radiance Fields' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'RP-SAM2: Refining Point Prompts for Stable Surgical Instrument Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Verifier Matters: Enhancing Inference-Time Scaling for Video Diffusion Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Is Structural Awareness the Key to Event Camera Data Cleansing for Enhancing Veracity?' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'SALT: Parameter-Efficient Fine-Tuning via Singular Value Adaptation with Low-Rank Transformation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'In-Model Merging for Enhancing the Robustness of Medical Imaging Classification Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Quantifying Risk in Pedestrian Crowds Using Divergence Estimated from Flows of Head-Tracking Data' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'PrIINeR: Towards Prior-Informed Implicit Neural Representations for Accelerated MRI' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Language-Guided Decision Override for Adaptive and Retraining-Free Video Anomaly Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Superpixel Anything: A general object-based framework for accurate yet regular superpixel segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Benchmarking Vision Foundation Models for Input Monitoring in Autonomous Driving' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Generative Data Augmentation for Object Point Cloud Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Conditional Prototype Learning for Few-Shot Object Detection' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Atomizer: Generalizing to unseen modalities by breaking images down to a set of scalars' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Learning Correlation-aware Aleatoric Uncertainty for 3D Hand Pose Estimation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'IPGPhormer: Interpretable Pathology Graph-Transformer for Survival Analysis' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Calibration-Aware Prompt Learning for Medical Vision-Language Models' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut '3D-WAG: Hierarchical Wavelet-Guided Autoregressive Generation for High-Fidelity 3D Shapes' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Stabilizing Open-Set Test-Time Adaptation via Primary-Auxiliary Filtering and Knowledge-Integrated Prediction' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Controllable Garment Generation with Multi-Modal Diffusion Guidance' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'CLFSeg: A Fuzzy-Logic based Solution for Boundary Clarity and Uncertainty Reduction in Medical Image Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Towards Sharper Object Boundaries in Self-Supervised Depth Estimation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'ImProvShow: Multimodal Fusion for Image Provenance Summarization' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'CLIMB-3D: Class-Incremental Imbalanced 3D Instance Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Supervised Segmentation Model for Improved Detection of OSSN using Slit Lamp Images' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'LED: Light Enhanced Depth Estimation at Night' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'AKD-BNN: Adaptive Kernel Dynamic Bayesian Neural Networks for Enhanced Medical Image Segmentation with Uncertainty Estimation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Robust Human Registration with Body Part Segmentation on Noisy Point Clouds' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Conformal Predictors for Efficient Video Text Spotting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'MIAS-SAM: Medical Image Anomaly Segmentation without thresholding' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Evaluating Self-Supervised Learning in Medical Imaging: A Systematic Investigation of Robustness, Generalizability, and Multi-Domain Impact' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'ALFred: An Active Learning Framework for Real-world Semi-supervised Anomaly Detection with Adaptive Thresholds' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Isolated Channel Vision Transformers: From Single-Channel Pretraining to Multi-Channel Finetuning' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'TRUDI and TITUS: A Multi-Perspective Dataset and A Three-Stage Recognition System for Transportation Unit Identification' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'The Trauma THOMPSON Dataset for Real-World Emergency AI' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'ETTA: Efficient Test-Time Adaptation for Vision-Language Models through Dynamic Embedding Updates' (score 0.0): No search terms matched
+2026-09-08 14:03:45,547 DEBUG    lit_review_agent: Prefilter cut 'Hierarchical Image-Guided 3D Point Cloud Segmentation in Industrial Scenes via Multi-View Bayesian Fusion' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'Evaluating Perceptual Distance Models by Fitting Binomial Distributions to Two-Alternative Forced Choice Data' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'Conflict-Aware Adversarial Training' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'Binarizing Severely Degraded Ancient Bamboo Slips: Dataset and Baseline' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'MO-SHW: Hierarchy-Aware Multi-Objective Optimization for Open-World Segmentation' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'Contrastive Point Feature Matching for Open-world Object Counting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'Out-of-Distribution Detection from Small Training Sets using Bayesian Neural Network Classifiers' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'IoSR: End-to-End Intraoral Scans Repairing' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'AULUNet: An Adaptive Ultra-Lightweight U-Net Framework for Efficient Skin Lesion Segmentation in Resource-Constrained Environments' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'Language-Guided Reinforcement Learning for Hard Attention in Few-Shot Learning' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'Hair Strand Reconstruction based on 3D Gaussian Splatting' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'RASALoRE: Region Aware Spatial Attention with Location-based Random Embeddings for Weakly Supervised Anomaly Detection in Brain MRI Scans' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 DEBUG    lit_review_agent: Prefilter cut 'End-to-End LiDAR optimization for point cloud registration' (score 0.0): No search terms matched
+2026-09-08 14:03:45,548 INFO     lit_review_agent: Prefilter shortlisted 1/276 papers (275 cut - see filtering.log for each reason)
+2026-09-08 14:03:45,585 INFO     lit_review_agent: Downloading 1 selected PDFs to data/bmvc2025/papers ...
+2026-09-08 14:03:46,155 INFO     lit_review_agent: Downloaded 'Coarse Attribute Prediction with Task Agnostic Distillation for Real World Clothes Changing ReID': downloaded to data/bmvc2025/papers/coarse-attribute-prediction-with-task-agnostic-distillation-for-real-world-cloth.pdf
+2026-09-08 14:03:46,155 INFO     lit_review_agent: Downloaded 1/1 selected papers successfully.
+2026-09-08 14:03:46,155 INFO     lit_review_agent: Full detail on rejections/failures: data/bmvc2025/filtering.log
+2026-09-09 13:18:33,297 INFO     lit_review_agent: === bmvc2025 (https://bmvc2025.bmva.org/proceedings/conference-proceedings/) ===
+2026-09-09 13:18:33,297 INFO     lit_review_agent: Fetching metadata using scraper=bmvc (limit=none, titles_only=False) ...
+2026-09-09 13:19:49,798 INFO     lit_review_agent: Saved metadata for 276 papers to data/bmvc2025/metadata.json
+2026-09-09 13:19:49,799 INFO     lit_review_agent: Prefilter: matching 276 papers against 2 search term(s) (match ANY) in title+abstract
+2026-09-09 13:19:49,801 DEBUG    lit_review_agent: Prefilter cut 'Part Segmentation and Motion Estimation for Articulated Objects with Dynamic 3D Gaussians' (score 0.0): No search terms matched
+2026-09-09 13:19:49,801 DEBUG    lit_review_agent: Prefilter cut 'Volumetric Temporal Texture for Smoke Stylization using Dynamic Radiance Fields' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'Learning from Synthetic Data for Visual Grounding' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'MSMVD: Exploiting Multi-scale Image Features via Multi-scale BEV Features for Multi-view Pedestrian Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'Guiding a diffusion model with itself using sliding windows' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'Gen4Gen: Generative Data Pipeline for Generative Multi-Concept Composition' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'SPARTAN: Spatiotemporal Pose-Aware Retrieval for Text-guided Autonomous Navigation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'Cross-Modal Scene Semantic Alignment for Image Complexity Assessment' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'GC-Font: Few-Shot Font Generation via Global Contextual Feature Modelling' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'DocAttentionRect: Attention-Guided Document Image Rectification' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'Split Matching for Inductive Zero-shot Semantic Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'Piezoelectric Acoustic Sensing for Sitting Pose Classification' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'Pointly-Supervised Weak-Shot Semantic Segmentation via Dual Mapping Transfer' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'CMAMRNet: A Contextual Mask-Aware Network Enhancing Mural Restoration Through Comprehensive Mask Guidance' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'ST-GDance: Long-Term and Collision-Free Group Choreography from Music' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'TACTFL: Temporal Contrastive Training for Multi-modal Federated Learning with Similarity-guided Model Aggregation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'Training-Free Synthetic Data Generation with Dual IP-Adapter Guidance' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'SSNeRF: Sparse View Semi-supervised Neural Radiance Fields with Augmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'RPD-Diff: Region-Adaptive Physics-Guided Diffusion Model for Visibility Enhancement under Dense and Non-Uniform Haze' (score 0.0): No search terms matched
+2026-09-09 13:19:49,802 DEBUG    lit_review_agent: Prefilter cut 'Continual Vision-and-Language Navigation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'CRCE: Coreference-Retention Concept Erasure in Text-to-Image Diffusion Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'STAIN: Smooth Tile-Aware Instance Normalisation for Virtual Staining' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'Prompt-Based Exemplar Super-Compression and Regeneration for Class-Incremental Learning' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'RAPrivacy: a Readable Anonymizer for Privacy Preserving Action Recognition' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'BOTM: Echocardiography Segmentation via Bi-directional Optimal Token Matching' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'Distribution-guided Generative Replay with Semantic Prompts for Class-Incremental Chest X-ray Diagnosis' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'Mask2Act: Predictive Multi-Object Tracking as Video Pre-Training for Robot Manipulation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'CLAIR: CLIP-Aided Weakly Supervised Zero-Shot Cross-Domain Image Retrieval' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'Uncertainty Diffusion: Parameter-Efficient Depth Refinement via Uncertainty-Guided Diffusion Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'Dual-Stream Attention with Multi-Modal Queries for Object Detection in Transportation Applications' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'M$^2$StyleGS: Multi-Modality 3D Style Transfer with Gaussian Splatting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'Lang4D: Weakly Supervised Learning of 4D Language Splatting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'SemanticControl: A Training-Free Approach for Handling Loosely Aligned Visual Conditions in ControlNet' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'Spatial-Frequency Domain Aggregation for Visual Place Recognition' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'WTNet: A Weather Transfer Network for Domain-Adaptive All-In-One Adverse Weather Image Restoration' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'Seed-to-Seed: Unpaired Image Translation in Diffusion Seed Space' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'Identity-Motion Trade-offs in Text-to-Video Generation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'Four eyes see more than two: Dataset Distillation with Mixture-of-Experts' (score 0.0): No search terms matched
+2026-09-09 13:19:49,803 DEBUG    lit_review_agent: Prefilter cut 'PSScreen: Partially Supervised Multiple Retinal Disease Screening' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'CellMamba: Adaptive Mamba for Accurate and Efficient Cell Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'LuKAN: A Kolmogorov-Arnold Network Framework for 3D Human Motion Prediction' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'eXtended Multimodal Composite Association Score (xMCAS): A Gender Inclusive Approach to Measurement of Bias in Text-To-Image Diffusion Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'Graph Similarity Learning of Floor Plans' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'Proto-FG3D: Prototype-based Interpretable Fine-Grained 3D Shape Classification' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'Efficient Image Restoration via Latent Consistency Flow Matching' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'Bridging Visual-Textual Modalities: Weakly Supervised Histopathology Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'LiDAR MOT-DETR: A LiDAR-based Two-Stage Transformer for 3D Multiple Object Tracking' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'Dual-Expert Collaborative Network for Fake News Detection with External Knowledge Integration' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'Unsupervised Video Continual Learning via Non-Parametric Deep Embedded Clustering' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'Capture and Reconstruct 3D Clothed Human from Images' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'REACT: Real-time Efficiency and Accuracy Compromise for Tradeoffs in Scene Graph Generation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'S$^2$V2V: Training-Free Video-to-Video with Sparse Points and Motion Guidance' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'Revisiting Entropy Minimization for Long-Sequence Continual Test-Time Adaptation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'ADIR: Adaptive Diffusion for Image Reconstruction' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'Enhancing Visual Tracking by Leveraging High-frequency Information within Event Signals' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'FaceGCD: Generalized Face Discovery via Dynamic Prefix Generation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'B-RIGHT: Benchmark Re-evaluation for Integrity in Generalized Human-Object Interaction Testing' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'Learning Event-guided Exposure-agnostic Video Frame Interpolation via Adaptive Feature Blending' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'CFFlow: An Optical Flow Estimation Hinging on Cross-Frequency Attention' (score 0.0): No search terms matched
+2026-09-09 13:19:49,804 DEBUG    lit_review_agent: Prefilter cut 'CLIP meets DINO for Tuning Zero-Shot Classifier using Unlabeled Image Collections' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'AegisRF: Adversarial Perturbations Guided with Sensitivity for Protecting Intellectual Property of Neural Radiance Fields' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Multimodal Feature Collaboration and Fusion for Fine-Grained Action Recognition' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Benchmarking Microsaccade Recognition with Event Cameras: A Novel Dataset and Evaluation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'CHIP: A multi-sensor dataset for 6D pose estimation of chairs in industrial settings' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Detection Transformers Under the Knife: A Neuroscience-Inspired Approach to Ablations' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'SVAC: Scaling Is All You Need For Referring Video Object Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Task Progressive Curriculum Learning for Robust Visual Question Answering' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'PME3D: An Adaptive and Efficient Multi-modal Feature Extraction Plug-in for 3D Object Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'OctreeNCA: Single-Pass 184 MP Segmentation on Consumer Hardware' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Extreme Model Compression with Structured Sparsity at Low Precision' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'DepthHMR: Leveraging Depth Around Humans for Multi-Human Mesh Generation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'FaceCrafter: Identity-Conditional Diffusion with Disentangled Control over Facial Pose, Expression, and Emotion' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'DAOVI: Distortion-Aware Omnidirectional Video Inpainting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'GLip: A Global-Local Integrated Progressive Framework for Robust Visual Speech Recognition' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Events Meet Dynamic Mode Decomposition: Capturing the Spatiotemporal Dynamics of Moving Objects' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Flatness-aware Curriculum Learning via Adversarial Difficulty' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'PosBridge: Multi-View Positional Embedding Transplant for Identity-Aware Image Editing' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Dual-Branch Network via Multiple Illumination-Aware Representation Learning for Steel Surface Defect Classification' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'What Can We Learn from Harry Potter? An Exploratory Study of Visual Representation Learning from Atypical Videos' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Pose-Robust Calibration Strategy for Point-of-Gaze Estimation on Mobile Phones' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'SteerPose: Simultaneous Extrinsic Camera Calibration and Matching from Articulation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Learning from Silence and Noise for Visual Sound Source Localization' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'HuGeDiff: 3D Human Generation via Diffusion with Gaussian Splatting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'RUSplatting: Robust 3D Gaussian Splatting for Sparse-View Underwater Scene Reconstruction' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'RGB-Event Fusion for Robust Lane Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Back To The Drawing Board: Rethinking Scene-Level Sketch-Based Image Retrieval' (score 0.0): No search terms matched
+2026-09-09 13:19:49,805 DEBUG    lit_review_agent: Prefilter cut 'Multi-Rationale Explainable Object Recognition via Contrastive Conditional Inference' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Permutation-Invariant Polar Harmonic Pooling for Point-based Neural Networks' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Depth Inconsistency-based spatial-channel attention gate for Mirror Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'UMM: A Unified Multi-Modal Model for Low-Level Vision Tasks with Dual-Driven Prompting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Knowledge Distillation via Cross Supervising with Attention for Remote Sensing Object Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut '3D Shape Reconstruction from Autonomous Driving Radars' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Log NeRF: Comparing Spaces for Learning Radiance Fields' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Exploring Histogram-based Color Constancy' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'HVLO-YOLO: An Ultra-Lightweight Detection Model for High-voltage Line Obstacles' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Multimodal Hate Detection Using Dual-Stream Graph Neural Networks' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Beyond Softmax: Dual-Branch Sigmoid Architecture for Accurate Class Activation Maps' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'JDATT: A Joint Distillation Framework for Atmospheric Turbulence Mitigation and Target Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Interactive Occlusion Boundary Estimation through Exploitation of Synthetic Data' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Answering from Sure to Uncertain: Uncertainty-Aware Curriculum Learning for Video Question Answering' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Frequency-Temporal Feature Integration for Compressed Video Action Recognition' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'HalfMix Augmentation and Regularized Dual-Path Learning for Cross-Domain Gaze Estimation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'A Novel Local Focusing Mechanism for Deepfake Detection Generalization' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Intra-Modal Divergence-Weighted Distillation for Vision-Language Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'FSF3A: Federated Spatial Feature Alignment and Adaptive Aggregation for Heterogeneous Brain Tumor Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Bézier Curve-Based Stroke Extraction for Handwritten Characters' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'CleverDistiller: Simple and Spatially Consistent Cross-modal Distillation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'FreqSelect: Frequency-Aware fMRI-to-Image Reconstruction' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Audio-Visual Separation with Hierarchical Fusion and Representation Alignment' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'An Explorative Study on Abstract Images and Visual Representations Learned from Them' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'One target to align them all: LiDAR, RGB and event cameras extrinsic calibration for Autonomous Driving' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'UFD-KD: Unified Frequency Decoupled Knowledge Distillation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'DefectGPT: Towards Multi-Class Defect Detection with Limited Electrical Samples' (score 0.0): No search terms matched
+2026-09-09 13:19:49,806 DEBUG    lit_review_agent: Prefilter cut 'Robust and Label-efficient Deep Waste Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Dynamic Convolution and Graph-Coupled Attention for Cross-Subject EEG-Vision Decoding' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'LieMorph: Transformer-based Image Registration Using Flows on Lie Groups' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Making Rotation Averaging Fast and Robust with Anisotropic Coordinate Descent' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Catching the Unknown with Limited Data: Bi-Directional Prompt Tuning in CLIP for Few-Shot Open-Set Adaptation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'OmniSegNet: Towards Scalable, Efficient & Universal Medical Image Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'OptSplat: Recurrent Optimization for Generalizable Reconstruction and Novel View Renderings' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Temporally Compressed 3D Gaussian Splatting for Dynamic Scenes' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Multi-Method Ensemble for Out-of-Distribution Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Pandora: Articulated 3D Scene Graphs from Egocentric Vision' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'EZIGen: Enhancing zero-shot personalized image generation with precise subject encoding and decoupled guidance' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'OpenHuman4D: Open-Vocabulary 4D Human Parsing' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Zero-Shot Anomaly Detection with Dual-Branch Prompt Selection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Zero-Shot CFC: Fast Real-World Image Denoising based on Cross-Frequency Consistency' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'CoT-SD: Chain-of-Thought Semantic Denoising' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'PanoHair: Detailed Hair Strand Synthesis on Volumetric Heads' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Video Dataset Condensation with Diffusion Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'TopoMortar: A Dataset to Evaluate Topology Accuracy in Image Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Dynamic Try-On: Taming Video Virtual Try-on with Dynamic Attention Mechanism' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Dual-Stream Adapters for Open-Set Segmentation in Driving Scenes' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'HERO-VQL: Hierarchical, Egocentric and Robust Visual Query Localization' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'PerSense: Training-Free Personalized Instance Segmentation in Dense Images' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Beyond Gloss: A Hand-Centric Framework for Gloss-Free Sign Language Translation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'TopoDiT-3D: Topology-Aware Diffusion Transformer with Bottleneck Structure for 3D Point Cloud Generation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'MuDG: Taming Multi-modal Diffusion with Gaussian Splatting for Urban Scene Reconstruction' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Incremental Multi-Scene Modeling via Continual Neural Graphics Primitives' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Segmentation Assisted Incremental Test Time Adaptation in an Open World' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Solving Zero-Shot 3D Visual Grounding as Constraint Satisfaction Problems' (score 0.0): No search terms matched
+2026-09-09 13:19:49,807 DEBUG    lit_review_agent: Prefilter cut 'Towards Data-Efficient Medical Imaging: A Generative and Semi-Supervised Framework' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Towards Open-Vocabulary Multimodal 3D Object Detection with Attributes' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Prompt-Informed Reinforcement Learning for Visual Coverage Path Planning' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut '3D Curvix: From Multiview 2D Edges to 3D Curve Segments' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Leveraging Sparsity for Efficient Inference of High-Resolution Vision Foundation Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Canonical Makeup Transfer' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Mitigating Hallucinations in Multimodal LLMs via Object-aware Preference Optimization' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'MLoRQ: Bridging Low-Rank and Quantization for Transformer Compression' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Jack of many Faces: A Step Towards Facial Expression and Physiological State Analysis with a Single Network' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'On the Role of Individual Differences in Current Approaches to Computational Image Aesthetics' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'MonoGSDF: Exploring Monocular Geometric Cues for Gaussian Splatting-Guided Implicit Surface Reconstruction' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Occam’s LGS: An Efficient Approach for Language Gaussian Splatting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'SAMWave: Adapting Segment Anything Model to difficult tasks' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Q-Align: Alleviating Attention Leakage in Zero-Shot Appearance Transfer via Query-Query Alignment' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Category-level Text-to-Image Retrieval Improved: Bridging the Domain Gap with Diffusion Models and Vision Encoders' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'JOG3R: Towards 3D-Consistent Video Generators' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'ALSA: Anchors in Logit Space for Out-of-Distribution Accuracy Estimation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Catch Your Concepts: A Flexible Concept Locator for Interpretable Visual Recognition' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'TAPM-Net: Trajectory-Aware Perturbation Modeling for Infrared Small Target Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Size-aware Contrastive Imitation Learning for Language-conditioned Multi-task Robotic Manipulation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'From Open Vocabulary to Open World: Teaching Vision Language Models to Detect Novel Objects' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'PADS: Plug-and-Play 3D Human Pose Analysis via Diffusion Generative Modeling' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Gromov Wasserstein Optimal Transport for Semantic Correspondences' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'Unsupervised Multimodal Deepfake Detection Through Explicit Intra-Modal and Cross-Modal Inconsistency Discovery' (score 0.0): No search terms matched
+2026-09-09 13:19:49,808 DEBUG    lit_review_agent: Prefilter cut 'TryOffDiff: Virtual-Try-Off via High-Fidelity Garment Reconstruction using Diffusion Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'EWMBench: Evaluating Scene, Motion, and Semantic Quality in Embodied World Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Self-Intersection-Aware 3D Human Motion Generation Using an Efficient Human Sphere Proxy' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Mapping like a Skeptic: Probabilistic BEV Projection for Online HD Mapping' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'TPA: Temporal Prompt Alignment for Fetal Congenital Heart Defect Classification' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Boosting Camera Motion Control for Video Diffusion Transformers' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Audio-Guided Visual Editing with Complex Multi-Modal Prompts' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Learning a Neural Association Network for Self-supervised Multi-Object Tracking' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Specify and Edit: Overcoming Ambiguity in Text-Based Image Editing' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Interpretable Text-Guided Image Clustering via Iterative Search' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'DTFSal: Audio-Visual Dynamic Token Fusion for Video Saliency Prediction' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Is Safety Checker Still Safe? A Study on the Covert NSFW Text' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'UDT : Unsupervised Discovery of Transformations between Fine-Grained Classes in Diffusion Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'TAG: A Simple Yet Effective Temporal-Aware Approach for Zero-Shot Video Temporal Grounding' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut '${C}^{3}$-GS: Learning Context-aware, Cross-dimension, Cross-scale Feature for Generalizable Gaussian Splatting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Vision Backbone Efficient Selection for Image Classification in Low-Data Regimes' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'DEAD: Data-Efficient Audiovisual Dubbing using Neural Rendering Priors' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'A Unified Framework for High-Frame-Rate HDR Video Synthesis' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Modular Embedding Recomposition for Incremental Learning' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'MonoTracker: Monocular RGB-Only 6D Tracking of Unknown Object' (score 0.0): No search terms matched
+2026-09-09 13:19:49,809 DEBUG    lit_review_agent: Prefilter cut 'Leveraging Modality Tags for Enhanced Cross-Modal Video Retrieval' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'LOGen: Toward LiDAR Object Generation by Point Diffusion' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'SIMULDITEX: Single Image Multiscale & Lightweight Diffusion for Texture Modelling' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Cloud-Stereo: A Dataset and Benchmark for Reconstructing Atmospheric Clouds from Stereo Images' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'C-SWAP: Explainability-Aware Structured Pruning for Efficient Neural Networks Compression' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Asymmetric Event-Image Stereo with Temporal Feature Gating and Iterative Structure-Detail Refinement' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'LoFT: LoRA-fused Training Dataset Generation with Few-shot Guidance' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Lost in Time: A New Temporal Benchmark for VideoLLMs' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Improving Multimodal Distillation for 3D Semantic Segmentation under Domain Shift' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Geometry-Aware Diffusion Models for Multiview Scene Inpainting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'FootFormer: Estimating Stability from Visual Input' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Image Recognition with Vision and Language Embeddings of VLMs' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Exploring Image Representation with Decoupled Classical Visual Descriptors' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Lost in Translation? Vocabulary Alignment for Source-Free Adaptation in Open-Vocabulary Semantic Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Distortion-Aware Multi-Object Tracking via Virtual Plane Projection in Overhead Fisheye Cameras' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'QWD-GAN: Quality-aware Wavelet-driven GAN for Unsupervised Medical Microscopy Images Denoising' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Llama Learns to Direct: DirectorLLM for Human-Centric Video Generation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'FaceCPT: Toward Cross-Modal Facial Representation Learning with Face-Caption Pre-Training' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Time-Scaling State-Space Models for Dense Video Captioning' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'ITC-RWKV: Interactive Tissue–Cell Modeling with Recurrent Key-Value Aggregation for Histopathological Subtyping' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Toward Robust Audio-Visual Synchronization Detection in Egocentric Video with Sparse Synchronization Events' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'Improving Human Motion Plausibility with Body Momentum' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'DualDistill: A Unified Cross-Modal Knowledge Distillation Framework for Camera-Based BEV Representation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,810 DEBUG    lit_review_agent: Prefilter cut 'FSLC: Fast Scoring with Learnable Coreset for Zero-shot Industrial Anomaly Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Diffusion Transformer-to-Mamba Distillation for High-Resolution Image Generation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Grad-CL: Source Free Domain Adaptation with Gradient Guided Feature Disalignment' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Semi-MoE: Mixture-of-Experts meets Semi-Supervised Histopathology Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'HEAL: Learning-Free Source Free Unsupervised Domain Adaptation for Cross-Modality Medical Image Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Tracking Meets Large Multimodal Models for Driving Scenario Understanding' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Prompt Image to Watch and Hear: Multimodal Prompting for Parameter-Efficient Audio-Visual Learning' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Clean Sample Selection and Noisy Sample Rematching for Text-Based Pedestrian Retrieval' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'A Hybrid Framework Bridging CNN and ViT based on Theory of Evidence for Diabetic Retinopathy Grading' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'LaMamba-Diff: Linear-Time High-Fidelity Diffusion Models Based on Local Attention and Mamba' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Advancing Utility Pole and Sign Detection Through Deep Learning' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Ev4DGS: Novel-view Rendering of Non-Rigid Objects from Monocular Event Streams' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Visible Structure Retrieval for Lightweight Image-Based Relocalisation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Spatiotemporal Event Spotting via 3D Heatmaps with Dynamically Shifted Gaussian Kernels' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Ink Enhancement for Ancient Bamboo Manuscripts Using Iterative Restoration-Degradation Adversarial Learning' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'MedOpenSeg: Open-World Medical Segmentation with Memory-Augmented Transformers' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Dual Polarity Prompts with Stochastic Entropy Perturbation for Label Noise' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Lid-Lab-NeRF: Generating Temporally Consistent, Labelled LiDAR Point Clouds using Neural Radiance Fields' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'RP-SAM2: Refining Point Prompts for Stable Surgical Instrument Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Verifier Matters: Enhancing Inference-Time Scaling for Video Diffusion Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Is Structural Awareness the Key to Event Camera Data Cleansing for Enhancing Veracity?' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'SALT: Parameter-Efficient Fine-Tuning via Singular Value Adaptation with Low-Rank Transformation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'In-Model Merging for Enhancing the Robustness of Medical Imaging Classification Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,811 DEBUG    lit_review_agent: Prefilter cut 'Quantifying Risk in Pedestrian Crowds Using Divergence Estimated from Flows of Head-Tracking Data' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'PrIINeR: Towards Prior-Informed Implicit Neural Representations for Accelerated MRI' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Language-Guided Decision Override for Adaptive and Retraining-Free Video Anomaly Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Superpixel Anything: A general object-based framework for accurate yet regular superpixel segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Benchmarking Vision Foundation Models for Input Monitoring in Autonomous Driving' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Generative Data Augmentation for Object Point Cloud Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Conditional Prototype Learning for Few-Shot Object Detection' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Atomizer: Generalizing to unseen modalities by breaking images down to a set of scalars' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Learning Correlation-aware Aleatoric Uncertainty for 3D Hand Pose Estimation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'IPGPhormer: Interpretable Pathology Graph-Transformer for Survival Analysis' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Calibration-Aware Prompt Learning for Medical Vision-Language Models' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut '3D-WAG: Hierarchical Wavelet-Guided Autoregressive Generation for High-Fidelity 3D Shapes' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Stabilizing Open-Set Test-Time Adaptation via Primary-Auxiliary Filtering and Knowledge-Integrated Prediction' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Controllable Garment Generation with Multi-Modal Diffusion Guidance' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'CLFSeg: A Fuzzy-Logic based Solution for Boundary Clarity and Uncertainty Reduction in Medical Image Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Towards Sharper Object Boundaries in Self-Supervised Depth Estimation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'ImProvShow: Multimodal Fusion for Image Provenance Summarization' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'CLIMB-3D: Class-Incremental Imbalanced 3D Instance Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Supervised Segmentation Model for Improved Detection of OSSN using Slit Lamp Images' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'LED: Light Enhanced Depth Estimation at Night' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'AKD-BNN: Adaptive Kernel Dynamic Bayesian Neural Networks for Enhanced Medical Image Segmentation with Uncertainty Estimation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Robust Human Registration with Body Part Segmentation on Noisy Point Clouds' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'Conformal Predictors for Efficient Video Text Spotting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,812 DEBUG    lit_review_agent: Prefilter cut 'MIAS-SAM: Medical Image Anomaly Segmentation without thresholding' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'Evaluating Self-Supervised Learning in Medical Imaging: A Systematic Investigation of Robustness, Generalizability, and Multi-Domain Impact' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'ALFred: An Active Learning Framework for Real-world Semi-supervised Anomaly Detection with Adaptive Thresholds' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'Isolated Channel Vision Transformers: From Single-Channel Pretraining to Multi-Channel Finetuning' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'TRUDI and TITUS: A Multi-Perspective Dataset and A Three-Stage Recognition System for Transportation Unit Identification' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'The Trauma THOMPSON Dataset for Real-World Emergency AI' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'ETTA: Efficient Test-Time Adaptation for Vision-Language Models through Dynamic Embedding Updates' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'Hierarchical Image-Guided 3D Point Cloud Segmentation in Industrial Scenes via Multi-View Bayesian Fusion' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'Evaluating Perceptual Distance Models by Fitting Binomial Distributions to Two-Alternative Forced Choice Data' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'Conflict-Aware Adversarial Training' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'Binarizing Severely Degraded Ancient Bamboo Slips: Dataset and Baseline' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'MO-SHW: Hierarchy-Aware Multi-Objective Optimization for Open-World Segmentation' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'Contrastive Point Feature Matching for Open-world Object Counting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'Out-of-Distribution Detection from Small Training Sets using Bayesian Neural Network Classifiers' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'IoSR: End-to-End Intraoral Scans Repairing' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'AULUNet: An Adaptive Ultra-Lightweight U-Net Framework for Efficient Skin Lesion Segmentation in Resource-Constrained Environments' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'Language-Guided Reinforcement Learning for Hard Attention in Few-Shot Learning' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'Hair Strand Reconstruction based on 3D Gaussian Splatting' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'RASALoRE: Region Aware Spatial Attention with Location-based Random Embeddings for Weakly Supervised Anomaly Detection in Brain MRI Scans' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 DEBUG    lit_review_agent: Prefilter cut 'End-to-End LiDAR optimization for point cloud registration' (score 0.0): No search terms matched
+2026-09-09 13:19:49,813 INFO     lit_review_agent: Prefilter shortlisted 2/276 papers (274 cut - see filtering.log for each reason)
+2026-09-09 13:19:49,873 INFO     lit_review_agent: Downloading 2 selected PDFs to data/bmvc2025/papers ...
+2026-09-09 13:19:50,976 INFO     lit_review_agent: Downloaded 'Fast Self-Supervised depth and mask aware Association for Multi-Object Tracking': downloaded to data/bmvc2025/papers/fast-self-supervised-depth-and-mask-aware-association-for-multi-object-tracking.pdf
+2026-09-09 13:19:50,976 INFO     lit_review_agent: Skipping 'Coarse Attribute Prediction with Task Agnostic Distillation for Real World Clothes Changing ReID': already downloaded at data/bmvc2025/papers/coarse-attribute-prediction-with-task-agnostic-distillation-for-real-world-cloth.pdf
+2026-09-09 13:19:50,976 INFO     lit_review_agent: Downloaded 2/2 selected papers successfully.
+2026-09-09 13:19:50,976 INFO     lit_review_agent: Full detail on rejections/failures: data/bmvc2025/filtering.log

@@ -1,0 +1,37 @@
+{
+  "nutshell": "Biometric recognition (face, gait, person ReID) is normally trained and evaluated in a closed-set way, but real deployments are open-set - some probes have no match in the gallery. Standard losses (softmax, triplet) treat genuine and imposter scores symmetrically and ignore that open-set thresholds are set by the largest imposter scores, so the paper proposes two new losses - an Identification-Detection loss and a Relative Threshold Minimization loss - trained on simulated open-set mini-batches, applicable to any biometric modality without changing the backbone architecture.",
+  "contributions": [
+    "Identification-Detection loss (L^IDL): a differentiable product of a detection score (sigmoid around a threshold sampled from in-batch non-mated scores) and an identification score (based on a differentiable softrank), trained on mini-batches that simulate open-set gallery/probe/mated/non-mated splits.",
+    "Relative Threshold Minimization (RTM) loss: minimizes a softmax-weighted average of non-mated-probe-to-gallery similarity scores, which adaptively pushes down the highest-ranking imposter scores (the ones that actually set the open-set threshold) more than lower ones - shown empirically to beat a hard-max version of the same idea.",
+    "A from-scratch open-set evaluation protocol for gait and person ReID (which lack official open-set splits): 50 random resamplings of non-mated probes at a fixed 21.5% non-mated rate, reporting median FNIR@FPIR for stability.",
+    "Demonstrated as a drop-in loss addition (no architecture change) across three modalities - face (AdaFace), gait (GaitBase, SwinGait-3D), person ReID (CAL) - improving both open-set (FNIR@FPIR) and closed-set (Rank-1) metrics simultaneously, at negligible extra training FLOPs and zero extra inference cost (Table 6)."
+  ],
+  "deficiencies": [
+    "The narrative text states the person-ReID result as 'a rank-1 accuracy of 84.8% (+2.2%) and a FNIR of 30.81% (-3.08%) on MEVID' - but Table 5 shows these exact numbers (84.8 Rank-1, 30.81 FNIR) belong to the CCVID row, not MEVID (MEVID's actual +Ours numbers are 55.1 Rank-1 and 64.80 FNIR). This is a direct mismatch between the paper's own prose and its own table, not just an interpretation issue.",
+    "Reported gains are inconsistent and sometimes negligible: GaitBase+Ours on GREW shows literally no closed-set improvement (60.1 -> 60.1 Rank@1) despite text describing the approach as consistently improving both closed- and open-set performance across the board.",
+    "The core hyperparameters (alpha, beta, gamma, lambda) are tuned via ablation on a single dataset/backbone combination (Gait3D with GaitBase, Table 2) and then reused as-is when applying the method to face recognition, a different gait backbone (SwinGait-3D), and person ReID - there's no shown re-tuning or sensitivity check confirming these hyperparameters transfer well across modalities.",
+    "A statistical significance test (two-sample t-test, p=0.052%) is reported for exactly one comparison (CAL vs +Ours on CCVID) out of the many comparisons made across three modalities and multiple datasets - the other, often smaller, margins (e.g. the MEVID or GREW results) get no significance testing despite being the kind of small deltas where it matters most.",
+    "Even after the proposed improvement, absolute open-set performance remains poor in practical terms - FNIR@1%FPIR stays above 60% on MEVID and above 75-80% on both gait datasets - meaning the majority of open-set probes are still mishandled; the paper's framing emphasizes the relative reduction rather than this remaining absolute gap."
+  ],
+  "notable": "The train/test asymmetry pattern recurs across this literature review: like the earlier BMVC2023 SANet paper (Gumbel-Softmax at train time, hard argmax at test time), this paper uses differentiable sigmoid/softrank relaxations of detection and rank only during training, then falls back to the actual non-differentiable FNIR@FPIR computation at test time - a common and reusable trick for training toward metrics that aren't differentiable themselves. Also notable: the method is explicitly loss-only and modality-agnostic (bolted onto AdaFace/GaitBase/SwinGait/CAL unchanged), which is a nice generality argument, though it also means all reported gains are entirely attributable to training signal rather than any architectural insight specific to open-set biometrics.",
+  "results": [
+    {"dataset": "IJB-S (Surveillance-Single)", "metric": "Rank-1", "value": "69.92", "setting": "AdaFace+Ours, face recognition"},
+    {"dataset": "IJB-S (Surveillance-Single)", "metric": "FNIR@0.1%FPIR", "value": "44.30", "setting": "AdaFace+Ours, face recognition"},
+    {"dataset": "IJB-S (Surveillance-Single)", "metric": "FNIR@1%FPIR", "value": "36.73", "setting": "AdaFace+Ours, face recognition"},
+    {"dataset": "IJB-S (Surveillance-Booking)", "metric": "Rank-1", "value": "70.00", "setting": "AdaFace+Ours, face recognition"},
+    {"dataset": "IJB-S (Surveillance-Booking)", "metric": "FNIR@0.1%FPIR", "value": "43.48", "setting": "AdaFace+Ours, face recognition"},
+    {"dataset": "IJB-S (Surveillance-Booking)", "metric": "FNIR@1%FPIR", "value": "36.17", "setting": "AdaFace+Ours, face recognition"},
+    {"dataset": "Gait3D", "metric": "Rank@1", "value": "64.8", "setting": "GaitBase+Ours, gait recognition"},
+    {"dataset": "Gait3D", "metric": "FNIR@1%FPIR", "value": "82.99±4.50", "setting": "GaitBase+Ours, gait recognition"},
+    {"dataset": "GREW", "metric": "Rank@1", "value": "60.1", "setting": "GaitBase+Ours, gait recognition"},
+    {"dataset": "GREW", "metric": "FNIR@1%FPIR", "value": "76.55±1.54", "setting": "GaitBase+Ours, gait recognition"},
+    {"dataset": "Gait3D", "metric": "Rank@1", "value": "75.3", "setting": "SwinGait-3D+Ours, gait recognition"},
+    {"dataset": "Gait3D", "metric": "FNIR@1%FPIR", "value": "79.30±6.74", "setting": "SwinGait-3D+Ours, gait recognition"},
+    {"dataset": "GREW", "metric": "Rank@1", "value": "80.4", "setting": "SwinGait-3D+Ours, gait recognition"},
+    {"dataset": "GREW", "metric": "FNIR@1%FPIR", "value": "57.29±1.83", "setting": "SwinGait-3D+Ours, gait recognition"},
+    {"dataset": "MEVID", "metric": "Rank-1", "value": "55.1", "setting": "CAL+Ours, video person ReID"},
+    {"dataset": "MEVID", "metric": "FNIR@1%FPIR", "value": "64.80±10.71", "setting": "CAL+Ours, video person ReID"},
+    {"dataset": "CCVID", "metric": "Rank-1", "value": "84.8", "setting": "CAL+Ours, video person ReID"},
+    {"dataset": "CCVID", "metric": "FNIR@1%FPIR", "value": "30.81±8.02", "setting": "CAL+Ours, video person ReID"}
+  ]
+}

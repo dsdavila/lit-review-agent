@@ -1,0 +1,32 @@
+{
+  "nutshell": "Aerial-Ground Person Re-ID (AGPReID) - matching a person seen by a drone camera to the same person seen by a ground camera, or vice versa - suffers extreme appearance variation from the viewpoint gap. Prior work either leans on hand-crafted attributes (AG-ReID) or a view-decoupling transformer (VDT) that separates view-related from view-invariant global features, but both underuse local/part-level information and don't adapt well across the full diversity of viewpoints. SeCap adds a decoder on top of VDT-style view decoupling: a Prompt Re-calibration Module that adaptively tunes a set of learnable prompts to the current input's view-invariant features, and a Local Feature Refinement Module that uses those prompts via two-way attention to pull view-invariant information out of local part features. The paper also contributes two new real-world AGPReID datasets, LAGPeR and G2APS-ReID.",
+  "contributions": [
+    "Prompt Re-calibration Module (PRM): a transformer-decoder-style block (cross-attention, then self-attention, then FFN) that adaptively re-calibrates a set of learnable prompt vectors based on the input's view-invariant global features, making the prompts specific to the current viewpoint rather than static across all inputs.",
+    "Local Feature Refinement Module (LFRM): a lightweight two-way-attention decoder (image-to-prompt and prompt-to-image cross-attention plus self-attention, stacked twice) that uses the re-calibrated prompts to align and refine local part features with the view-invariant global representation - directly targeting the 'neglect of local features' gap the paper identifies in prior AGPReID work.",
+    "Two new real-world AGPReID datasets: LAGPeR (4,231 identities, 63,841 images, 21 cameras - 7 drone + 14 ground - across 7 real campus scenes with varying lighting/weather/viewing angle) and G2APS-ReID (reconstructed from the G2APS person-search dataset into a proper 2,788-identity, 200,864-image ReID benchmark with train/query/gallery splits the original G2APS lacked).",
+    "State-of-the-art results on LAGPeR, G2APS-ReID, and AG-ReID.v1 against both single-view baselines (ViT, TransReID, CLIP-ReID) and cross-view baselines (AG-ReID, VDT, MIP), including beating AG-ReID.v1's best prior result without using that dataset's provided attribute labels at all."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 5) shows PRM hurting performance when isolated from VDT: LFRM alone (#3) beats LFRM+PRM without VDT (#4) on nearly every metric (e.g. LAGPeR A->G Rank-1 40.05 vs. 39.36, mAP 28.76 vs. 28.52) - meaning the paper's headline module, on its own, is a net negative in their own numbers. The explanation offered ('without VDT, prompts learn incorrect view-invariant information') is plausible but not directly tested.",
+    "PRM's marginal contribution once VDT is already present is small: full model (VDT+LFRM+PRM, #6) beats VDT+LFRM alone (#5) by only 0.04-0.82 points across most LAGPeR/G2APS-ReID metrics, despite the abstract framing PRM as 'the core of this framework.'",
+    "On AG-ReID.v1 (Table 4), SeCap actually loses to VDT on G->A mAP (78.34 vs. 78.57) while winning every other cell - the text glosses over this with 'comparable results for the G->A setting' rather than noting VDT is marginally ahead on that specific metric.",
+    "All results across both datasets appear to be single runs (no seeds/variance reported), and the new datasets are entirely author-collected/annotated/partitioned with no independent verification - the G2APS-ReID split process explicitly involves manually reallocating IDs with 'too few or too many images' to the training set with no stated criteria for what counts as too few/many, a source of researcher discretion in constructing the benchmark that isn't discussed as a limitation."
+  ],
+  "notable": "The two new datasets are a substantial contribution independent of the SeCap architecture itself - LAGPeR (4,231 real IDs, 63,841 images) is the largest real-world AGPReID dataset in the paper's own comparison table, larger than AG-ReID.v1/v2 by several times, and could be useful to a literature review regardless of how the method itself holds up. Also worth flagging: despite the 'Prompt Re-calibration' and 'Adaptive Prompts' framing in the title, the PRM module is structurally a standard transformer-decoder cross-attention block (much like a DETR query-refinement layer) applied to a set of learnable tokens - closer to conventional decoder cross-attention than to language-model-style prompting, which is worth knowing when comparing 'prompt learning' claims across papers in this literature review.",
+  "results": [
+    {"dataset": "LAGPeR", "metric": "Rank-1", "value": "41.79", "setting": "A->G (aerial query, ground gallery)"},
+    {"dataset": "LAGPeR", "metric": "mAP", "value": "30.37", "setting": "A->G (aerial query, ground gallery)"},
+    {"dataset": "LAGPeR", "metric": "Rank-1", "value": "35.26", "setting": "G->A (ground query, aerial gallery)"},
+    {"dataset": "LAGPeR", "metric": "mAP", "value": "33.42", "setting": "G->A (ground query, aerial gallery)"},
+    {"dataset": "LAGPeR", "metric": "Rank-1", "value": "24.39", "setting": "G->A+G (ground query, mixed gallery)"},
+    {"dataset": "LAGPeR", "metric": "mAP", "value": "19.24", "setting": "G->A+G (ground query, mixed gallery)"},
+    {"dataset": "G2APS-ReID", "metric": "Rank-1", "value": "75.31", "setting": "A->G"},
+    {"dataset": "G2APS-ReID", "metric": "mAP", "value": "58.57", "setting": "A->G"},
+    {"dataset": "G2APS-ReID", "metric": "Rank-1", "value": "73.22", "setting": "G->A"},
+    {"dataset": "G2APS-ReID", "metric": "mAP", "value": "58.90", "setting": "G->A"},
+    {"dataset": "AG-ReID.v1", "metric": "Rank-1", "value": "84.03", "setting": "A->G, no attribute labels used"},
+    {"dataset": "AG-ReID.v1", "metric": "mAP", "value": "76.16", "setting": "A->G, no attribute labels used"},
+    {"dataset": "AG-ReID.v1", "metric": "Rank-1", "value": "87.01", "setting": "G->A, no attribute labels used"},
+    {"dataset": "AG-ReID.v1", "metric": "mAP", "value": "78.34", "setting": "G->A, no attribute labels used"}
+  ]
+}

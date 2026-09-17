@@ -1,0 +1,32 @@
+{
+  "nutshell": "Visual State Space Models (VMamba/SS2D) promise linear-time sequence processing, but in practice still process a dense H×W token grid with sequential recurrent state updates, so the theoretical linear complexity doesn't translate into fast real inference - and ViT-style token pruning/merging methods don't respect Mamba's directional, recurrent scan when transplanted directly. TE-VMamba instead defines token importance natively from SS2D's own state-update step-size (Δ), pruning low-impact tokens in middle layers and merging semantically similar survivors in deep layers, both gated by learned adaptive thresholds.",
+  "contributions": [
+    "Token importance derived natively from SS2D's input-dependent step-size Δk (which governs how strongly a token updates the recurrent hidden state), rather than adapting ViT-attention-based pruning heuristics - tokens with |Δk| below a batch mean-variance threshold (θ = μ − ασ) are pruned in early-to-mid layers.",
+    "Adaptive token merging: SS2D's alternating horizontal/vertical scan tokens are grouped into structured even-odd pairs, scored by normalized dot-product similarity, and merged via mean-fusion when similarity exceeds a threshold predicted per-layer/per-instance by a lightweight 2-layer MLP gating head - applied in deep layers where survivor tokens become more semantically redundant.",
+    "An empirically-justified depth-wise schedule (Prune→Merge ordering, early layers untouched) - Table 6 shows this beats both Merge→Prune (similar accuracy but ~2x the FLOPs, since redundant tokens are merged before being removable) and Simultaneous application (which actively hurts both accuracy and efficiency from conflicting decision boundaries).",
+    "Reports >60% FLOPs reduction on Market-1501 (Base: 15.46G→3.82G) while remaining competitive or best-in-class on Market-1501, CUHK03-NP, and Occluded-ReID versus CNN, Transformer, and other Mamba-based baselines."
+  ],
+  "deficiencies": [
+    "The CUHK03-NP results are anomalously large relative to every other comparison in the paper: TE-VMamba-Base reports 97.3/94.0 (Labeled) and 95.4/91.7 (Detected) Rank-1/mAP, beating the best non-Mamba competitor (DFLN, 86.8/84.0) by more than 10 points - a far larger margin than the narrow gains on Market-1501 (96.7 vs. 96.1 best) or the outright loss on MSMT17 (below), with no discussion of why this one benchmark shows such a disproportionate jump.",
+    "On MSMT17, the paper's own Table 2 shows TE-VMamba-Base (83.3 Rank-1 / 62.7 mAP) is clearly behind the best Transformer baseline DC-Former (86.9/70.7) - a real 3.6/8.0 point gap that the text characterizes only as TE-VMamba 'remains competitive,' understating the shortfall on this specific large-scale benchmark.",
+    "The headline >60-70% FLOPs reduction and latency/throughput numbers (Tables 4-5) are reported only for Market-1501 (and partially CUHK03-NP-Detected); no efficiency numbers are given for MSMT17 or Occluded-ReID, so it's unclear whether the same efficiency gains hold on the datasets where the accuracy story is weaker.",
+    "Table 4's own component ablation shows pruning+merging costs real accuracy on the smaller backbones - VMamba-Tiny loses -4.6 Rank-1/-7.4 mAP and VMamba-Small loses -3.0/-5.4 versus no token reduction at all - only the largest (Base) backbone shows pruning+merging staying roughly accuracy-neutral (-1.5/-4.5 relative to a slightly-improved no-reduction baseline); the paper's framing of 'preserving strong identity cues' understates this backbone-size-dependent cost."
+  ],
+  "notable": "The pruning/merging ordering ablation (Table 6) is a genuinely reusable empirical finding for anyone adding token reduction to a Mamba-family backbone: Prune→Merge gives the best accuracy/efficiency trade-off, Merge→Prune gets marginally higher accuracy but at roughly 2x the FLOPs cost (redundant tokens get merged before they can be removed), and doing both simultaneously actively degrades both accuracy and efficiency from conflicting decision boundaries between Δ-based pruning and similarity-based merging.",
+  "results": [
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "96.7", "setting": "TE-VMamba-Base, no re-ranking"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "87.1", "setting": "TE-VMamba-Base, no re-ranking"},
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "93.6", "setting": "TE-VMamba-Tiny, no re-ranking"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "84.2", "setting": "TE-VMamba-Tiny, no re-ranking"},
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "95.1", "setting": "TE-VMamba-Small, no re-ranking"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "85.7", "setting": "TE-VMamba-Small, no re-ranking"},
+    {"dataset": "CUHK03-NP", "metric": "Rank-1", "value": "97.3", "setting": "TE-VMamba-Base, Labeled split"},
+    {"dataset": "CUHK03-NP", "metric": "mAP", "value": "94.0", "setting": "TE-VMamba-Base, Labeled split"},
+    {"dataset": "CUHK03-NP", "metric": "Rank-1", "value": "95.4", "setting": "TE-VMamba-Base, Detected split"},
+    {"dataset": "CUHK03-NP", "metric": "mAP", "value": "91.7", "setting": "TE-VMamba-Base, Detected split"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "83.3", "setting": "TE-VMamba-Base (below best Transformer baseline DC-Former's 86.9)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "62.7", "setting": "TE-VMamba-Base (below best Transformer baseline DC-Former's 70.7)"},
+    {"dataset": "Occluded-ReID", "metric": "Rank-1", "value": "95.5", "setting": "TE-VMamba-Base"},
+    {"dataset": "Occluded-ReID", "metric": "mAP", "value": "85.3", "setting": "TE-VMamba-Base (not best - FLaN-Net reports 89.5)"}
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "nutshell": "Existing cross-modality ReID datasets only vary modality (RGB/IR/thermal) OR platform (ground/UAV), never both. This paper introduces MP-ReID, the first dataset combining multi-modality AND multi-platform variation simultaneously (ground RGB, ground infrared, UAV RGB, UAV thermal), plus Uni-Prompt ReID, a CLIP-based prompt-learning method with separate modality-aware, platform-aware, and visual-enhanced prompt components to handle both gaps jointly.",
+  "contributions": [
+    "MP-ReID dataset: the first person-ReID benchmark spanning both multi-modality (RGB, infrared, thermal) and multi-platform (6 ground RGB + 6 ground infrared cameras, plus a UAV with synchronized RGB+thermal cameras) capture - 1,930 identities, 136,156 annotated bounding boxes, across indoor/outdoor/aerial scenes.",
+    "Uni-Prompt ReID: extends CLIP-based prompt learning (building on DAPrompt and CoCoOp) with three distinct learnable prompt components - a Specific-ReID prompt, a Modality-aware prompt, and a Platform-aware prompt - plus a lightweight 'visual-enhanced network' that conditions all three prompts on the actual input image's visual features rather than using static learned tokens alone.",
+    "A two-stage training recipe: first warm up and freeze the Specific-ReID prompt via CLIP-ReID's image-text contrastive losses, then train the modality- and platform-specific prompts with their own separate contrastive losses (Eqs. 2-5).",
+    "New SOTA across 12 cross-modality/cross-platform settings on MP-ReID, with the largest gain in the hardest 'cross-modality & platform' setting (mAP 40.26 vs. the next-best baseline SAAI's 20.66 - roughly double)."
+  ],
+  "deficiencies": [
+    "The testing protocol randomly samples one query image per identity per camera and averages over 10 trials, but no variance/standard deviation across those trials is reported anywhere - exactly the setup where run-to-run noise matters, especially given some capture sources (e.g. UAV RGB, 341 IDs) have far fewer identities than others.",
+    "The identity distribution is heavily skewed: 346 of the 1,930 identities appear in only one camera and 381 have fewer than 10 bounding boxes total, meaning a meaningful fraction of the dataset's 'identities' offer very limited cross-camera/cross-modality signal to actually test generalization - this isn't addressed in how the benchmark splits or reports results.",
+    "Thermal-camera bounding boxes had to be manually delineated because automated YOLOX tracking was 'unsatisfactory' on thermal video, while all other modalities were auto-tracked - the paper doesn't quantify how much manual correction was needed or whether this asymmetric annotation process introduces any systematic bias into the thermal-modality labels specifically.",
+    "The paper's own ablation (Table 3) shows the Platform-aware Prompt contributes the single largest jump in the hardest cross-modality & platform setting (Rank-1 31.57→40.66, +9.09), yet the narrative gives comparatively more emphasis to the Visual-enhanced Prompt (a custom lightweight network) despite it contributing a smaller +2.5 Rank-1 gain in that same setting."
+  ],
+  "notable": "The dataset paper documents an unusually thorough privacy/ethics protocol for a UAV surveillance benchmark - IRB approval, posted public notices in the shooting zones, explicit participant consent, facial mosaicing, permanent deletion of raw footage, and a non-commercial-only release enforced via signed agreements. Worth flagging as a template, since several other UAV/surveillance-adjacent ReID papers in this batch don't discuss ethics at all or only in a single sentence.",
+  "results": [
+    {"dataset": "MP-ReID", "metric": "Rank-1", "value": "78.77", "setting": "Cross-platform only"},
+    {"dataset": "MP-ReID", "metric": "Rank-5", "value": "88.38", "setting": "Cross-platform only"},
+    {"dataset": "MP-ReID", "metric": "mAP", "value": "74.29", "setting": "Cross-platform only"},
+    {"dataset": "MP-ReID", "metric": "Rank-1", "value": "72.26", "setting": "Cross-modality only"},
+    {"dataset": "MP-ReID", "metric": "Rank-5", "value": "85.00", "setting": "Cross-modality only"},
+    {"dataset": "MP-ReID", "metric": "mAP", "value": "60.81", "setting": "Cross-modality only"},
+    {"dataset": "MP-ReID", "metric": "Rank-1", "value": "43.16", "setting": "Cross-modality & platform"},
+    {"dataset": "MP-ReID", "metric": "Rank-5", "value": "60.60", "setting": "Cross-modality & platform"},
+    {"dataset": "MP-ReID", "metric": "mAP", "value": "40.26", "setting": "Cross-modality & platform"},
+    {"dataset": "MP-ReID", "metric": "Rank-1", "value": "64.73", "setting": "Average across all 12 settings"},
+    {"dataset": "MP-ReID", "metric": "Rank-5", "value": "77.99", "setting": "Average across all 12 settings"},
+    {"dataset": "MP-ReID", "metric": "mAP", "value": "58.45", "setting": "Average across all 12 settings"}
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "nutshell": "Domain-generalizable (DG) person ReID normally needs labeled data from multiple source domains, which is expensive and small-scale. ISR instead learns identity-discriminative representations directly from 47.8M unlabeled internet video frames by mining cross-frame positive pairs (same identity across two frames of one video) via bipartite matching, then down-weighting the inevitable noisy pairs with a reliability-guided contrastive loss - reaching state-of-the-art DG performance without any human annotation or fine-tuning.",
+  "contributions": [
+    "ISR: constructs contrastive positive pairs from inter-frame images of the same video (solved as a maximum-weight bipartite matching / Hungarian-algorithm assignment problem between two frames), aligning the self-supervised pretext task with ReID's identity-discrimination objective instead of MoCo-style instance discrimination.",
+    "A reliability-guided contrastive loss (Eq. 2-4) that computes a softmax-based reliability score per mined positive pair and uses it (with its gradient stopped) as a modulating exponent to down-weight noisy pairs - shown to substantially outperform both the raw contrastive loss (gamma=0) and focal loss under the same noisy-pseudo-label setting (Table 6).",
+    "Trains on a self-collected 47.8M-image / 74K-video-clip dataset crawled from YouTube city street-view footage, with training cost shown to scale roughly linearly (O(N)) with data size, and demonstrates the performance has not saturated even at the largest tested scale (Figure 4)."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 5) shows the single biggest jump comes just from constructing cross-frame positive pairs at all (CP alone: 54.5% Rank-1 on Market-1501 vs. MoCo's 10.5%); the reliability-guided loss LRC is the next largest contributor (54.5%->81.5%), while the memory-queue loss LQ adds only a further 81.5%->85.1%. The abstract and intro present the method as one unified contribution without foregrounding how much of the result rests on the basic pair-construction idea versus the more heavily-marketed reliability mechanism.",
+    "The 47.8M-image training set is crawled from YouTube via 'cityname+streetview' queries across 100 cities with no discussed process for de-duplication, identity leakage into test benchmarks, or licensing/consent for the underlying video footage - a real concern at this scale that the paper doesn't address as a limitation.",
+    "Gains are markedly smaller on CUHK03 than on Market-1501/MSMT17, and the method still trails the supervised RaMoE baseline there (26.1% vs. 36.6% Rank-1, R50); the text's framing ('outperforms it on most datasets, six out of seven') doesn't examine why the harder/older CUHK03 benchmark behaves differently.",
+    "The few-shot fine-tuning result at 10% images-per-identity is genuinely worse than direct zero-shot evaluation on Market-1501 (75.9/54.3 mAP/R1 vs. 85.1/65.1 zero-shot) - an interesting negative result, but the paper treats it only as a practical caveat ('use direct testing instead') rather than investigating why so little fine-tuning data destabilizes the classifier enough to hurt the underlying representation."
+  ],
+  "notable": "The paper explicitly excludes DukeMTMC-reID from all evaluation because it was withdrawn by its creators, noting it only to illustrate other methods' training setups - a more careful practice than several other papers in this literature review that still report DukeMTMC numbers without comment. Also notable: the hyperparameter sweep (Figure 6) shows performance is fairly flat across gamma in [2,8] and lambda in [3,9], suggesting the method is robust to these choices but also that the specific tuned values (gamma=6, lambda=5) may not be doing as much work as a reader might assume from how prominently they're reported.",
+  "results": [
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "85.1", "setting": "DG Protocol-1, zero-shot, ResNet50 backbone"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "65.1", "setting": "DG Protocol-1, zero-shot, ResNet50 backbone"},
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "87.0", "setting": "DG Protocol-1, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "70.5", "setting": "DG Protocol-1, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "45.7", "setting": "DG Protocol-1, zero-shot, ResNet50 backbone"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "21.2", "setting": "DG Protocol-1, zero-shot, ResNet50 backbone"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "56.4", "setting": "DG Protocol-1, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "30.3", "setting": "DG Protocol-1, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "CUHK03", "metric": "Rank-1", "value": "26.1", "setting": "DG Protocol-1, zero-shot, ResNet50 backbone"},
+    {"dataset": "CUHK03", "metric": "mAP", "value": "27.4", "setting": "DG Protocol-1, zero-shot, ResNet50 backbone"},
+    {"dataset": "CUHK03", "metric": "Rank-1", "value": "36.6", "setting": "DG Protocol-1, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "CUHK03", "metric": "mAP", "value": "37.8", "setting": "DG Protocol-1, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "PRID", "metric": "Rank-1", "value": "74.5", "setting": "DG Protocol-2, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "PRID", "metric": "mAP", "value": "83.0", "setting": "DG Protocol-2, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "GRID", "metric": "Rank-1", "value": "62.7", "setting": "DG Protocol-2, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "GRID", "metric": "mAP", "value": "72.0", "setting": "DG Protocol-2, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "VIPeR", "metric": "Rank-1", "value": "68.4", "setting": "DG Protocol-2, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "VIPeR", "metric": "mAP", "value": "75.5", "setting": "DG Protocol-2, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "iLIDs", "metric": "Rank-1", "value": "87.5", "setting": "DG Protocol-2, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "iLIDs", "metric": "mAP", "value": "91.5", "setting": "DG Protocol-2, zero-shot, Swin-Transformer backbone"},
+    {"dataset": "CUHK03", "metric": "Rank-1", "value": "82.7", "setting": "pre-training for MGN fine-tuning (Ours+MGN)"},
+    {"dataset": "CUHK03", "metric": "mAP", "value": "81.7", "setting": "pre-training for MGN fine-tuning (Ours+MGN)"},
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "96.9", "setting": "pre-training for MGN fine-tuning (Ours+MGN)"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "92.3", "setting": "pre-training for MGN fine-tuning (Ours+MGN)"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "88.4", "setting": "pre-training for MGN fine-tuning (Ours+MGN)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "71.5", "setting": "pre-training for MGN fine-tuning (Ours+MGN)"}
+  ]
+}

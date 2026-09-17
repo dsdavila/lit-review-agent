@@ -1,0 +1,21 @@
+{
+  "nutshell": "Long-term person re-identification with clothes change has lacked a large, realistic benchmark, since prior long-term datasets are small and often simulated. DeepChange contributes real 12-month, 17-camera surveillance footage (1,121 identities, 178K bounding boxes) with natural clothing/weather/season variation, benchmarks a wide range of CNN/Transformer backbones, and proposes multimodal (RGB + grayscale/edge/keypoint) fusion strategies to help models look past clothing.",
+  "contributions": [
+    "DeepChange: the largest realistic long-term clothes-change person ReID dataset built from genuine surveillance video (not simulated or web-collected) - 17 cameras, 1,121 identities, 178K bounding boxes, spanning 12 months across two calendar years with sunny/rainy/snowy/extreme-cold weather diversity.",
+    "A large-scale benchmarking effort across 54 unimodal configurations (common CNNs, latest CNN variants, short-term re-id-specific models like BNNeck and OSNet, the long-term-specific ReIDCaps, and ViT/DeiT) on the new dataset.",
+    "Two multimodal fusion strategies (CNN-based late-fusion and Transformer-based early-fusion combining RGB with grayscale, edge maps, and body keypoints) that set new state-of-the-art results on DeepChange, with a ViT + grayscale fusion model (#64) reaching the top mAP."
+  ],
+  "deficiencies": [
+    "Even the best reported method's absolute mAP (15.19%) is extremely low compared to short-term ReID benchmarks (where 80%+ mAP is typical on Market-1501) - the paper doesn't frame this stark absolute gap as a caveat when describing its multimodal results as achieving 'new state-of-the-art,' leaving a reader to infer on their own how much of the underlying task may remain essentially unsolved.",
+    "Body keypoint modality is explicitly excluded from unimodal testing because the OpenPose extraction 'fails on 13.45% (23K out of 178K) of person images' - a disclosed data-quality issue in their own pipeline that is not otherwise filtered, corrected, or accounted for when keypoints are later folded into the multimodal fusion experiments (#55).",
+    "The paper's own qualitative analysis (Fig. 7) shows that true matches for a given query form a long-tail rank distribution due to high clothes diversity - this suggests part of the low achievable mAP may be an inherent property of using appearance-heavy signals on this dataset rather than a gap current methods can be expected to close, a distinction the paper does not attempt to quantify.",
+    "Ethics/consent disclosure is thin: volunteers are described only as having 'agreed to be collected and didn't mind being studied and released,' with faces blurred for privacy, but no formal IRB or ethics review process is described, which is a lighter disclosure than some contemporaneous long-term ReID benchmark papers provide for real (non-actor) surveillance subjects."
+  ],
+  "notable": "Because DeepChange uses real, non-synthetic, non-actor surveillance footage of ordinary bystanders (unlike Real28, NKUP, LTCC, and PRCC, which use simulated or clearly consenting recreated scenarios per the paper's own Table 2), it carries a meaningfully heavier privacy/ethics footprint than most predecessor long-term ReID datasets - worth flagging explicitly for anyone building on it. Also notable, and consistent with a pattern seen elsewhere in this batch of papers: rank@1 substantially exceeds mAP in this long-term/clothes-change setting (a phenomenon the paper explicitly attributes to prior work [24,54]), so rank@1 alone should not be read as representative of overall retrieval quality here.",
+  "results": [
+    {"dataset": "DeepChange", "metric": "mAP", "value": "15.19", "setting": "ViT-B16, RGB + 0.3*Grayscale fusion (#64, best reported result)"},
+    {"dataset": "DeepChange", "metric": "Rank-1", "value": "48.00", "setting": "ViT-B16, RGB + 0.3*Grayscale fusion (#64)"},
+    {"dataset": "DeepChange", "metric": "mAP", "value": "14.98", "setting": "ViT-B16, RGB only, unimodal (#52)"},
+    {"dataset": "DeepChange", "metric": "mAP", "value": "12.98", "setting": "BNNeck re-id ResNet50, RGB, unimodal (#42)"}
+  ]
+}

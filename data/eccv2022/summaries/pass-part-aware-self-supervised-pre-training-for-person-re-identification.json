@@ -1,0 +1,34 @@
+{
+  "nutshell": "Prior self-supervised pretraining for ReID (e.g. DINO on the LUPerson dataset) directly reuses image-classification SSL, which matches every local image crop to the same global-view representation, losing fine-grained body-part detail. PASS instead divides each image into fixed local areas, assigns each a specific learnable [PART] token, and only matches a local view's [PART] prediction to the corresponding [PART] prediction from the global view (never across different areas) - so each [PART] token specializes to one body region purely through this restricted self-supervised matching, with no extra architecture or part-detection module.",
+  "contributions": [
+    "A ReID-specific adaptation of DINO-style knowledge-distillation SSL: images are split into L fixed overlapping local areas, each assigned its own learnable [PART] token, and the local-to-global contrastive loss is restricted to same-[PART] pairs only - unlike DINO, which matches every local crop to the global view in one shared space.",
+    "The [CLS] token is still matched across all local and global views (not restricted like [PART]), so it retains a robust, occlusion-tolerant global representation that complements the part-specific [PART] tokens.",
+    "Fine-tuning requires no fixed part detector or segmentation network - [CLS] and all [PART]s are simply appended to the input sequence and automatically specialize to different regions, and the same pretrained backbone transfers across three distinct downstream settings: supervised, unsupervised domain adaptation (UDA), and fully unsupervised (USL) ReID.",
+    "New state-of-the-art across all three settings on Market-1501 and MSMT17 with ViT-S/ViT-B backbones pretrained on the 4.18M-image LUPerson dataset, plus ablations identifying L=3 local areas and [CLS]+mean-[PART] concatenation as the best default configuration."
+  ],
+  "deficiencies": [
+    "Pretraining cost is very high (8xA100 GPUs for 100 epochs: ~60h for ViT-S, ~120h for ViT-B) with no ablation on a reduced schedule or smaller pretraining set, so it's unclear how much of the LUPerson-scale pretraining budget is actually necessary to realize the reported gains over DINO.",
+    "The margin over the closest same-setup competitor (DINO+CFS, which also pretrains DINO/ViT on LUPerson) is fairly modest on Market1501 (92.2 vs. 91.0 mAP for ViT-S, about 1.2pp) even though the paper frames the improvement over its DINO baseline as 'remarkable' - the comparison against the more relevant near-identical-setup baseline (CFS) is less dramatic than the framing suggests.",
+    "The local-area ablation (Table 4) shows L=3 best, but L=2 and the combined L={2,3} setting trail by less than 1pp on most metrics, while L=5 actually underperforms - the paper reports this pattern without any explanation of why finer part granularity degrades performance beyond a certain point.",
+    "The optimal feature-fusion strategy (Tables 5-6) actually differs by task and dataset - concatenating [CLS] and mean-[PART] wins for supervised ReID, but a plain mean feature wins for MSMT17 specifically under UDA/USL - and this is addressed with only one sentence ('may be related to their data distributions') rather than any further investigation, leaving practitioners to retune the fusion choice per downstream setting rather than having one clear default."
+  ],
+  "notable": "The attention visualization (Fig. 3) shows an emergent occlusion-robustness behavior: when a person carries a box that blocks part of their upper body, the corresponding [PART] token learns to skip the box and attend only to the still-visible upper-body region - purely as a byproduct of the restricted same-[PART] contrastive objective, with no explicit occlusion augmentation or segmentation supervision. That's a useful data point for anyone evaluating occlusion-specific ReID methods elsewhere in this literature review, since a chunk of that robustness may be obtainable for free from better pretraining rather than requiring occlusion-specific architecture.",
+  "results": [
+    {"dataset": "Market1501", "metric": "mAP", "value": "92.2", "setting": "supervised ReID, PASS pretraining, ViT-S backbone"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "96.3", "setting": "supervised ReID, PASS pretraining, ViT-S backbone"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "69.1", "setting": "supervised ReID, PASS pretraining, ViT-S backbone"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "86.5", "setting": "supervised ReID, PASS pretraining, ViT-S backbone"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "93.3", "setting": "supervised ReID, PASS pretraining, ViT-B backbone, 384px"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "96.9", "setting": "supervised ReID, PASS pretraining, ViT-B backbone, 384px"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "74.3", "setting": "supervised ReID, PASS pretraining, ViT-B backbone, 384px"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "89.7", "setting": "supervised ReID, PASS pretraining, ViT-B backbone, 384px"},
+    {"dataset": "MSMT17->Market1501", "metric": "mAP", "value": "90.2", "setting": "UDA ReID, ViT-S, fine-tuned with C-Contrast"},
+    {"dataset": "MSMT17->Market1501", "metric": "Rank-1", "value": "95.8", "setting": "UDA ReID, ViT-S, fine-tuned with C-Contrast"},
+    {"dataset": "Market1501->MSMT17", "metric": "mAP", "value": "49.1", "setting": "UDA ReID, ViT-S, fine-tuned with C-Contrast"},
+    {"dataset": "Market1501->MSMT17", "metric": "Rank-1", "value": "72.7", "setting": "UDA ReID, ViT-S, fine-tuned with C-Contrast"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "88.5", "setting": "USL ReID, ViT-S"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "94.9", "setting": "USL ReID, ViT-S"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "41.0", "setting": "USL ReID, ViT-S"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "67.0", "setting": "USL ReID, ViT-S"}
+  ]
+}

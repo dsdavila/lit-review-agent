@@ -1,0 +1,28 @@
+{
+  "nutshell": "Person ReID deployed on energy-constrained devices needs both fast feature comparison and low compute per query. HashReID combines binary hash-code representations (fast Hamming-distance lookup) with an input-adaptive multi-exit network that can stop computing early on easy/noisy samples, using part-based pooling at early layers to avoid losing discriminative detail, and a GRU-based learned policy (trained from the network's own training-time prediction-flip statistics) to decide when to exit instead of hand-tuned thresholds.",
+  "contributions": [
+    "A 4-exit hash network built on ResNet50 stages, using part-based (head/upper-torso/lower-torso/feet) local average pooling at the earliest exit instead of global pooling, since global pooling on large early spatial maps was found to destroy most of the discriminative signal.",
+    "A ranking regularizer (Eq. 7) that matches the pairwise inner-product distance matrix of continuous features to that of the binary hash features for the batch's top-5 ranks, making the hash-code learning tractable/differentiable while preserving the original feature's similarity structure.",
+    "ETS (Exit using Training Statistics): a GRU-based classifier that labels samples easy/hard/skip using statistics of how often each training sample's top-1 retrieval decision 'flips' correctness across training epochs (rather than test-time confidence, which is infeasible in open-set retrieval), combined with a Gallery Separability heuristic for samples flagged hard.",
+    "Reports large computational savings on Market1501: over 70% of samples exit at the first (256-dim) stage, saving ~80% of network compute and cutting total query search time to roughly 1/20th of using full 2048-dim continuous features, a ~60% additional search-time improvement over prior hash-only methods."
+  ],
+  "deficiencies": [
+    "The paper's own Table 1 shows the static hash variant (OURS-HE, no dynamic exiting) trails SOTA continuous-feature ReID methods OSNet (94.20 R-1 / 82.60 mAP) and BOT (94.50 / 85.90) on both metrics on Market1501, despite the abstract's framing of 'comparable accuracy to conventional ReID methods' - it's about 1-2 mAP points behind the actual best conventional methods, not merely comparable.",
+    "The headline mAP comparison ('improves from 74.34% to 82.08% over DaRE') is not code-length-controlled: DaRE(R)/DaRE+RE(R) use a fixed 128-dim code at every exit stage, while OURS+HE uses a mixed 256/256/1024/2048-dim scheme that is far larger at later stages - part of the reported gain plausibly comes from using longer codes, not just the proposed architecture, and this isn't addressed.",
+    "BGC1, one of only three evaluation datasets and the one most relevant to the paper's real-world/biometric framing (unconstrained long-range imagery), is presented only as a qualitative bar chart (Fig. 3) with no accompanying numeric table anywhere in the main text - the claimed improvement on this dataset can't be independently checked against a number.",
+    "The intro motivates the learned ETS policy specifically by criticizing prior heuristic threshold methods as needing 'hand-tuning of the distance thresholds' and being 'not generalizable' (Sec. 3.4), yet the paper's own best-performing setup (Ours+GS, Fig. 5) still relies on a hand-tuned Gallery-Separability distance threshold 'determined using cross-validation' - the paper doesn't reconcile this with its stated motivation for moving away from heuristic thresholds."
+  ],
+  "notable": "Table 3's bit-length ablation is a useful practical reference: even a short 128-bit hash code reaches 84.26% Rank-1 on Market1501 (vs. 94.18% for the full 2048-dim code) while being roughly an order of magnitude faster to compare (2.8 vs. 17 x10^-6 s per Hamming-distance computation) - a concrete accuracy/latency knob for anyone deploying a similar hash-based ReID system. Also notable: the auxiliary classifier attached to each hash-exit block exists purely to shape training via cross-entropy loss and is discarded entirely after training - it plays no role at inference time.",
+  "results": [
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "94.18", "setting": "OURS-HE, static 2048-dim hash code (no dynamic exiting)"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "84.85", "setting": "OURS-HE, static 2048-dim hash code (no dynamic exiting)"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "82.08", "setting": "OURS+HE, dynamic multi-exit (256/256/1024/2048-dim)"},
+    {"dataset": "Market1501", "metric": "Rank-1 (exit stage 1, 256-dim)", "value": "71.29", "setting": "OURS+HE dynamic, earliest exit"},
+    {"dataset": "Market1501", "metric": "Rank-1 (exit stage 4, 2048-dim)", "value": "92.10", "setting": "OURS+HE dynamic, final exit"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "76.81", "setting": "OURS-HE, static 2048-dim hash code (no dynamic exiting)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "51.41", "setting": "OURS-HE, static 2048-dim hash code (no dynamic exiting)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "46.66", "setting": "OURS+HE, dynamic multi-exit (256/256/1024/2048-dim)"},
+    {"dataset": "MSMT17", "metric": "Rank-1 (exit stage 1, 256-dim)", "value": "28.91", "setting": "OURS+HE dynamic, earliest exit"},
+    {"dataset": "MSMT17", "metric": "Rank-1 (exit stage 4, 2048-dim)", "value": "71.52", "setting": "OURS+HE dynamic, final exit"}
+  ]
+}

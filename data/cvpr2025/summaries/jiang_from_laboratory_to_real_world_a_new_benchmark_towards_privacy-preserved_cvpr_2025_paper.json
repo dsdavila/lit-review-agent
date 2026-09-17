@@ -1,0 +1,40 @@
+{
+  "nutshell": "Visible-infrared person ReID (VI-ReID) methods are trained assuming all camera/entity data can be centrally pooled, which conflicts with real-world privacy and data-ownership constraints. This paper introduces L2RW, a benchmark with three protocols simulating different privacy levels (camera-isolated, entity-isolated, and centralized-but-cross-domain), plus DPPT, a federated-learning-based training method designed to handle the modality-incomplete, identity-missing, and domain-shift problems that arise once data can no longer be freely shared.",
+  "contributions": [
+    "L2RW benchmark: three protocols - Camera Independence (CI, each camera's data stays isolated), Entity Independence (EI, each institution's data stays isolated, tested cross-domain on an unseen entity), and Entity Sharing (ES, centralized training but still tested cross-domain) - reframing VI-ReID evaluation around realistic privacy/ownership constraints instead of the standard single-dataset centralized setup.",
+    "DPPT method: converts the standard two-stream VI-ReID architecture into a one-stream architecture with identity-only (not modality-paired) sampling to solve the modality-incomplete problem under CI, where a given camera/client may have only visible, only infrared, or mixed images.",
+    "A Memory Rectification Bank (MRB): each federated client maintains per-identity feature centers (averaged over the top-K closest samples to filter noisy features), which are aggregated into a global memory across clients and pulled toward via a cosine-similarity loss (Eq. 6) each round - addressing identity-missing (not every identity appears at every client) and domain shift across clients without sharing raw data.",
+    "Adapts two existing supervised VI-ReID methods (AGW, DNS) into CI-compatible single-stream, modality-agnostic baselines (denoted AGW†, DNS†) for fair comparison, and shows DPPT consistently beats these plus four federated aggregation baselines (FedProx, FedNova, Moon, FedAvg) across SYSU-MM01, RegDB, and LLCM under CI; also shows EI (fully decentralized) achieves accuracy comparable to or better than ES (centralized) on cross-domain generalization."
+  ],
+  "deficiencies": [
+    "The EI/ES cross-domain generalization results (Table 2) are weak in absolute terms across every method tested, including DPPT - rank-1 accuracy ranges from single digits to the low 20s depending on the dataset pairing. The paper's own text concedes 'overall rank-1 accuracy remains low' for this setting, yet still frames DPPT's modest margin over the baseline as 'comparable or even superior' performance without addressing how far the whole approach is from being practically deployable.",
+    "The EI protocol is only ever tested with exactly 2 clients (merging 2 of the 3 available datasets, testing on the 3rd), giving just 3 possible train/test splits total (Table 2) - there's no test of how the identity-missing/domain-shift handling scales beyond 2 entities, even though the CI protocol (which uses many more clients, one per camera) suggests the method is meant to generalize further.",
+    "The Lmrb loss-variant ablation (cosine vs. Euclidean vs. mixed, Table 3) and the λ/Top-K hyperparameter sweep (Fig. 4) are both run only on SYSU-MM01 (and LLCM for the loss variant, but not RegDB for either) - it's unclear whether these tuned choices (λ=1, K=4) transfer to RegDB or to the EI/ES protocols at all.",
+    "Table 1 shows FedNova and Moon results are simply missing ('-') for the LLCM dataset with no explanation given anywhere in the text, which sits oddly next to the paper's claim that DPPT achieves 'consistent improvements across the board.'",
+    "All experiments use the standard infrared-query/visible-gallery convention only; despite the paper's stated goal of closer real-world fidelity, there's no test of the reverse query direction or of settings with more than 2-3 total entities, which would more directly stress-test the identity-missing problem the method is designed to solve."
+  ],
+  "notable": "The 'privacy' framing here is specifically about data NOT being pooled across cameras/institutions during training (a federated-learning/data-governance concern) rather than about protecting the identities of people being tracked - the underlying VI-ReID surveillance application itself gets no ethics or broader-impact discussion, which is worth noting given the paper's title leads with 'Privacy-Preserved.' Also notable: converting AGW and DNS into single-stream, modality-agnostic variants (AGW†/DNS†) specifically to give the CI protocol a fair non-federated-learning baseline is a reasonable, somewhat underappreciated methodological detail - it means the DPPT-vs-baseline comparison in Table 1 isn't just against generic federated learning algorithms but against adapted versions of real prior VI-ReID methods.",
+  "results": [
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "51.27", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "88.55", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "49.29", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "SYSU-MM01", "metric": "mINP", "value": "34.47", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "59.85", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "RegDB", "metric": "Rank-10", "value": "77.58", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "55.58", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "RegDB", "metric": "mINP", "value": "41.70", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "LLCM", "metric": "Rank-1", "value": "34.69", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "LLCM", "metric": "Rank-10", "value": "67.20", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "LLCM", "metric": "mAP", "value": "41.91", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "LLCM", "metric": "mINP", "value": "38.48", "setting": "CI protocol, FedAvg+DPPT"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "11.27", "setting": "EI protocol, trained on RegDB+LLCM, unseen entity"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "11.86", "setting": "EI protocol, trained on RegDB+LLCM, unseen entity"},
+    {"dataset": "SYSU-MM01", "metric": "mINP", "value": "5.34", "setting": "EI protocol, trained on RegDB+LLCM, unseen entity"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "21.54", "setting": "EI protocol, trained on LLCM+SYSU-MM01, unseen entity"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "20.72", "setting": "EI protocol, trained on LLCM+SYSU-MM01, unseen entity"},
+    {"dataset": "RegDB", "metric": "mINP", "value": "12.78", "setting": "EI protocol, trained on LLCM+SYSU-MM01, unseen entity"},
+    {"dataset": "LLCM", "metric": "Rank-1", "value": "14.63", "setting": "EI protocol, trained on RegDB+SYSU-MM01, unseen entity"},
+    {"dataset": "LLCM", "metric": "mAP", "value": "19.15", "setting": "EI protocol, trained on RegDB+SYSU-MM01, unseen entity"},
+    {"dataset": "LLCM", "metric": "mINP", "value": "16.44", "setting": "EI protocol, trained on RegDB+SYSU-MM01, unseen entity"}
+  ]
+}

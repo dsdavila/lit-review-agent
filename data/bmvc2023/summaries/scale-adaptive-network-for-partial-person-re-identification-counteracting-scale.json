@@ -1,0 +1,30 @@
+{
+  "nutshell": "Partial person ReID (matching a cropped/partial pedestrian image to holistic gallery images) suffers from scale misalignment because partial and holistic crops of the same local body region look very different in scale. SANet addresses this with a dynamic-routing module that picks a per-image path through multi-scale features (instead of a fixed multi-scale pyramid), plus a human-parsing-based module that only compares body parts visible in both images.",
+  "contributions": [
+    "Adaptive Feature Enhancement (AFE) module: a 5-layer graph of gated \"cells\" (gumbel-softmax gating + 3x3 conv refinement) inserted between ResNet-50's early layers and layer 4, which learns per-image scale-transformation paths rather than using a static spatial-pyramid architecture.",
+    "Multi-branch Feature Extension (MFE) module: 5 parameter-unshared branches (head, upper body, lower body, foot, global) that self-generate human-parsing masks (via a focal-loss segmentation head, no separate pretrained parser) and restrict similarity computation to commonly-visible parts between query and gallery images.",
+    "Trained only on Market1501 (no partial-domain training data) and evaluated zero-shot on Partial-REID and both Partial-iLIDS splits, reporting new best Rank-1/mAP on all three versus prior partial-ReID methods, plus competitive results on the holistic Market1501/DukeMTMC benchmarks."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 3) shows the headline AFE module contributes only +0.7% Rank-1 / +1.0% mAP over a 'Fixed FE' variant that uses the same architecture with all scale paths statically activated - most of the reported gain over the HPNet baseline actually comes from adding the global branch (+3.4%/+3.1%) and from multi-scale fusion in general, not from the adaptive routing that is the paper's central claim.",
+    "Evaluation sets are very small (Partial-REID: 600 images/60 IDs; Partial-iLIDS: 476 images/119 IDs) and results are reported as single numbers with no variance across runs, so the 1-3 point margins over the best competitors (FRT, PPCL) are hard to trust as significant.",
+    "Section 2.3 motivates dynamic routing partly on efficiency grounds ('the ReID task is a real-time interactive task demanding high efficiency'), but the paper never reports inference latency, FLOPs, or parameter count versus the static multi-scale baselines it's positioned against - the efficiency argument is asserted, not measured.",
+    "On the holistic benchmarks the paper's own Table 2 shows SANet is actually below STNReID on Market1501 mAP (80.1 vs. 84.9, a 2020 method) despite text describing SANet's holistic performance as 'compatible' - this discrepancy isn't discussed."
+  ],
+  "notable": "Test-time inference swaps the Gumbel-Softmax path sampling used during training for hard argmax path selection (Eq. 1 area, Sec 3.3) - a standard discretization trick to make inference deterministic and cheap without extra machinery, worth knowing if reusing this gating design elsewhere. Also: references [13] and [14] are the exact same paper (Li et al., \"Learning dynamic routing for semantic segmentation\", CVPR 2020) cited twice under different numbers - likely a bibliography bug rather than two separate related works.",
+  "results": [
+    {"dataset": "Partial-REID", "metric": "Rank-1", "value": "88.7", "setting": "trained on Market1501 only, zero-shot"},
+    {"dataset": "Partial-REID", "metric": "Rank-3", "value": "92.3", "setting": "trained on Market1501 only, zero-shot"},
+    {"dataset": "Partial-REID", "metric": "mAP", "value": "81.5", "setting": "trained on Market1501 only, zero-shot"},
+    {"dataset": "Partial-iLIDS-O", "metric": "Rank-1", "value": "84.9", "setting": "trained on Market1501 only, zero-shot"},
+    {"dataset": "Partial-iLIDS-O", "metric": "Rank-3", "value": "89.1", "setting": "trained on Market1501 only, zero-shot"},
+    {"dataset": "Partial-iLIDS-O", "metric": "mAP", "value": "86.5", "setting": "trained on Market1501 only, zero-shot"},
+    {"dataset": "Partial-iLIDS-P", "metric": "Rank-1", "value": "74.8", "setting": "trained on Market1501 only, zero-shot"},
+    {"dataset": "Partial-iLIDS-P", "metric": "Rank-3", "value": "84.0", "setting": "trained on Market1501 only, zero-shot"},
+    {"dataset": "Partial-iLIDS-P", "metric": "mAP", "value": "77.3", "setting": "trained on Market1501 only, zero-shot"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "93.7", "setting": "holistic ReID, native training domain"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "80.1", "setting": "holistic ReID, native training domain"},
+    {"dataset": "DukeMTMC", "metric": "Rank-1", "value": "85.5", "setting": "holistic ReID, native training domain"},
+    {"dataset": "DukeMTMC", "metric": "mAP", "value": "67.1", "setting": "holistic ReID, native training domain"}
+  ]
+}

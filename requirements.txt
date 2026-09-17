@@ -1,0 +1,7 @@
+requests>=2.31
+beautifulsoup4>=4.12
+tenacity>=8.2
+sentence-transformers>=2.2
+numpy>=1.24
+anthropic>=0.40
+playwright>=1.40

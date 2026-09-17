@@ -1,0 +1,26 @@
+{
+  "nutshell": "Person search (joint pedestrian detection + ReID) had no unsupervised domain-adaptation setting before this paper - prior 'weakly supervised' work still requires ground-truth bounding boxes on the target domain. DAPS trains on a fully labeled source domain and adapts to a target domain with neither boxes nor identity labels, using a domain alignment module plus a dynamic-clustering pseudo-box strategy to bootstrap both detection and ReID training on the unlabeled target.",
+  "contributions": [
+    "Introduces the Domain Adaptive Person Search (DAPS) setting itself: the target domain has zero annotations (no boxes, no IDs), stricter than prior weakly-supervised person search which still needs GT boxes.",
+    "A Domain Alignment Module combining image-level adversarial alignment (GRL-based domain discriminator) with a 'task-sensitive' instance-level alignment that weights alignment strength between the detection head and the ReID (NAE) head by a closed-form function of the source/target dataset size ratio (Eq. 3), rather than aligning both heads equally.",
+    "A dynamic clustering strategy that maintains a box + feature memory bank and matches/updates pseudo bounding boxes across training epochs via IOU matching and exponential moving average, addressing the fact that detected boxes on the target domain shift as the detector itself trains (unlike standard UDA-ReID, which assumes fixed crops).",
+    "Hybrid hard-case mining that recycles low-confidence proposals (undetected persons, background clutter, near-duplicates) as additional contrastive training signal instead of discarding them outright."
+  ],
+  "deficiencies": [
+    "On CUHK-SYSU as the target domain, DAPS actually underperforms the existing weakly-supervised SOTA (R-SiamNet: 86.0 vs DAPS's 77.6 mAP, Table 6) despite DAPS operating under a strictly harder (fully unlabeled) setting - the paper attributes this only qualitatively to 'limitation brought by detection capabilities' from the source/target size mismatch, without a controlled experiment (e.g., swapping which dataset is source vs. target) to isolate that claimed cause.",
+    "The critical timing hyperparameter alpha (when to start trusting pseudo-labels on the target domain) needs opposite optimal values per target dataset - best at alpha=8 for PRW but alpha=0 for CUHK-SYSU (Table 4) - and the paper offers no principled way to choose it without already knowing target-domain performance, which undercuts practical usability for a method meant for genuinely unlabeled target domains.",
+    "The detection-on-target-domain (DTD) component has an inconsistent effect across the two ablation datasets (Table 1, row 5 vs row 6): adding it substantially boosts CUHK-SYSU ReID mAP (73.2 to 76.8) but actually decreases PRW ReID mAP (34.5 to 33.1) before hard-case mining is layered back on top - a real cross-dataset tension in the ablation that isn't discussed in the text.",
+    "No variance or multiple-run reporting appears anywhere in the ablations, despite several individually-attributed component gains being under 1-2 points (e.g., hybrid hard-case mining's effect, described in text as '0.6% mAP' but reading closer to 0.8-1.8 points depending on which two ablation rows are actually being compared)."
+  ],
+  "notable": "The task-sensitive alignment weight (lambda in Eq. 3) is not learned - it's a fixed closed-form sigmoid function of only the source/target dataset SIZE ratio, yet it produces the single largest jump in the whole ablation set (Table 2: naive equal-weight instance alignment gets 21.7% mAP on PRW vs. 30.9% with the size-ratio-based weighting, a +9.2 point gain from a near-free heuristic). Also notable: the 'static' pseudo-box baseline (using detector proposals directly each epoch with no cross-epoch matching/memory) collapses to 25.3% mAP on PRW versus 32.7% for the full dynamic-clustering version (Table 3) - worse even than just adding the domain alignment module alone (30.9%) - suggesting naive pseudo-labeling without box-identity stability across epochs can be actively harmful, not just suboptimal.",
+  "results": [
+    {"dataset": "PRW", "metric": "mAP", "value": "34.7", "setting": "domain-adaptive target (source: CUHK-SYSU), zero target-domain labels, full DAPS model"},
+    {"dataset": "PRW", "metric": "top-1", "value": "80.6", "setting": "domain-adaptive target (source: CUHK-SYSU), zero target-domain labels, full DAPS model"},
+    {"dataset": "PRW", "metric": "recall", "value": "97.2", "setting": "domain-adaptive target (source: CUHK-SYSU), detection sub-task metric"},
+    {"dataset": "PRW", "metric": "AP", "value": "90.9", "setting": "domain-adaptive target (source: CUHK-SYSU), detection sub-task metric"},
+    {"dataset": "CUHK-SYSU", "metric": "mAP", "value": "77.6", "setting": "domain-adaptive target (source: PRW), zero target-domain labels, full DAPS model"},
+    {"dataset": "CUHK-SYSU", "metric": "top-1", "value": "79.6", "setting": "domain-adaptive target (source: PRW), zero target-domain labels, full DAPS model"},
+    {"dataset": "CUHK-SYSU", "metric": "recall", "value": "77.7", "setting": "domain-adaptive target (source: PRW), detection sub-task metric"},
+    {"dataset": "CUHK-SYSU", "metric": "AP", "value": "69.9", "setting": "domain-adaptive target (source: PRW), detection sub-task metric"}
+  ]
+}

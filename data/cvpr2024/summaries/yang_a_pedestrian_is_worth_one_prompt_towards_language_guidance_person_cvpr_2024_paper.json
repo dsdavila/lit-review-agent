@@ -1,0 +1,34 @@
+{
+  "nutshell": "Prior CLIP-based person ReID (CLIP-ReID) learns ID-specific soft text prompts in a two-stage process, but only the visual embedding is used at inference, so the learned prompts never generalize to unseen identities. PromptSG instead trains an inversion network that maps each image's visual embedding into a personalized pseudo-token, composes it into a prompt ('a photo of a S* person'), and uses cross-attention between that prompt and the visual patch tokens to guide the encoder toward semantically and appearance-relevant regions, end-to-end in one stage.",
+  "contributions": [
+    "An end-to-end, one-stage framework (vs. CLIP-ReID's two-stage, decoupled training) that uses language-guided cross-attention (patch tokens as K/V, text prompt as Q) so the text branch actively shapes visual features during both training and inference, not just at training time.",
+    "A lightweight textual-inversion module (3-layer MLP) that maps each image's global visual embedding into a pseudo-token s*, trained via symmetric (unsupervised + supervised) contrastive losses (Eq. 2-6) so the prompt captures per-identity appearance detail without any extra labeling effort - adapting a technique from personalized text-to-image generation to ReID.",
+    "State-of-the-art results across CNN, ViT, and CLIP-based baselines on Market-1501, MSMT17, DukeMTMC, and CUHK03-NP, with the largest gains on MSMT17/ViT-B16 (mAP 87.2 vs. CLIP-ReID's 73.4, +13.8 points), and roughly 2x faster training than the two-stage CLIP-ReID (Table 6) at a comparable parameter count.",
+    "An inference-efficiency option: substituting a fixed generic prompt ('a photo of a person') for the per-query composed prompt at inference avoids needing the text encoder per query, trading a small accuracy drop for lower latency (Table 5)."
+  ],
+  "deficiencies": [
+    "On DukeMTMC specifically, PromptSG's own Table 2 shows it is NOT actually better than CLIP-ReID on mAP for either backbone - ResNet50 (80.4 vs. 80.7) and ViT-B/16 (81.6 vs. 82.5) both show PromptSG below CLIP-ReID's mAP, with PromptSG only ahead on Rank-1. The text never engages with this; the headline '10% on MSMT17, nearly 5% on Market-1501' framing simply omits DukeMTMC entirely.",
+    "The paper's own ablation (Table 3) shows removing the multimodal interaction module (MIM) causes by far the largest single drop (94.6->89.4 mAP on Market-1501, 87.2->71.4 on MSMT17), while the more heavily marketed contribution - the personalized pseudo-token from textual inversion - contributes a comparatively modest 1.9-2.6 mAP points when removed (Table 4). The interaction module, not the personalization idea foregrounded in the abstract/intro, appears to do most of the actual work.",
+    "The 'no increase in inference time' efficiency claim (Sec. 4.3) is validated in only one ablation row, on one dataset (Market-1501, Table 5), and even that 'efficient' configuration still runs at 0.88x the no-attention baseline's FPS, not literally the same speed as claimed - and the setting is never checked on MSMT17, DukeMTMC, or CUHK03-NP.",
+    "All results across Tables 2-6 are single-run point estimates with no variance or repeated-seed reporting, despite several reported margins (e.g. the DukeMTMC/CUHK03-NP gaps discussed above) being under 1-2 points."
+  ],
+  "notable": "The core mechanism - inverting an image into a pseudo-word token for a frozen text encoder - is borrowed directly from personalized text-to-image generation (Gal et al., textual inversion, ICLR'22) and repurposed purely as a representation-learning signal rather than for generation; a reusable pattern for other identity-centric tasks that want per-instance language conditioning without extra labels. Also notable: references [12] and [13] are the exact same paper (the FastReID toolbox, first as a 2020 arXiv preprint, then as ACM MM 2023) cited under two different numbers - the same duplicate-citation pattern seen repeatedly elsewhere in this batch of papers, reinforcing that it looks like a common camera-ready/bibliography artifact rather than an isolated slip.",
+  "results": [
+    {"dataset": "Market-1501", "metric": "mAP", "value": "91.8", "setting": "PromptSG, ResNet50 backbone"},
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "96.6", "setting": "PromptSG, ResNet50 backbone"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "68.5", "setting": "PromptSG, ResNet50 backbone"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "86.0", "setting": "PromptSG, ResNet50 backbone"},
+    {"dataset": "DukeMTMC", "metric": "mAP", "value": "80.4", "setting": "PromptSG, ResNet50 backbone"},
+    {"dataset": "DukeMTMC", "metric": "Rank-1", "value": "90.2", "setting": "PromptSG, ResNet50 backbone"},
+    {"dataset": "CUHK03-NP", "metric": "mAP", "value": "79.8", "setting": "PromptSG, ResNet50 backbone"},
+    {"dataset": "CUHK03-NP", "metric": "Rank-1", "value": "80.5", "setting": "PromptSG, ResNet50 backbone"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "94.6", "setting": "PromptSG, ViT-B/16 backbone"},
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "97.0", "setting": "PromptSG, ViT-B/16 backbone"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "87.2", "setting": "PromptSG, ViT-B/16 backbone"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "92.6", "setting": "PromptSG, ViT-B/16 backbone"},
+    {"dataset": "DukeMTMC", "metric": "mAP", "value": "81.6", "setting": "PromptSG, ViT-B/16 backbone"},
+    {"dataset": "DukeMTMC", "metric": "Rank-1", "value": "91.0", "setting": "PromptSG, ViT-B/16 backbone"},
+    {"dataset": "CUHK03-NP", "metric": "mAP", "value": "83.1", "setting": "PromptSG, ViT-B/16 backbone"},
+    {"dataset": "CUHK03-NP", "metric": "Rank-1", "value": "85.1", "setting": "PromptSG, ViT-B/16 backbone"}
+  ]
+}

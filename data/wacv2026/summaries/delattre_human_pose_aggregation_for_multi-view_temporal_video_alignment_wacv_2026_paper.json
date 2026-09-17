@@ -1,0 +1,26 @@
+{
+  "nutshell": "Temporally syncing multiple unsynchronized videos of the same scene (e.g. user-generated concert footage) is hard when metadata/audio is missing, and prior human-pose-based alignment methods need to track or re-identify people across views. This paper aggregates all detected people's view-invariant pose descriptors into a single fixed-size frame descriptor (via a learned projector + max-pooling), then finds the optimal temporal shift by FFT-based cross-correlation between the two frame-descriptor sequences - avoiding re-identification entirely and reducing alignment cost from O(n²) to O(n log n).",
+  "contributions": [
+    "A pose-aggregation scheme (small MLP projector + max-pooling over per-person view-invariant pose embeddings) that produces one fixed-size descriptor per frame regardless of how many people are present, removing the need for cross-view person tracking/re-identification that all prior human-pose alignment methods required.",
+    "An FFT-based cross-correlation alignment procedure over the frame-descriptor sequences that finds the optimal integer temporal shift in O(n log n), versus the O(n²) pairwise similarity-matrix-and-voting approach used by the closest prior method (SSHP).",
+    "A contrastive (InfoNCE) training scheme that synthesizes multi-person training scenes by combining people from several NTU RGB+D clips into shared frames, letting a model trained only on this synthetic multi-person data generalize to real multi-person alignment.",
+    "State-of-the-art alignment accuracy on 3 existing benchmarks (NTU-SYN, CMU-SYN, CVID-SYN) and a new 40-pair real-world benchmark (Korean Dancing Dataset, K-pop concert footage) that the authors collected and release for evaluation."
+  ],
+  "deficiencies": [
+    "The paper diagnoses that a prior baseline (SSHP) exploits a zero-padding artifact as a shortcut (performance collapses from 3.39 to 15.77 average frame error on NTU-SYN when zero-padding is swapped for reflective padding, i.e. SSHP-reflect), but the proposed method's own alignment algorithm (Algorithm 1) also zero-pads both sequences before the FFT convolution - the paper never runs the equivalent reflect-padding diagnostic on its own method to confirm it isn't relying on a similar boundary artifact.",
+    "The authors' own real-world benchmark (KDD) is compared against only one baseline (CTE, a content-based method) - none of the human-pose-based baselines (SSHP, SynNet, TCC, LAV) that are compared against on the synthetic datasets are evaluated on KDD, leaving it untested how those methods would fare on real, longer, multi-person UGC footage versus the proposed method.",
+    "The method estimates a single constant integer-frame shift per video pair (via cross-correlation), which assumes stable, matched frame rates between cameras; this is never stress-tested against frame-rate mismatch or clock drift within a video pair, even though the paper's own introduction motivates the problem partly around 'recording devices [that] vary greatly in quality and sensor specifications' - a real UGC condition the evaluation doesn't directly probe.",
+    "The paper explicitly acknowledges (Sec. 6) that its approach only handles pairwise alignment, and that extending to more than two videos by composing pairwise shifts is 'suboptimal both in terms of accuracy and runtime' - a real scalability gap for the many-camera UGC scenario the paper is motivated by, left entirely to future work."
+  ],
+  "notable": "The SSHP-reflect diagnostic (swapping a sequence model's zero-padding for reflective padding to check whether it's covertly exploiting the padding boundary as a training-time shortcut rather than genuinely learning temporal alignment) is a simple, reusable sanity check applicable to any padded-convolution or cross-correlation-based sequence model, and it's a genuine methodological contribution in its own right - it exposes a validity problem in a current SOTA baseline's reported results, not just in this paper's own comparison.",
+  "results": [
+    {"dataset": "NTU-SYN", "metric": "Average frame error", "value": "1.19", "setting": "trained on NTU RGB+D 120 with 4-scene aggregation"},
+    {"dataset": "NTU-SYN", "metric": "Acc@1 frame", "value": "84.26", "setting": "trained on NTU RGB+D 120 with 4-scene aggregation"},
+    {"dataset": "CMU-SYN", "metric": "Average frame error", "value": "0.11", "setting": "trained on NTU RGB+D 120 with 4-scene aggregation"},
+    {"dataset": "CMU-SYN", "metric": "Acc@1 frame", "value": "100.00", "setting": "trained on NTU RGB+D 120 with 4-scene aggregation"},
+    {"dataset": "CVID-SYN", "metric": "Average frame error", "value": "1.93", "setting": "multi-person (avg 5 people/frame), trained with 4-scene aggregation"},
+    {"dataset": "CVID-SYN", "metric": "Acc@1 frame", "value": "68.18", "setting": "multi-person; compared baseline SSHP used ground-truth re-identification"},
+    {"dataset": "Korean Dancing Dataset (KDD, authors' own)", "metric": "Average alignment error", "value": "0", "setting": "real-world RGB concert footage, 40 video pairs, seconds"},
+    {"dataset": "Korean Dancing Dataset (KDD, authors' own)", "metric": "Acc@0.1s", "value": "100.00", "setting": "real-world RGB concert footage, 40 video pairs"}
+  ]
+}

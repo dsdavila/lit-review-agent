@@ -1,0 +1,50 @@
+{
+  "nutshell": "Prior privacy-preserving person ReID (anonymizing images while keeping them matchable) only works in single-modality visible-light settings, but real surveillance needs 24-hour visible-infrared (VI) coverage. This paper introduces that task (PP-VI-ReID) and proposes PPA, which (1) uses a pose-keypoint prior to constrain anonymization so it doesn't destroy identity-critical structure, and (2) aligns visible and infrared modalities by treating the anonymization-induced feature shift as a consistent, learnable offset rather than random per-modality noise.",
+  "contributions": [
+    "Defines a new task, Privacy-Preserving Visible-Infrared Person Re-Identification (PP-VI-ReID), extending single-modality privacy-preserving ReID (SecureReID) to the cross-modal visible-infrared setting required for round-the-clock surveillance.",
+    "Keypoint-Preserving Regularization (KPR): a frozen pre-trained pose model (YOLOv8n-pose) generates a binary guidance mask around detected body keypoints; a learnable mask head is trained to reproduce this mask from the anonymized image, acting as a structural regularizer that discourages the generator from destroying identity-critical keypoint regions during anonymization.",
+    "Differential Consistency-guided Modality Alignment (DCMA): instead of aligning raw-vs-anonymized features directly, DCMA aligns the *difference vectors* (feature shift caused by anonymization) between the visible and infrared modalities, with a triangle-inequality argument showing this term is what actually bounds the cross-modal alignment error in the anonymized feature space when the underlying anonymization distortions are asymmetric across modalities.",
+    "Establishes the first empirical benchmark for PP-VI-ReID on SYSU-MM01 and RegDB across three anonymization-supervision styles (mosaic, blur, Gaussian noise) and four query/gallery combinations (Raw-Raw, Raw-Anon, Anon-Raw, Anon-Anon), outperforming an adapted version of SecureReID (the closest prior single-modality method) in essentially all settings."
+  ],
+  "deficiencies": [
+    "Since this is a brand-new task, the only baseline is SecureReID - and it isn't evaluated as originally published, but re-implemented/adapted by the authors themselves ('SecureReID is adapted and trained using AGW and a single-stream adversarial network,' Sec 4.3) for this cross-modal setting. With no independent implementation to check against, and no other privacy-preserving method compared despite several being cited in Related Work (PIS, AVIH, PixelFade), the 'outperforms across all settings' claim rests entirely on a single self-adapted baseline.",
+    "The Raw-to-Raw condition (no anonymization applied to either query or gallery) still shows PPA beating adapted-SecureReID by a large margin (60.7% vs. 35.6% Rank-1, SYSU all-search, mosaic init). Since this condition doesn't even exercise KPR or DCMA's privacy-specific behavior, the gap likely reflects differences in the underlying backbone/distillation setup between the two systems rather than the paper's actual contributions - the ablation study (Table 4) never isolates this by reporting a Raw-to-Raw number, only Anon-to-Raw, leaving this confound unaddressed.",
+    "The paper's own Table 2 contradicts its Sec 4.4 claim that anonymization quality 'generally outperforms SecureReID': on RegDB, PPA's visible-image SSIM is *worse* (higher, meaning less anonymized/more identity-revealing) than SecureReID under both mosaic (0.33 vs. 0.14) and blurring (0.32 vs. 0.16) initialization - a directionally opposite result to every other row in the table that isn't discussed or explained anywhere in the text.",
+    "Five loss-weighting hyperparameters (lambda, beta, gamma, delta, eta) plus a keypoint radius R are set by a single fixed configuration with no ablation shown for most of them in the main paper - only delta (KPR weight) gets a sensitivity plot (Fig. 3), with 'more parameter analyses ... in the supplementary material' for the rest, so the main paper doesn't demonstrate how sensitive the method is to its own hyperparameter choices."
+  ],
+  "notable": "The DCMA design is backed by an actual (if simple) theoretical argument rather than pure empirical motivation - a triangle-inequality bound showing that even with perfectly aligned raw cross-modal features, an unaligned anonymization-difference term introduces an irreducible cross-modal error, which is what DCMA directly minimizes (Eq. 15). This kind of explicit derivation for why a proposed loss term should work is uncommon in this batch of papers, most of which only argue design choices empirically. Also notable: the paper validates an assumption most cross-modal pose-guided methods would just assume - that a pose model trained only on RGB images still works on infrared images - by running the frozen RGB-trained YOLOv8n-pose model directly on IR data and confirming near-identical detection rate/confidence (95.46%/0.763 IR vs. 95.11%/0.757 RGB) before relying on it for KPR supervision.",
+  "results": [
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "60.7", "setting": "all-search, Raw query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "58.8", "setting": "all-search, Raw query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "50.9", "setting": "all-search, Raw query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "46.4", "setting": "all-search, Raw query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "53.3", "setting": "all-search, Anonymized query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "51.9", "setting": "all-search, Anonymized query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "46.2", "setting": "all-search, Anonymized query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "43.4", "setting": "all-search, Anonymized query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "70.3", "setting": "indoor-search, Raw query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "75.6", "setting": "indoor-search, Raw query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "61.9", "setting": "indoor-search, Raw query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "68.7", "setting": "indoor-search, Raw query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "62.9", "setting": "indoor-search, Anonymized query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "70.6", "setting": "indoor-search, Anonymized query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "56.6", "setting": "indoor-search, Anonymized query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "65.1", "setting": "indoor-search, Anonymized query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "80.5", "setting": "Infrared-to-Visible, Raw query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "74.6", "setting": "Infrared-to-Visible, Raw query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "61.3", "setting": "Infrared-to-Visible, Raw query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "55.0", "setting": "Infrared-to-Visible, Raw query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "32.3", "setting": "Infrared-to-Visible, Anonymized query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "32.5", "setting": "Infrared-to-Visible, Anonymized query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "39.7", "setting": "Infrared-to-Visible, Anonymized query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "36.0", "setting": "Infrared-to-Visible, Anonymized query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "81.0", "setting": "Visible-to-Infrared, Raw query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "76.0", "setting": "Visible-to-Infrared, Raw query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "45.7", "setting": "Visible-to-Infrared, Raw query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "40.8", "setting": "Visible-to-Infrared, Raw query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "51.3", "setting": "Visible-to-Infrared, Anonymized query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "49.1", "setting": "Visible-to-Infrared, Anonymized query/Raw gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "41.7", "setting": "Visible-to-Infrared, Anonymized query/Anonymized gallery, mosaic-initialized supervision"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "37.5", "setting": "Visible-to-Infrared, Anonymized query/Anonymized gallery, mosaic-initialized supervision"}
+  ]
+}

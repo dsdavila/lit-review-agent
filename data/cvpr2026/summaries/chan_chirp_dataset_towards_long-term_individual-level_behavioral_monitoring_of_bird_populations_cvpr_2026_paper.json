@@ -1,0 +1,41 @@
+{
+  "nutshell": "Long-term individual-level behavior monitoring of wild animals needs multiple computer-vision tasks (who is present, what are they doing) solved together, but most animal datasets only support one task in isolation. CHIRP is a 9-year, multi-task dataset of wild Siberian jays (video re-ID, action recognition, 2D keypoints, detection/segmentation) built around color leg-ring identification, paired with a novel application-specific benchmark (feeding-rate and co-occurrence-rate errors) that evaluates pipelines on the actual biological measurements researchers care about, not just isolated task accuracy. CORVID, a lightweight color-ring-detection re-ID pipeline, is proposed as the paper's own re-ID baseline.",
+  "contributions": [
+    "CHIRP: the first dataset combining video re-identification (16,190 clips, 183 individuals), action recognition (1,387 clips, 3 behavior classes), 2D keypoint estimation (1,176 instances, 13 keypoints), and object detection/instance segmentation from one real, ongoing biological study system (a 2014-2022 wild Siberian jay population), including closed/disjointed/open re-ID splits and color-ring segmentation annotations.",
+    "An application-specific benchmarking paradigm: 12 independently annotated test videos with frame-by-frame ID/behavior/bounding-box ground truth, plus novel metrics (individual feeding-rate error, pairwise co-occurrence-rate error, against a human-coder baseline) that test whether a full pipeline's task-level accuracy actually translates into usable biological measurements - complementing rather than replacing traditional per-task benchmarking.",
+    "CORVID (COlouR-based Video re-IDentification): a re-ID pipeline that identifies individuals purely by detecting and classifying their color leg-ring combinations (Mask2Former segmentation -> HSV color histograms -> random forest classifier -> probabilistic ring-pair matching pooled across frames), requiring no training data from the target re-ID dataset itself - only a list of known possible ring-color combinations - unlike standard deep-metric-learning re-ID approaches."
+  ],
+  "deficiencies": [
+    "CORVID's headline re-ID advantage only holds when the candidate gallery is constrained to a small 'within territory' list (2-5 birds); in the closed-set split with the full gallery ('All' individuals), CORVID actually underperforms both pretrained and fine-tuned MegaDescriptor on Top-1 accuracy (0.05 vs. 0.10, Table 1) - the paper itself concedes this makes the method 'unscalable to larger bird populations,' a significant limitation for what's framed as the paper's flagship re-ID contribution.",
+    "In the application-specific benchmark, random ID assignment beats both CORVID and fine-tuned MegaDescriptor on several higher-level biological metrics (e.g., co-occurrence-rate correlation: random r=0.799 vs. CORVID r=0.654, Table 5), and MegaDescriptor performs worse than random across all higher-level metrics (Figure 5). The paper frames this as showing 'proposed methods still have room for improvement' rather than more directly flagging that neither tested re-ID method is currently reliable enough for the stated deployment goal.",
+    "Annotations across the different sub-tasks (re-id, action recognition, keypoints, ring segmentation) come from different, non-overlapping frame subsets rather than the same video sequences - the paper explicitly contrasts this against ChimpACT, which does provide co-annotated sequences. This means the dataset can't directly validate a true end-to-end 'who did what' pipeline on identical footage from the provided ground truth alone, only via separately-trained, separately-evaluated component models.",
+    "The action-recognition (3 broad classes, heavily skewed toward 'eat') and 2D-keypoint benchmarks report only existing third-party models (C3D, ViTPose, etc.) as baselines rather than any method contribution from this paper, and roughly a third of the object/color-ring mask annotations were SAM2-auto-generated and validated against only 688 manually-checked instances (0.84 mean IoU) - the quality of the larger unvalidated auto-generated portion isn't independently confirmed."
+  ],
+  "notable": "CORVID's color classifier is a random forest trained on 20x20-resolution HSV color histograms - a deliberately lightweight, non-deep-learning component for one stage of the pipeline, notable as a fast/interpretable alternative wherever a study system already tags individuals with distinct, enumerable visual markers (color rings, painted codes, etc.), rather than defaulting to deep metric learning. Also notable: references [28] and [29] are the exact same paper (Griesser, Drobniak, Nakagawa & Botero, PLOS Biology 2017) listed twice verbatim under different numbers - consistent with the duplicate-citation pattern seen in several other papers in this batch.",
+  "results": [
+    {"dataset": "CHIRP Video Re-ID (closed set)", "metric": "Top-1", "value": "0.66", "setting": "within territory gallery"},
+    {"dataset": "CHIRP Video Re-ID (closed set)", "metric": "Top-3", "value": "0.96", "setting": "within territory gallery"},
+    {"dataset": "CHIRP Video Re-ID (closed set)", "metric": "Top-1", "value": "0.29", "setting": "within territory + neighbours gallery"},
+    {"dataset": "CHIRP Video Re-ID (closed set)", "metric": "Top-3", "value": "0.49", "setting": "within territory + neighbours gallery"},
+    {"dataset": "CHIRP Video Re-ID (closed set)", "metric": "Top-1", "value": "0.05", "setting": "all individuals gallery"},
+    {"dataset": "CHIRP Video Re-ID (closed set)", "metric": "Top-3", "value": "0.07", "setting": "all individuals gallery"},
+    {"dataset": "CHIRP Video Re-ID (disjointed set)", "metric": "Top-1", "value": "0.69", "setting": "within territory gallery"},
+    {"dataset": "CHIRP Video Re-ID (disjointed set)", "metric": "Top-3", "value": "0.97", "setting": "within territory gallery"},
+    {"dataset": "CHIRP Video Re-ID (disjointed set)", "metric": "Top-1", "value": "0.31", "setting": "within territory + neighbours gallery"},
+    {"dataset": "CHIRP Video Re-ID (disjointed set)", "metric": "Top-3", "value": "0.53", "setting": "within territory + neighbours gallery"},
+    {"dataset": "CHIRP Video Re-ID (disjointed set)", "metric": "Top-1", "value": "0.06", "setting": "all individuals gallery"},
+    {"dataset": "CHIRP Video Re-ID (disjointed set)", "metric": "Top-3", "value": "0.13", "setting": "all individuals gallery"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Proportion correct frames", "value": "0.647", "setting": "CORVID for ID assignment"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Peck Precision", "value": "0.485", "setting": "CORVID for ID assignment"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Peck Recall", "value": "0.725", "setting": "CORVID for ID assignment"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Peck F1", "value": "0.537", "setting": "CORVID for ID assignment"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Feeding rate error (mean)", "value": "9.000", "setting": "CORVID for ID assignment, pecks/min"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Feeding rate error (median)", "value": "8.131", "setting": "CORVID for ID assignment, pecks/min"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Feeding rate error (SD)", "value": "7.342", "setting": "CORVID for ID assignment, pecks/min"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Feeding rate correlation (r)", "value": "0.582", "setting": "CORVID for ID assignment"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Co-occurrence rate error (mean)", "value": "0.041", "setting": "CORVID for ID assignment"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Co-occurrence rate error (median)", "value": "0.019", "setting": "CORVID for ID assignment"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Co-occurrence rate error (SD)", "value": "0.057", "setting": "CORVID for ID assignment"},
+    {"dataset": "CHIRP Application-Specific Benchmark", "metric": "Co-occurrence rate correlation (r)", "value": "0.654", "setting": "CORVID for ID assignment"}
+  ]
+}

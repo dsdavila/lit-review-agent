@@ -1,0 +1,40 @@
+{
+  "nutshell": "Object ReID models are normally category-specific (trained separately for persons, vehicles, etc.) and can't generalize to a new object category without retraining. VICP instead uses a frozen LLM to infer identity-discriminative rules from a handful of labeled positive/negative example pairs of a novel category, converts those rules into learned visual prompts, and injects them into a frozen vision foundation model (DINOv2) to extract ID-discriminative features for that category - with no parameter updates at deployment time.",
+  "contributions": [
+    "Defines a new task, 'Generalizable Object ReID': adapt to unseen object categories at test time using only a small support set of labeled positive/negative pairs, under the assumption that the target category is known a priori (e.g. via an upstream detector).",
+    "VICP framework: a frozen LLM processes in-context example pairs (each image compressed to N latent tokens via a Q-Former-style connector) and is trained to predict pair labels (loss masked to only the label tokens); learnable visual prompt tokens appended to that context are mapped through a small MLP 'Visual Head' into visual prompts injected into every layer of a frozen DINOv2 ViT, dynamically reweighting self-attention toward ID-discriminative regions. Only the connector, LM head, visual head, and prompts are trained - the LLM and vision backbone stay frozen throughout.",
+    "Two auxiliary losses beyond the in-context-learning objective: a triplet loss on the [CLS] embedding for global ID discriminability, and an optimal-transport-based patch alignment loss that pulls together patch embeddings of positive pairs and pushes apart those of negative pairs for local feature consistency.",
+    "Releases ShopID10K: 10K object instances / 45K images across 34 e-commerce categories with natural lighting, pose, occlusion, and background variation - substantially larger and more realistic than the only prior generalizable-object-ReID dataset (CUTE, 180 lab-controlled instances).",
+    "Reports gains over unsupervised (DINOv2, CLIP, DINO) and fine-tuned few-shot baselines (Triplet+) on PetFace, MVImageNet, ShopID10K, and CUTE, plus competitive-to-SOTA results on standard person (MSMT17, Market1501) and vehicle (VeRi-776) ReID despite requiring no parameter updates for novel categories at test time."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 6, row [v] 'ICL from LLM') shows using the LLM's in-context learning signal alone actually performs *worse* than the plain Triplet/Triplet+ baselines it's compared against (e.g. PetFace mAP 42.1 vs. Triplet+'s 49.8; ShopID10K mAP 39.6 vs. 54.8) - the running text calls LLM ICL 'promising,' which undersells that the raw ICL-only variant underperforms simpler methods already in the paper.",
+    "The 'seen' vs. 'unseen' category splits (PetFace, MVImageNet, ShopID10K) are random category splits drawn from the same single dataset/collection process, so 'generalization to unseen categories' is intra-dataset rather than a true cross-domain generalization test - a narrower and easier claim than the framing suggests.",
+    "Section 4.2 states results are averaged over 5 repeated runs, but no variance or standard deviation is reported anywhere in the main tables, making it hard to judge how stable small margins are (e.g. the VeRi-776 mAP gain over TransReID is 81.2 vs. 79.6, and Rank-1 is essentially tied at 97.1 vs. 97.0).",
+    "The 'category-aware inference' assumption (object category known a priori via an upstream detector) is a significant real-world dependency the paper treats as a given rather than evaluates - no experiment stress-tests the pipeline under detector failure or category ambiguity, despite this being foundational to the whole method working at all."
+  ],
+  "notable": "The prompt-generation cost is amortized per category, not per query: once the support-set prompts are computed for a novel category, they're cached and reused for every subsequent query-gallery comparison in that category, so the LLM only runs once per category rather than adding per-query inference cost - a practical design choice worth reusing elsewhere. Also notable: reference [39]/[40] (the CUTE dataset) is cited twice under different venue listings (NeurIPS 2023 proceedings vs. a Nov. 2023 arXiv date) for what looks like the same paper - a milder version of the duplicate-citation pattern seen in several other papers in this batch, though this one may just be a legitimate preprint/camera-ready pairing rather than an error.",
+  "results": [
+    {"dataset": "PetFace", "metric": "AUC", "value": "93.5", "setting": "verification protocol, 5 seen categories for training"},
+    {"dataset": "PetFace", "metric": "ACC", "value": "86.0", "setting": "verification protocol, 5 seen categories for training"},
+    {"dataset": "PetFace", "metric": "mAP", "value": "51.2", "setting": "identification protocol, unseen categories"},
+    {"dataset": "PetFace", "metric": "Top-1", "value": "49.7", "setting": "identification protocol, unseen categories"},
+    {"dataset": "MVImageNet", "metric": "mAP", "value": "74.9", "setting": "5 seen categories for training, tested on unseen categories"},
+    {"dataset": "MVImageNet", "metric": "Rank-1", "value": "85.4", "setting": "5 seen categories for training, tested on unseen categories"},
+    {"dataset": "ShopID10K", "metric": "mAP", "value": "58.5", "setting": "authors' own dataset, unseen-category split"},
+    {"dataset": "ShopID10K", "metric": "Rank-1", "value": "68.4", "setting": "authors' own dataset, unseen-category split"},
+    {"dataset": "ShopID10K", "metric": "Rank-5", "value": "87.5", "setting": "authors' own dataset, unseen-category split"},
+    {"dataset": "CUTE", "metric": "mAP", "value": "82.5", "setting": "In-the-wild regime"},
+    {"dataset": "CUTE", "metric": "Top-1", "value": "77.3", "setting": "In-the-wild regime"},
+    {"dataset": "CUTE", "metric": "mAP", "value": "89.8", "setting": "Illumination regime"},
+    {"dataset": "CUTE", "metric": "Top-1", "value": "89.2", "setting": "Illumination regime"},
+    {"dataset": "CUTE", "metric": "mAP", "value": "87.6", "setting": "Pose regime"},
+    {"dataset": "CUTE", "metric": "Top-1", "value": "98.9", "setting": "Pose regime"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "75.3", "setting": "standard person ReID benchmark"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "89.2", "setting": "standard person ReID benchmark"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "90.3", "setting": "standard person ReID benchmark"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "95.5", "setting": "standard person ReID benchmark"},
+    {"dataset": "VeRi-776", "metric": "mAP", "value": "81.2", "setting": "vehicle ReID; reported in-text vs. TransReID's 79.6"},
+    {"dataset": "VeRi-776", "metric": "Rank-1", "value": "97.1", "setting": "vehicle ReID; reported in-text vs. TransReID's 97.0"}
+  ]
+}

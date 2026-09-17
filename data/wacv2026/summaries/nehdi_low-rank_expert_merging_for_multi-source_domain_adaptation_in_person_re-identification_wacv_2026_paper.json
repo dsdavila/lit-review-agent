@@ -1,0 +1,24 @@
+{
+  "nutshell": "Multi-source unsupervised domain adaptation (MSDA) for person ReID typically needs either access to source data during adaptation or a full backbone per source, both costly. SAGE-reID instead trains one lightweight LoRA adapter per source (source-free, via pseudo-label self-training), then fuses the LoRA experts at inference with a small input-adaptive gating network that runs in a single forward pass over a source-averaged backbone.",
+  "contributions": [
+    "A source-free MSDA framework (SAGE-reID) that adapts each source-pretrained backbone to the target domain by fine-tuning only a per-source LoRA adapter (≤ 2% of backbone parameters) via DBSCAN pseudo-label self-training, instead of full-backbone fine-tuning or requiring access to source data.",
+    "A lightweight, per-layer, input-adaptive gating mechanism that predicts a linear combination of the frozen LoRA experts' residuals in a single forward pass (parameter cost O(κd) per layer vs. O(s²κd) for a prior expert-specific gating design), letting inference cost stay constant regardless of the number of source domains - unlike CDR, whose inference cost grows linearly with sources.",
+    "State-of-the-art results among source-free MSDA methods on Market-1501, DukeMTMC-reID, and MSMT17, and outperforms 7 other LoRA/weight-merging techniques (TIES, TA, KnOTS, TSV-M, LoRAHub, MoLE) benchmarked under an identical protocol with the same target-adapted LoRA experts (Table 5)."
+  ],
+  "deficiencies": [
+    "On the Market-1501 target, SAGE-reID (83.7 mAP) is actually beaten by both single-source IDM (82.8 mAP, but close) and multi-source MSUDA (86.0 mAP) - methods that replay source data during adaptation. The paper attributes this to Market-1501's small target size benefiting from the 'huge extra data' regularization those methods get from source replay, but this means the headline 'outperforms SOTA' claim does not hold on this dataset even among methods with a much larger data/compute budget than SAGE-reID's own strictest comparison class.",
+    "The margin over the closest true competitor is thin in the paper's own ablation: SAGE-reID beats MoLE (a pre-existing per-token LoRA gating method from the LLM literature) by only +0.3 mAP / +0.4 Rank-1 on MSMT17 and +1.2 mAP / +0.3 Rank-1 on DukeMTMC (Table 5) - the core novelty (per-layer rather than per-token gating, applied to ReID) yields a small empirical edge over directly adapting an existing LLM-merging technique.",
+    "There is an internal numeric inconsistency between tables for the same setting: SAGE-reID's DukeMTMC-reID Rank-1 is reported as 84.1 in Table 1 but as 83.3 in Table 3, for what is described as the same multi-source (M+CU+MS→D) configuration - the paper doesn't reconcile or footnote this discrepancy.",
+    "CUHK03 is introduced as one of the '4 widely used' benchmark datasets but is only ever used as a source domain, never evaluated as a target - so the method's own headline results cover only 3 of the 4 datasets it sets up as its evaluation suite.",
+    "The MSUDA comparison in Table 4 explicitly swaps in a ViT-B/16 backbone for baselines whose original paper used a different backbone, with results otherwise 'copied from the original MSUDA paper' - the backbone change is a real methodological alteration to the baseline that isn't clearly disentangled from the actual algorithmic comparison being made."
+  ],
+  "notable": "References [37] and [38] are the exact same paper (Yadav et al., 'TIES-merging: Resolving interference when merging models') cited twice under different numbers - the same duplicate-citation bibliography bug seen in several other papers in this batch. Also notable: the paper explicitly flags its own limitation (naive backbone averaging for the shared-backbone initialization step) and proposes unsupervised initialization as future work, which is a refreshingly direct self-critique rather than an omitted weakness.",
+  "results": [
+    {"dataset": "Market-1501", "metric": "mAP", "value": "83.7", "setting": "SAGE-reID, sources: DukeMTMC+MSMT17+CUHK03, source-free MSDA"},
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "93.0", "setting": "SAGE-reID, sources: DukeMTMC+MSMT17+CUHK03, source-free MSDA"},
+    {"dataset": "DukeMTMC-reID", "metric": "mAP", "value": "72.7", "setting": "SAGE-reID, sources: Market1501+MSMT17+CUHK03, source-free MSDA"},
+    {"dataset": "DukeMTMC-reID", "metric": "Rank-1", "value": "84.1", "setting": "SAGE-reID, sources: Market1501+MSMT17+CUHK03, source-free MSDA (Table 1; Table 3 reports 83.3 for the same setting)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "44.1", "setting": "SAGE-reID, sources: DukeMTMC+Market1501+CUHK03, source-free MSDA"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "69.8", "setting": "SAGE-reID, sources: DukeMTMC+Market1501+CUHK03, source-free MSDA"}
+  ]
+}

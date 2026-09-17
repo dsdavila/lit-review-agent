@@ -1,0 +1,30 @@
+{
+  "nutshell": "Online video instance segmentation associates per-frame instance predictions over time via learned instance embeddings, but prior methods build the contrastive training pairs from only one adjacent reference frame - mismatched with the memory-bank-based matching actually used at inference. CTVIS closes this training/inference gap by constructing contrastive items from the same long-term memory bank of momentum-averaged embeddings used at test time, and injects synthetic ID-switch noise into memory bank updates during training to make embeddings robust to the tracking failures that actually occur at inference.",
+  "contributions": [
+    "A 'Consistent Training' framework that builds contrastive items (anchor/positive/negative embeddings) using the same memory-bank + momentum-averaged (MA) embedding mechanism used at inference, instead of comparing only to one reference frame as prior methods (e.g. IDOL) do - directly aligning how embeddings are compared in training versus inference.",
+    "Noise-augmented memory bank updates: with small probability, a disappeared instance's memory slot is deliberately overwritten with a different instance's embedding during training, simulating real ID-switch failures the model will encounter at inference, without requiring a separate adversarial network or training stage.",
+    "A goal-oriented pseudo-video generation pipeline (rotation, crop-zoom, crop-shift, copy-paste) that turns static image datasets (COCO) into synthetic training videos, showing models trained purely on pseudo-video can match or exceed fully video-supervised competitors.",
+    "New SOTA across three VIS benchmarks (YTVIS19, YTVIS21, OVIS) with a controlled ablation (Table 2) isolating that the gains come from the training strategy itself, not merely from swapping in a stronger per-frame segmentor (Mask2Former vs. Deformable DETR)."
+  ],
+  "deficiencies": [
+    "The paper's own component ablation (Table 3) shows using the memory bank alone (latest embedding per instance, no momentum averaging) contributes only +0.5/+0.7 AP over the single-reference-frame baseline, while adding momentum averaging on top contributes the largest jump (+2.1/+1.6 AP) - the paper's central framing around 'building CIs via the memory bank' undersells that most of the measured gain is specifically from momentum averaging, not memory-bank-based CI construction per se.",
+    "The long-video-training ablation (Fig. 4) shows AP is non-monotonic in the number of training frames, peaking at 8-10 frames and then declining (e.g. OVIS AP: 35.5 at 10 frames, 35.3 at 12; YTVIS19 similarly dips before its peak) - the headline numbers use this unstated optimum without discussing why performance degrades past it or how sensitive the method is to this choice.",
+    "The noise-injection mechanism for ID-switch robustness is validated only via aggregate AP and a single qualitative example (the fish in Fig. 5); no quantitative ID-switch-rate or tracking-continuity metric is reported to directly verify the claimed mechanism, despite ID-switch robustness being one of the paper's two headline motivations.",
+    "The pseudo-video experiments (Tables 5-7) are evaluated only on category-overlapping subsets of YTVIS21/OVIS (421 and 140 sampled videos, marked with asterisks), not the full standard benchmarks, and the pseudo-data comparisons against VITA/IDOL rely on those methods' own reported/reimplemented results rather than a fully matched reimplementation using CTVIS's exact augmentation pipeline - leaving some uncertainty about how much of the reported advantage is the training strategy versus the specific augmentation recipe."
+  ],
+  "notable": "The negative-sampling ablation (Table 4) has a striking, non-obvious result: using only background ('supplementary') negative embeddings alone collapses performance almost to zero (OVIS AP 0.5), while switching the supplementary-negative sampling domain from 'global' (all previous frames) to 'local' (preceding frame only) - a seemingly minor implementation detail - adds +2.1 OVIS AP on its own. Also notable: CTVIS trained purely on pseudo-videos built from 100% of COCO's still images (Table 7) actually surpasses several fully video-annotated competitors (VITA, IDOL) on all three benchmarks, suggesting dense temporal mask annotation may be far less necessary for VIS training than the field's current annotation practices assume.",
+  "results": [
+    {"dataset": "YTVIS19", "metric": "AP", "value": "55.1", "setting": "ResNet-50 backbone, COCO joint training"},
+    {"dataset": "YTVIS19", "metric": "AP50", "value": "78.2", "setting": "ResNet-50 backbone, COCO joint training"},
+    {"dataset": "YTVIS19", "metric": "AP75", "value": "59.1", "setting": "ResNet-50 backbone, COCO joint training"},
+    {"dataset": "YTVIS21", "metric": "AP", "value": "50.1", "setting": "ResNet-50 backbone, COCO joint training"},
+    {"dataset": "YTVIS21", "metric": "AP50", "value": "73.7", "setting": "ResNet-50 backbone, COCO joint training"},
+    {"dataset": "YTVIS21", "metric": "AP75", "value": "54.7", "setting": "ResNet-50 backbone, COCO joint training"},
+    {"dataset": "OVIS", "metric": "AP", "value": "35.5", "setting": "ResNet-50 backbone, COCO joint training"},
+    {"dataset": "OVIS", "metric": "AP50", "value": "60.8", "setting": "ResNet-50 backbone, COCO joint training"},
+    {"dataset": "OVIS", "metric": "AP75", "value": "34.9", "setting": "ResNet-50 backbone, COCO joint training"},
+    {"dataset": "YTVIS19", "metric": "AP", "value": "65.6", "setting": "Swin-L backbone, COCO joint training"},
+    {"dataset": "YTVIS21", "metric": "AP", "value": "61.2", "setting": "Swin-L backbone, COCO joint training"},
+    {"dataset": "OVIS", "metric": "AP", "value": "46.9", "setting": "Swin-L backbone, COCO joint training"}
+  ]
+}

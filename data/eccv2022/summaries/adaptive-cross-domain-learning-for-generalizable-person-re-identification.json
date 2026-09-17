@@ -1,0 +1,32 @@
+{
+  "nutshell": "Domain-Generalizable person ReID (train on several labeled source domains, test on an unseen one) suffers from a 'domain conflict' problem: methods that only learn domain-invariant features waste useful domain-specific cues, while methods that keep a separate expert per domain can't share knowledge across domains and scale linearly in cost with the number of domains. ACL's CODE-Block instead keeps one shared 'common feature space' per backbone layer: a dynamic branch (several parallel embedding networks combined by per-sample meta-weights from a domain-aware adapter) captures both invariant and specific features jointly, complemented by a static instance-normalization branch, fused via a learned Dynamic-Static Fusion module.",
+  "contributions": [
+    "CODE-Block: replaces the last conv block of each ResNet stage with N parallel embedding networks that all map into the same shared feature space (rather than one dedicated expert network per domain as in prior MoE-based DG-ReID methods), combined via meta-weights from a domain-aware adapter - avoiding the linear per-domain cost of expert-based approaches while still modeling domain-specific variation.",
+    "The domain-aware adapter generates its own weight-generator parameters per sample via a 'meta-parameter generator' (a hypernetwork-style module) instead of using a fixed MLP, plus a domain-aware cluster loss that pulls the predicted meta-weight vectors of same-domain samples together and pushes different-domain ones apart.",
+    "Dynamic-Static Fusion (DSF) module: normalizes the dynamic-branch and static-branch outputs separately, combines them with a learned per-channel weight vector, and refines the result with SE-style channel attention, rather than naive summation or concatenation.",
+    "Large reported gains under leave-one-domain-out evaluation (Protocol-2/3) across Market1501, MSMT17, CUHK02/03, and CUHK-SYSU - the abstract highlights +7.8% mAP / +7.6% rank-1 over the prior SOTA average under Protocol-2 - using a two-stage meta-learning training procedure adapted from MetaBIN."
+  ],
+  "deficiencies": [
+    "All four ablation tables (static/dynamic branches, domain-aware adapter, fusion module, embedding stage) show a suspiciously uniform pattern: every added component improves every single metric on every single leave-one-out split with zero exceptions or trade-offs - a very clean result across four separate multi-part ablations, and no variance or multiple-seed reporting is given anywhere to support how reliable these single-run numbers are.",
+    "The comparison baselines (SNR*, QAConv50*, M3L*, MetaBIN*) are explicitly the paper's own re-implementations of prior methods under a 'new protocol' (marked with '*'), so the headline SOTA margins are measured against the authors' own re-runs rather than the originally published numbers, with no side-by-side check against those original results to validate the re-implementation.",
+    "The paper argues its shared-space design avoids the 'linear increasing costs' of per-domain-expert methods (e.g. RaMoE, MDECL), but never reports parameter counts, FLOPs, or inference latency for either its own method or those baselines - the efficiency argument is asserted, not measured.",
+    "Protocol-1 (Table 1) explicitly excludes DukeMTMC for privacy reasons, a reasonable choice, but this means the paper's own headline comparison table isn't directly comparable to earlier DG-ReID papers that include DukeMTMC results, and the brief ethics discussion doesn't connect back to this specific methodological consequence."
+  ],
+  "notable": "The domain-aware cluster loss (Eq. 4) applies a margin/triplet-style intra-/inter-domain loss directly to the network's own generated routing weights (the meta-weights choosing how to combine embedding networks), not to the final ReID feature embedding - regularizing a routing/gating signal by domain identity is a reusable trick distinct from the usual practice of applying metric-learning losses only to the output representation, and could transfer to other dynamic-routing or mixture-of-experts designs. The t-SNE visualization of these meta-weights (Fig. 6) is also a clean, simple sanity check that a learned routing mechanism is behaving as intended (forming per-domain clusters with internal diversity) rather than collapsing to one dominant pattern.",
+  "results": [
+    {"dataset": "PRID", "metric": "mAP", "value": "73.4", "setting": "Protocol-1, trained on M+CUHK02+CUHK03+CUHK-SYSU"},
+    {"dataset": "PRID", "metric": "Rank-1", "value": "63.0", "setting": "Protocol-1, trained on M+CUHK02+CUHK03+CUHK-SYSU"},
+    {"dataset": "GRID", "metric": "mAP", "value": "65.7", "setting": "Protocol-1, trained on M+CUHK02+CUHK03+CUHK-SYSU"},
+    {"dataset": "GRID", "metric": "Rank-1", "value": "55.2", "setting": "Protocol-1, trained on M+CUHK02+CUHK03+CUHK-SYSU"},
+    {"dataset": "VIPeR", "metric": "mAP", "value": "75.1", "setting": "Protocol-1, trained on M+CUHK02+CUHK03+CUHK-SYSU"},
+    {"dataset": "VIPeR", "metric": "Rank-1", "value": "66.4", "setting": "Protocol-1, trained on M+CUHK02+CUHK03+CUHK-SYSU"},
+    {"dataset": "iLIDs", "metric": "mAP", "value": "86.5", "setting": "Protocol-1, trained on M+CUHK02+CUHK03+CUHK-SYSU"},
+    {"dataset": "iLIDs", "metric": "Rank-1", "value": "81.8", "setting": "Protocol-1, trained on M+CUHK02+CUHK03+CUHK-SYSU"},
+    {"dataset": "Protocol-1 average (PRID/GRID/VIPeR/iLIDs)", "metric": "mAP", "value": "75.2", "setting": ""},
+    {"dataset": "Protocol-1 average (PRID/GRID/VIPeR/iLIDs)", "metric": "Rank-1", "value": "66.6", "setting": ""},
+    {"dataset": "Protocol-2 average (leave-one-out, Market/MSMT17/CUHK03)", "metric": "mAP", "value": "45.3", "setting": "trained on source training data only"},
+    {"dataset": "Protocol-2 average (leave-one-out, Market/MSMT17/CUHK03)", "metric": "Rank-1", "value": "59.0", "setting": "trained on source training data only"},
+    {"dataset": "Protocol-3 average (leave-one-out, Market/MSMT17/CUHK03)", "metric": "mAP", "value": "49.3", "setting": "trained on source training+testing data"},
+    {"dataset": "Protocol-3 average (leave-one-out, Market/MSMT17/CUHK03)", "metric": "Rank-1", "value": "62.7", "setting": "trained on source training+testing data"}
+  ]
+}

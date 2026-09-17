@@ -1,0 +1,43 @@
+{
+  "nutshell": "Standard person ReID models trained only to match identities still encode enough personally identifiable information (PII) in their features to let an attacker re-identify individuals or reconstruct images. PEPR-Net addresses this with two stages: (1) training-time suppression via a self-supervised de-identification decoder plus an adversarial-identity module, and (2) an optional deployment-time controllable-privacy mechanism that applies differential-privacy Gaussian noise to gallery features with a user-tunable privacy budget.",
+  "contributions": [
+    "A privacy metric for ReID: quantifying PII leakage as the accuracy with which a held-out identity classifier can re-identify individuals from the learned ReID features (lower ID accuracy = better privacy), used consistently to evaluate both the proposed method and prior work that never reported this.",
+    "Stage 1 (training-time): a De-ID decoder that reconstructs pixelated (de-identified) versions of the input from ReID features, plus an adversarial-identity module that pushes the softmax identity-prediction distribution toward uniform - both trained jointly with the standard ReID triplet loss via a weighted multi-task objective.",
+    "Stage 2 (deployment-time): a controllable (epsilon, delta)-differential-privacy mechanism that adds Gaussian noise directly to gallery embeddings after training, letting an operator dial privacy up or down post-hoc via a single budget parameter without retraining the model.",
+    "Empirically shows the two stages are complementary: applying the same DP noise to baseline (undefended) features only modestly reduces identity leakage, while applying it on top of the Stage-1 privacy-preserving features achieves a much larger leakage reduction at comparable utility cost.",
+    "Outperforms several existing privacy-preserving ReID baselines (DP-SGD, federated-learning variants, face-blurring methods, PIS) on ReID utility (mAP/Top-1) while being one of the only methods among them to actually report a quantified privacy-leakage number."
+  ],
+  "deficiencies": [
+    "The privacy metric only tests one specific attack: whether a held-out softmax/linear classifier can predict identity from the features. The paper's own Figure 1 motivates the work partly with a decoder-reconstruction attack threat, and Figure 7 shows qualitative reconstructed images, but no quantitative reconstruction-attack success metric is reported against the final trained model - the headline privacy number covers identity-inference risk only, not the reconstruction risk it also motivates.",
+    "The paper's own Table 1 ablation shows the Adversarial-Identity (Adv-ID) module alone is the single most damaging component to utility (Market-1501 mAP drops from 69.22 to 55.90, worse than any De-ID variant alone), yet it is retained in the final model at a small loss weight without questioning whether its privacy benefit independently justifies its utility cost versus, say, using only the De-ID decoder.",
+    "The SOTA comparison (Tables 3-4) is not symmetric: several compared privacy-preserving baselines (DP-SGD, Federated-by-Camera, face-blur variants) report no privacy/ID-leakage numbers at all (shown as '-'), so the claim of 'achieving a better trade-off between Re-ID performance and privacy' than these methods can only actually be verified on the utility axis for those rows, not the privacy axis that is the paper's central contribution.",
+    "Differential privacy is applied only to gallery features at test time using an empirically chosen noise range (dataset standard deviation +/- 5) rather than a principled per-dataset sensitivity derivation, and Stage 1's privacy improvement (De-ID + Adv-ID) carries no formal privacy guarantee - only Stage 2 has an actual (epsilon, delta)-DP proof, so the combined system's overall privacy guarantee is partial rather than end-to-end."
+  ],
+  "notable": "Table 2 shows a genuinely useful synergy finding: at matched privacy budget (epsilon=0.5), adding DP noise to baseline features only drops identity-leakage accuracy by 12.34 points, but adding the identical DP mechanism on top of the Stage-1 privacy-preserving features drops it by 50.44 points at a comparable utility cost - evidence that layering a training-time defense with a deployment-time one is meaningfully more effective than either alone, useful for anyone designing similar layered privacy pipelines. Also notable: the ablation directly compares blurring, obfuscation, and pixelation as the De-ID decoder's reconstruction target and finds pixelation clearly best for utility-privacy trade-off (Table 1) - a concrete, transferable design choice.",
+  "results": [
+    {"dataset": "Market-1501", "metric": "mAP", "value": "57.65", "setting": "Proposed (Stage 1 only, no DP)"},
+    {"dataset": "Market-1501", "metric": "Top-1", "value": "77.55", "setting": "Proposed (Stage 1 only, no DP)"},
+    {"dataset": "Market-1501", "metric": "ID accuracy (privacy leakage, lower=better)", "value": "33.55", "setting": "Proposed (Stage 1 only, no DP)"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "56.90", "setting": "Proposed (Stage 2, epsilon=1.0)"},
+    {"dataset": "Market-1501", "metric": "Top-1", "value": "75.80", "setting": "Proposed (Stage 2, epsilon=1.0)"},
+    {"dataset": "Market-1501", "metric": "ID accuracy (privacy leakage, lower=better)", "value": "29.90", "setting": "Proposed (Stage 2, epsilon=1.0)"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "56.40", "setting": "Proposed (Stage 2, epsilon=0.5)"},
+    {"dataset": "Market-1501", "metric": "Top-1", "value": "75.30", "setting": "Proposed (Stage 2, epsilon=0.5)"},
+    {"dataset": "Market-1501", "metric": "ID accuracy (privacy leakage, lower=better)", "value": "22.30", "setting": "Proposed (Stage 2, epsilon=0.5)"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "51.50", "setting": "Proposed (Stage 2, epsilon=0.1)"},
+    {"dataset": "Market-1501", "metric": "Top-1", "value": "69.80", "setting": "Proposed (Stage 2, epsilon=0.1)"},
+    {"dataset": "Market-1501", "metric": "ID accuracy (privacy leakage, lower=better)", "value": "14.10", "setting": "Proposed (Stage 2, epsilon=0.1)"},
+    {"dataset": "CUHK03-NP", "metric": "mAP", "value": "69.40", "setting": "Proposed (Stage 1 only, no DP)"},
+    {"dataset": "CUHK03-NP", "metric": "Top-1", "value": "90.36", "setting": "Proposed (Stage 1 only, no DP)"},
+    {"dataset": "CUHK03-NP", "metric": "ID accuracy (privacy leakage, lower=better)", "value": "64.07", "setting": "Proposed (Stage 1 only, no DP)"},
+    {"dataset": "CUHK03-NP", "metric": "mAP", "value": "67.12", "setting": "Proposed (Stage 2, epsilon=1.0)"},
+    {"dataset": "CUHK03-NP", "metric": "Top-1", "value": "87.23", "setting": "Proposed (Stage 2, epsilon=1.0)"},
+    {"dataset": "CUHK03-NP", "metric": "ID accuracy (privacy leakage, lower=better)", "value": "62.47", "setting": "Proposed (Stage 2, epsilon=1.0)"},
+    {"dataset": "CUHK03-NP", "metric": "mAP", "value": "62.45", "setting": "Proposed (Stage 2, epsilon=0.5)"},
+    {"dataset": "CUHK03-NP", "metric": "Top-1", "value": "79.32", "setting": "Proposed (Stage 2, epsilon=0.5)"},
+    {"dataset": "CUHK03-NP", "metric": "ID accuracy (privacy leakage, lower=better)", "value": "41.14", "setting": "Proposed (Stage 2, epsilon=0.5)"},
+    {"dataset": "CUHK03-NP", "metric": "mAP", "value": "55.21", "setting": "Proposed (Stage 2, epsilon=0.1)"},
+    {"dataset": "CUHK03-NP", "metric": "Top-1", "value": "71.75", "setting": "Proposed (Stage 2, epsilon=0.1)"},
+    {"dataset": "CUHK03-NP", "metric": "ID accuracy (privacy leakage, lower=better)", "value": "28.79", "setting": "Proposed (Stage 2, epsilon=0.1)"}
+  ]
+}

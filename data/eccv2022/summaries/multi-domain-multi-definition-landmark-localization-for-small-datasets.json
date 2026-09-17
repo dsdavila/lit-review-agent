@@ -1,0 +1,53 @@
+{
+  "nutshell": "Facial landmark localization for niche domains (animals, art portraits, caricatures, illusory 'pareidolia' faces) is hard because labeled datasets are tiny and use inconsistent landmark definitions across domains. MDMD introduces a ViT encoder plus a transformer decoder built around 12 shared 'Facial Landmark Semantic Group' (FLSG) tokens, letting one model train concurrently across datasets with different landmark counts/definitions by routing decoder outputs to per-dataset regression heads.",
+  "contributions": [
+    "Facial Landmark Semantic Group (FLSG): a fixed set of 12 learned embedding tokens representing abstract facial regions (eyes, nose, etc.) shared across all domains/definitions, letting heterogeneous landmark schemas be unified in one decoder rather than needing per-dataset architecture.",
+    "A definition-agnostic transformer decoder where FLSG tokens cross-attend to ViT image features and self-attend to each other, then route to per-dataset/definition MLP heads that regress both landmark means and Cholesky-factorized covariance via a Laplacian log-likelihood loss.",
+    "Demonstrates large gains on small/novel-domain datasets (a 100-image macaque subset of AnimWeb, ArtFace portraits, CariFace caricatures, and a new 150-image pareidolia dataset the authors contribute) when co-trained with a larger source dataset (300W or LaPa), plus competitive-to-SOTA results on the standard COFW and WFLW benchmarks."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 5) shows FLSG actually underperforms a simpler explicit-individual-landmark-token baseline in the single-dataset case (4.82 vs. 4.73 NME on COFW alone) - the central architectural idea only pays off once a co-training partner dataset is added, which the paper acknowledges but doesn't resolve.",
+    "The small-domain 'SOTA' comparisons are explicitly not apples-to-apples: the paper trains CariFace on 148 images vs. Zhang et al.'s 6,420, and AnimWeb on a single macaque subset vs. Khan et al.'s full 21,900-image multi-species set, then still frames results as competitive/SOTA despite noting these are only 'ballpark' comparisons.",
+    "On WFLW (Table 2), two concurrent works (FaRL, SH-FAN) beat MDMD w/LaPa on overall NME/FR/AUC (e.g. SH-FAN 3.72 vs. MDMD's 3.97 NME) - the 'outperforms all previous SOTA aside from two concurrent works' framing carries a fairly load-bearing caveat.",
+    "Novel-domain test sets are extremely small (33 test monkey faces, 3 held-out images per artist across 16 artists for ArtFace) with no reported variance across seeds/runs, so the reported NME/FR/AUC swings rest on very few examples."
+  ],
+  "notable": "The paper includes a dedicated qualitative failure-case figure (Fig. 5: extreme pose/occlusion, an extremely deformed caricature) rather than only showcasing successes - a good-faith practice not every paper in this batch bothers with. Also: references [19] and [20] are the same paper (Jin et al., 'Separable batch normalization for robust facial landmark localization') cited twice under different numbers - the same duplicate-citation pattern seen elsewhere in this literature review.",
+  "results": [
+    {"dataset": "COFW", "metric": "NME (inter-pupil)", "value": "4.82", "setting": "MDMD Base, single-dataset training"},
+    {"dataset": "COFW", "metric": "FR@10%", "value": "0.39", "setting": "MDMD Base, single-dataset training"},
+    {"dataset": "COFW", "metric": "AUC@10%", "value": "51.84", "setting": "MDMD Base, single-dataset training"},
+    {"dataset": "COFW", "metric": "NME (inter-pupil)", "value": "4.65", "setting": "MDMD w/LaPa co-training"},
+    {"dataset": "COFW", "metric": "FR@10%", "value": "0.59", "setting": "MDMD w/LaPa co-training"},
+    {"dataset": "COFW", "metric": "AUC@10%", "value": "53.49", "setting": "MDMD w/LaPa co-training"},
+    {"dataset": "WFLW", "metric": "NME", "value": "4.06", "setting": "MDMD Base, full testset"},
+    {"dataset": "WFLW", "metric": "FR@10%", "value": "2.63", "setting": "MDMD Base, full testset"},
+    {"dataset": "WFLW", "metric": "AUC@10%", "value": "60.10", "setting": "MDMD Base, full testset"},
+    {"dataset": "WFLW", "metric": "NME", "value": "3.97", "setting": "MDMD w/LaPa co-training, full testset"},
+    {"dataset": "WFLW", "metric": "FR@10%", "value": "2.2", "setting": "MDMD w/LaPa co-training, full testset"},
+    {"dataset": "WFLW", "metric": "AUC@10%", "value": "60.83", "setting": "MDMD w/LaPa co-training, full testset"},
+    {"dataset": "AnimWeb (macaque subset)", "metric": "NME (inter-ocular)", "value": "6.88", "setting": "MDMD Base, 100 train/33 test"},
+    {"dataset": "AnimWeb (macaque subset)", "metric": "FR@10%", "value": "15.15", "setting": "MDMD Base, 100 train/33 test"},
+    {"dataset": "AnimWeb (macaque subset)", "metric": "AUC@10%", "value": "42.33", "setting": "MDMD Base, 100 train/33 test"},
+    {"dataset": "AnimWeb (macaque subset)", "metric": "NME (inter-ocular)", "value": "6.55", "setting": "MDMD w/300W co-training"},
+    {"dataset": "AnimWeb (macaque subset)", "metric": "FR@10%", "value": "15.15", "setting": "MDMD w/300W co-training"},
+    {"dataset": "AnimWeb (macaque subset)", "metric": "AUC@10%", "value": "43.88", "setting": "MDMD w/300W co-training"},
+    {"dataset": "ArtFace", "metric": "NME (inter-ocular)", "value": "4.46", "setting": "MDMD Base"},
+    {"dataset": "ArtFace", "metric": "FR@10%", "value": "2.08", "setting": "MDMD Base"},
+    {"dataset": "ArtFace", "metric": "AUC@10%", "value": "55.49", "setting": "MDMD Base"},
+    {"dataset": "ArtFace", "metric": "NME (inter-ocular)", "value": "3.75", "setting": "MDMD w/300W co-training"},
+    {"dataset": "ArtFace", "metric": "FR@10%", "value": "0.0", "setting": "MDMD w/300W co-training"},
+    {"dataset": "ArtFace", "metric": "AUC@10%", "value": "63.0", "setting": "MDMD w/300W co-training"},
+    {"dataset": "CariFace", "metric": "NME (inter-ocular)", "value": "7.81", "setting": "MDMD Base, 148 training images"},
+    {"dataset": "CariFace", "metric": "FR@10%", "value": "19.04", "setting": "MDMD Base, 148 training images"},
+    {"dataset": "CariFace", "metric": "AUC@10%", "value": "29.41", "setting": "MDMD Base, 148 training images"},
+    {"dataset": "CariFace", "metric": "NME (inter-ocular)", "value": "5.85", "setting": "MDMD w/300W co-training, 148 training images"},
+    {"dataset": "CariFace", "metric": "FR@10%", "value": "6.41", "setting": "MDMD w/300W co-training, 148 training images"},
+    {"dataset": "CariFace", "metric": "AUC@10%", "value": "43.57", "setting": "MDMD w/300W co-training, 148 training images"},
+    {"dataset": "PARE (pareidolias, new dataset)", "metric": "NME (inter-ocular)", "value": "9.12", "setting": "MDMD Base"},
+    {"dataset": "PARE (pareidolias, new dataset)", "metric": "FR@10%", "value": "28.0", "setting": "MDMD Base"},
+    {"dataset": "PARE (pareidolias, new dataset)", "metric": "AUC@10%", "value": "23.65", "setting": "MDMD Base"},
+    {"dataset": "PARE (pareidolias, new dataset)", "metric": "NME (inter-ocular)", "value": "8.59", "setting": "MDMD w/300W co-training"},
+    {"dataset": "PARE (pareidolias, new dataset)", "metric": "FR@10%", "value": "22.0", "setting": "MDMD w/300W co-training"},
+    {"dataset": "PARE (pareidolias, new dataset)", "metric": "AUC@10%", "value": "28.71", "setting": "MDMD w/300W co-training"}
+  ]
+}

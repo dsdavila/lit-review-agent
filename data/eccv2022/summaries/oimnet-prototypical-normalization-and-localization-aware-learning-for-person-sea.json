@@ -1,0 +1,26 @@
+{
+  "nutshell": "OIMNet, the pioneer end-to-end person search method, projects features onto a unit hypersphere via L2 normalization and updates an ID lookup table (LUT) with a fixed-momentum update for every positive proposal equally. OIMNet++ fixes two weaknesses of this: ProtoNorm standardizes features using per-ID prototype statistics (rather than raw batch statistics) so the long-tailed ID distribution doesn't bias normalization toward majority IDs, and the LOIM loss uses an IoU-based adaptive momentum so better-localized (less noisy) proposals contribute more to each ID's LUT feature.",
+  "contributions": [
+    "ProtoNorm: a normalization layer that computes standardization mean/variance from per-ID prototype features (each ID's features averaged within a mini-batch) rather than from raw input features directly, giving each ID equal weight regardless of how frequently it appears - directly targeting the long-tail class imbalance that biases plain BatchNorm toward majority IDs.",
+    "LOIM loss: replaces OIM's fixed-momentum LUT update with an adaptive momentum derived from each proposal's IoU with its ground-truth box (clipped to [0, 1-eps]), so well-aligned, less-noisy proposals override the stored ID feature more than poorly-localized ones.",
+    "New SOTA among ResNet50 end-to-end person search methods on CUHK-SYSU and PRW (Table 1), plus a backbone-embedded variant (OIMNet+++, replacing conv5 BatchNorm with ProtoNorm) that improves PRW further without adding parameters or inference-time compute, unlike competing backbone-modification approaches.",
+    "Reports results averaged over 4 runs with standard deviations (Table 1) - a level of statistical rigor most other papers in this batch don't provide."
+  ],
+  "deficiencies": [
+    "On CUHK-SYSU, OIMNet++'s gain over the prior best end-to-end method (AlignPS) is a tie on mAP (93.1 vs. 93.1) and a small +0.5pp on rank-1 (93.9 vs. 93.4) - nearly all of the paper's real improvement is concentrated on PRW (+0.9 mAP, +2.0 rank-1 over AlignPS), which sits awkwardly next to the conclusion's claim of outperforming other methods 'by a large margin.'",
+    "OIMNet+++ (the backbone-embedded ProtoNorm variant) explicitly frames itself as being 'at a disadvantage' next to PGA*/AlignPS+ since those add extra dilation/deformable-conv parameters at inference - yet on CUHK-SYSU it still underperforms AlignPS+ (93.1/94.1 vs. 94.0/94.5 mAP/rank-1), so the paper's own 'comparable' framing there is doing some softening of a real gap, even though PRW numbers do favor OIMNet+++.",
+    "Evaluation is limited to two established, comparatively small benchmarks (CUHK-SYSU, PRW) with no test on a larger-scale or more occlusion-heavy modern benchmark (e.g. PoseTrack21, used by later person-search papers) - so it's unclear whether ProtoNorm's per-ID prototype averaging remains stable when a mini-batch (size 5 images here) yields very few or zero instances per ID.",
+    "No training or inference overhead is reported for ProtoNorm's extra per-ID grouping/averaging step versus plain BatchNorm, despite this being a natural question whenever an extra bookkeeping step is added to every normalization layer's forward pass."
+  ],
+  "notable": "The synthetic 2D toy visualization (Fig. 1) is a clean, minimal way to visually motivate why plain L2 normalization degenerates under non-standardized, class-imbalanced features before any real experiments are shown - a reusable technique for explaining a normalization-scheme contribution. Also notable: footnote 2 candidly reports that just re-implementing vanilla OIMNet with modern training tricks (better LR schedule, larger batch size, RoIAlign) already scores far above the original 2017 paper's numbers - a useful reminder that some of the 'SOTA' gains reported across this literature may partly reflect modernized training recipes rather than the specific architectural contribution being proposed.",
+  "results": [
+    {"dataset": "CUHK-SYSU", "metric": "mAP", "value": "93.1", "setting": "OIMNet++, ResNet50 backbone"},
+    {"dataset": "CUHK-SYSU", "metric": "Rank-1", "value": "93.9", "setting": "OIMNet++, ResNet50 backbone"},
+    {"dataset": "PRW", "metric": "mAP", "value": "46.8", "setting": "OIMNet++, ResNet50 backbone"},
+    {"dataset": "PRW", "metric": "Rank-1", "value": "83.9", "setting": "OIMNet++, ResNet50 backbone"},
+    {"dataset": "CUHK-SYSU", "metric": "mAP", "value": "93.1", "setting": "OIMNet+++, ResNet50-ProtoNorm backbone"},
+    {"dataset": "CUHK-SYSU", "metric": "Rank-1", "value": "94.1", "setting": "OIMNet+++, ResNet50-ProtoNorm backbone"},
+    {"dataset": "PRW", "metric": "mAP", "value": "47.7", "setting": "OIMNet+++, ResNet50-ProtoNorm backbone"},
+    {"dataset": "PRW", "metric": "Rank-1", "value": "84.8", "setting": "OIMNet+++, ResNet50-ProtoNorm backbone"}
+  ]
+}

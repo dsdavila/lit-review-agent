@@ -1,0 +1,1018 @@
+[
+  {
+    "name": "cvpr2024",
+    "url": "https://openaccess.thecvf.com/CVPR2024?day=all",
+    "scraped": 2716,
+    "shortlisted": 21,
+    "downloaded": 21,
+    "top_matches": [
+      {
+        "title": "Learning Continual Compatible Representation for Re-indexing Free Lifelong Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Cui_Learning_Continual_Compatible_Representation_for_Re-indexing_Free_Lifelong_Person_Re-identification_CVPR_2024_paper.html"
+      },
+      {
+        "title": "LiDAR-based Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Guo_LiDAR-based_Person_Re-identification_CVPR_2024_paper.html"
+      },
+      {
+        "title": "A Pedestrian is Worth One Prompt: Towards Language Guidance Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Yang_A_Pedestrian_is_Worth_One_Prompt_Towards_Language_Guidance_Person_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Day-Night Cross-domain Vehicle Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Li_Day-Night_Cross-domain_Vehicle_Re-identification_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Distribution-aware Knowledge Prototyping for Non-exemplar Lifelong Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Xu_Distribution-aware_Knowledge_Prototyping_for_Non-exemplar_Lifelong_Person_Re-identification_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Noisy-Correspondence Learning for Text-to-Image Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Qin_Noisy-Correspondence_Learning_for_Text-to-Image_Person_Re-identification_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Instruct-ReID: A Multi-purpose Person Re-identification Task with Instructions",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/He_Instruct-ReID_A_Multi-purpose_Person_Re-identification_Task_with_Instructions_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Magic Tokens: Select Diverse Tokens for Multi-modal Object Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Zhang_Magic_Tokens_Select_Diverse_Tokens_for_Multi-modal_Object_Re-Identification_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Harnessing the Power of MLLMs for Transferable Text-to-Image Person ReID",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Tan_Harnessing_the_Power_of_MLLMs_for_Transferable_Text-to-Image_Person_ReID_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Distilling CLIP with Dual Guidance for Learning Discriminative Human Body Shape Representation",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Liu_Distilling_CLIP_with_Dual_Guidance_for_Learning_Discriminative_Human_Body_CVPR_2024_paper.html"
+      },
+      {
+        "title": "All in One Framework for Multimodal Re-identification in the Wild",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Li_All_in_One_Framework_for_Multimodal_Re-identification_in_the_Wild_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Shallow-Deep Collaborative Learning for Unsupervised Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Yang_Shallow-Deep_Collaborative_Learning_for_Unsupervised_Visible-Infrared_Person_Re-Identification_CVPR_2024_paper.html"
+      },
+      {
+        "title": "View-decoupled Transformer for Person Re-identification under Aerial-ground Camera Network",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Zhang_View-decoupled_Transformer_for_Person_Re-identification_under_Aerial-ground_Camera_Network_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Implicit Discriminative Knowledge Learning for Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Ren_Implicit_Discriminative_Knowledge_Learning_for_Visible-Infrared_Person_Re-Identification_CVPR_2024_paper.html"
+      },
+      {
+        "title": "MTMMC: A Large-Scale Real-World Multi-Modal Camera Tracking Benchmark",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Woo_MTMMC_A_Large-Scale_Real-World_Multi-Modal_Camera_Tracking_Benchmark_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Attribute-Guided Pedestrian Retrieval: Bridging Person Re-ID with Internal Attribute Variability",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Huang_Attribute-Guided_Pedestrian_Retrieval_Bridging_Person_Re-ID_with_Internal_Attribute_Variability_CVPR_2024_paper.html"
+      },
+      {
+        "title": "UniVS: Unified and Universal Video Segmentation with Prompts as Queries",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Li_UniVS_Unified_and_Universal_Video_Segmentation_with_Prompts_as_Queries_CVPR_2024_paper.html"
+      },
+      {
+        "title": "SEAS: ShapE-Aligned Supervision for Person Re-Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Zhu_SEAS_ShapE-Aligned_Supervision_for_Person_Re-Identification_CVPR_2024_paper.html"
+      },
+      {
+        "title": "SC-Tune: Unleashing Self-Consistent Referential Comprehension in Large Vision Language Models",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Yue_SC-Tune_Unleashing_Self-Consistent_Referential_Comprehension_in_Large_Vision_Language_Models_CVPR_2024_paper.html"
+      },
+      {
+        "title": "Delving into the Trajectory Long-tail Distribution for Muti-object Tracking",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Chen_Delving_into_the_Trajectory_Long-tail_Distribution_for_Muti-object_Tracking_CVPR_2024_paper.html"
+      },
+      {
+        "title": "CA-Jaccard: Camera-aware Jaccard Distance for Person Re-identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Chen_CA-Jaccard_Camera-aware_Jaccard_Distance_for_Person_Re-identification_CVPR_2024_paper.html"
+      }
+    ]
+  },
+  {
+    "name": "cvpr2025",
+    "url": "https://openaccess.thecvf.com/CVPR2025?day=all",
+    "scraped": 2871,
+    "shortlisted": 19,
+    "downloaded": 19,
+    "top_matches": [
+      {
+        "title": "SeCap: Self-Calibrating and Adaptive Prompts for Cross-view Person Re-Identification in Aerial-Ground Networks",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Wang_SeCap_Self-Calibrating_and_Adaptive_Prompts_for_Cross-view_Person_Re-Identification_in_CVPR_2025_paper.html"
+      },
+      {
+        "title": "DKC: Differentiated Knowledge Consolidation for Cloth-Hybrid Lifelong Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Cui_DKC_Differentiated_Knowledge_Consolidation_for_Cloth-Hybrid_Lifelong_Person_Re-identification_CVPR_2025_paper.html"
+      },
+      {
+        "title": "DIFFER: Disentangling Identity Features via Semantic Cues for Clothes-Changing Person Re-ID",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Liang_DIFFER_Disentangling_Identity_Features_via_Semantic_Cues_for_Clothes-Changing_Person_CVPR_2025_paper.html"
+      },
+      {
+        "title": "From Poses to Identity: Training-Free Person Re-Identification via Feature Centralization",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Yuan_From_Poses_to_Identity_Training-Free_Person_Re-Identification_via_Feature_Centralization_CVPR_2025_paper.html"
+      },
+      {
+        "title": "From Laboratory to Real World: A New Benchmark Towards Privacy-Preserved Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Jiang_From_Laboratory_to_Real_World_A_New_Benchmark_Towards_Privacy-Preserved_CVPR_2025_paper.html"
+      },
+      {
+        "title": "Identity-Clothing Similarity Modeling for Unsupervised Clothing Change Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Pang_Identity-Clothing_Similarity_Modeling_for_Unsupervised_Clothing_Change_Person_Re-Identification_CVPR_2025_paper.html"
+      },
+      {
+        "title": "Cheb-GR: Rethinking K-nearest Neighbor Search in Re-ranking for Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Yang_Cheb-GR_Rethinking_K-nearest_Neighbor_Search_in_Re-ranking_for_Person_Re-identification_CVPR_2025_paper.html"
+      },
+      {
+        "title": "Modeling Thousands of Human Annotators for Generalizable Text-to-Image Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Jiang_Modeling_Thousands_of_Human_Annotators_for_Generalizable_Text-to-Image_Person_Re-identification_CVPR_2025_paper.html"
+      },
+      {
+        "title": "Towards All-in-One Medical Image Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Tian_Towards_All-in-One_Medical_Image_Re-Identification_CVPR_2025_paper.html"
+      },
+      {
+        "title": "Person De-reidentification: A Variation-guided Identity Shift Modeling",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Peng_Person_De-reidentification_A_Variation-guided_Identity_Shift_Modeling_CVPR_2025_paper.html"
+      },
+      {
+        "title": "AG-VPReID: A Challenging Large-Scale Benchmark for Aerial-Ground Video-based Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Nguyen_AG-VPReID_A_Challenging_Large-Scale_Benchmark_for_Aerial-Ground_Video-based_Person_Re-Identification_CVPR_2025_paper.html"
+      },
+      {
+        "title": "UCM-VeID V2: A Richer Dataset and A Pre-training Method for UAV Cross-Modality Vehicle Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Liu_UCM-VeID_V2_A_Richer_Dataset_and_A_Pre-training_Method_for_CVPR_2025_paper.html"
+      },
+      {
+        "title": "Human-centered Interactive Learning via MLLMs for Text-to-Image Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Qin_Human-centered_Interactive_Learning_via_MLLMs_for_Text-to-Image_Person_Re-identification_CVPR_2025_paper.html"
+      },
+      {
+        "title": "IDEA: Inverted Text with Cooperative Deformable Aggregation for Multi-modal Object Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Wang_IDEA_Inverted_Text_with_Cooperative_Deformable_Aggregation_for_Multi-modal_Object_CVPR_2025_paper.html"
+      },
+      {
+        "title": "AirRoom: Objects Matter in Room Reidentification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Yao_AirRoom_Objects_Matter_in_Room_Reidentification_CVPR_2025_paper.html"
+      },
+      {
+        "title": "Enhanced Visual-Semantic Interaction with Tailored Prompts for Pedestrian Attribute Recognition",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Wu_Enhanced_Visual-Semantic_Interaction_with_Tailored_Prompts_for_Pedestrian_Attribute_Recognition_CVPR_2025_paper.html"
+      },
+      {
+        "title": "Learning from Synchronization: Self-Supervised Uncalibrated Multi-View Person Association in Challenging Scenes",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Chen_Learning_from_Synchronization_Self-Supervised_Uncalibrated_Multi-View_Person_Association_in_Challenging_CVPR_2025_paper.html"
+      },
+      {
+        "title": "Mixture of Submodules for Domain Adaptive Person Search",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Kim_Mixture_of_Submodules_for_Domain_Adaptive_Person_Search_CVPR_2025_paper.html"
+      },
+      {
+        "title": "SapiensID: Foundation for Human Recognition",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Kim_SapiensID_Foundation_for_Human_Recognition_CVPR_2025_paper.html"
+      }
+    ]
+  },
+  {
+    "name": "cvpr2026",
+    "url": "https://openaccess.thecvf.com/CVPR2026?day=all",
+    "scraped": 4042,
+    "shortlisted": 25,
+    "downloaded": 25,
+    "top_matches": [
+      {
+        "title": "Prompt-Anchored Vision-Text Distillation for Lifelong Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Wen_Prompt-Anchored_Vision-Text_Distillation_for_Lifelong_Person_Re-identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "Pose-guided Enriched Feature Learning for Federated-by-camera Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Oh_Pose-guided_Enriched_Feature_Learning_for_Federated-by-camera_Person_Re-identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "Chain-of-Thought Guided Multi-Modal Object Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "Object-Generalized Re-Identification: A Step Towards Universal Instance Perception",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Chen_Object-Generalized_Re-Identification_A_Step_Towards_Universal_Instance_Perception_CVPR_2026_paper.html"
+      },
+      {
+        "title": "R$^2$TUA: Reconstruction-residual Based Targeted and Untargeted Attack Against Text-Image Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Wang_R2TUA_Reconstruction-residual_Based_Targeted_and_Untargeted_Attack_Against_Text-Image_Person_CVPR_2026_paper.html"
+      },
+      {
+        "title": "Towards Cross-Modal Preservation, Consistency and Alignment for Privacy-Preserving Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Xie_Towards_Cross-Modal_Preservation_Consistency_and_Alignment_for_Privacy-Preserving_Visible-Infrared_Person_CVPR_2026_paper.html"
+      },
+      {
+        "title": "SANER: Switchable Adapter with Non-parametric Enhanced Routing for Person De-Reidentification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Liu_SANER_Switchable_Adapter_with_Non-parametric_Enhanced_Routing_for_Person_De-Reidentification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "WHU-MARS: A Multispectral Aerial-Ground Benchmark Towards Any-Scenario Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Zhao_WHU-MARS_A_Multispectral_Aerial-Ground_Benchmark_Towards_Any-Scenario_Person_Re-Identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "FedBPrompt: Federated Domain Generalization Person Re-Identification via Body Distribution Aware Visual Prompts",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Xu_FedBPrompt_Federated_Domain_Generalization_Person_Re-Identification_via_Body_Distribution_Aware_CVPR_2026_paper.html"
+      },
+      {
+        "title": "Dynamic Magic: Unleashing Restricted Knowledge for Lifelong Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Peng_Dynamic_Magic_Unleashing_Restricted_Knowledge_for_Lifelong_Person_Re-Identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "MOS: Mitigating Optical-SAR Modality Gap for Cross-Modal Ship Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Zhao_MOS_Mitigating_Optical-SAR_Modality_Gap_for_Cross-Modal_Ship_Re-Identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "VRCLIP: Multimodal Canonical Correlation Alignment for CLIP-Driven Vision-Radio Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Zhang_VRCLIP_Multimodal_Canonical_Correlation_Alignment_for_CLIP-Driven_Vision-Radio_Person_Re-Identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "CHIRP dataset: towards long-term, individual-level, behavioral monitoring of bird populations in the wild",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Chan_CHIRP_dataset_towards_long-term_individual-level_behavioral_monitoring_of_bird_populations_CVPR_2026_paper.html"
+      },
+      {
+        "title": "AR2-4FV: Anchored Referring and Re-identification for Long-Term Grounding in Fixed-View Videos",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Yan_AR2-4FV_Anchored_Referring_and_Re-identification_for_Long-Term_Grounding_in_Fixed-View_CVPR_2026_paper.html"
+      },
+      {
+        "title": "Spatial-Frequency Collaborative Learning for Occluded Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Yu_Spatial-Frequency_Collaborative_Learning_for_Occluded_Visible-Infrared_Person_Re-Identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "BIT: Matching-based Bi-directional Interaction Transformation Network for Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Xu_BIT_Matching-based_Bi-directional_Interaction_Transformation_Network_for_Visible-Infrared_Person_Re-Identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "View-Aware Semantic Alignment for Aerial-Ground Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Zhang_View-Aware_Semantic_Alignment_for_Aerial-Ground_Person_Re-Identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "Vision-Language Attribute Disentanglement and Reinforcement for Lifelong Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Xu_Vision-Language_Attribute_Disentanglement_and_Reinforcement_for_Lifelong_Person_Re-Identification_CVPR_2026_paper.html"
+      },
+      {
+        "title": "MFEN: Multi-Frequency Expert Network for Visible-Infrared Person Re-ID",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Li_MFEN_Multi-Frequency_Expert_Network_for_Visible-Infrared_Person_Re-ID_CVPR_2026_paper.html"
+      },
+      {
+        "title": "SSM-Aware Token-Efficient VMamba via Adaptive Patch Pruning and Merging for Person Re-Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Huang_SSM-Aware_Token-Efficient_VMamba_via_Adaptive_Patch_Pruning_and_Merging_for_CVPR_2026_paper.html"
+      },
+      {
+        "title": "The SA-FARI Dataset: Segment Anything in Footage of Animals for Recognition and Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Wasmuht_The_SA-FARI_Dataset_Segment_Anything_in_Footage_of_Animals_for_CVPR_2026_paper.html"
+      },
+      {
+        "title": "Illuminating Visual Identity in Universal Multimodal Embeddings",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Cao_Illuminating_Visual_Identity_in_Universal_Multimodal_Embeddings_CVPR_2026_paper.html"
+      },
+      {
+        "title": "COPE: Consistent Occlusion and Prompt Enhancement Network for Occluded Person Re-identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Sun_COPE_Consistent_Occlusion_and_Prompt_Enhancement_Network_for_Occluded_Person_CVPR_2026_paper.html"
+      },
+      {
+        "title": "SAMosaic3D: Modular Scene Assembly for Real-Time 3D Segment Anything",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Wang_SAMosaic3D_Modular_Scene_Assembly_for_Real-Time_3D_Segment_Anything_CVPR_2026_paper.html"
+      },
+      {
+        "title": "FSLoRA: Harmonizing Detection and Re-Identification via Freq-Spatial Low-Rank Adapter for One-Stage Person Search",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Tian_FSLoRA_Harmonizing_Detection_and_Re-Identification_via_Freq-Spatial_Low-Rank_Adapter_for_CVPR_2026_paper.html"
+      }
+    ]
+  },
+  {
+    "name": "wacv2024",
+    "url": "https://openaccess.thecvf.com/WACV2024?day=all",
+    "scraped": 846,
+    "shortlisted": 13,
+    "downloaded": 13,
+    "top_matches": [
+      {
+        "title": "Enhancing Diverse Intra-Identity Representation for Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Kim_Enhancing_Diverse_Intra-Identity_Representation_for_Visible-Infrared_Person_Re-Identification_WACV_2024_paper.html"
+      },
+      {
+        "title": "Object Re-Identification From Point Clouds",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Therien_Object_Re-Identification_From_Point_Clouds_WACV_2024_paper.html"
+      },
+      {
+        "title": "DDAM-PS: Diligent Domain Adaptive Mixer for Person Search",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Almansoori_DDAM-PS_Diligent_Domain_Adaptive_Mixer_for_Person_Search_WACV_2024_paper.html"
+      },
+      {
+        "title": "HashReID: Dynamic Network With Binary Codes for Efficient Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Nikhal_HashReID_Dynamic_Network_With_Binary_Codes_for_Efficient_Person_Re-Identification_WACV_2024_paper.html"
+      },
+      {
+        "title": "SeaTurtleID2022: A Long-Span Dataset for Reliable Sea Turtle Re-Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Adam_SeaTurtleID2022_A_Long-Span_Dataset_for_Reliable_Sea_Turtle_Re-Identification_WACV_2024_paper.html"
+      },
+      {
+        "title": "Optimizing Long-Term Robot Tracking With Multi-Platform Sensor Fusion",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Albanese_Optimizing_Long-Term_Robot_Tracking_With_Multi-Platform_Sensor_Fusion_WACV_2024_paper.html"
+      },
+      {
+        "title": "Source-Guided Similarity Preservation for Online Person Re-Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Rami_Source-Guided_Similarity_Preservation_for_Online_Person_Re-Identification_WACV_2024_paper.html"
+      },
+      {
+        "title": "ISAR: A Benchmark for Single- and Few-Shot Object Instance Segmentation and Re-Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Gorlo_ISAR_A_Benchmark_for_Single-_and_Few-Shot_Object_Instance_Segmentation_WACV_2024_paper.html"
+      },
+      {
+        "title": "Mitigate Domain Shift by Primary-Auxiliary Objectives Association for Generalizing Person ReID",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Li_Mitigate_Domain_Shift_by_Primary-Auxiliary_Objectives_Association_for_Generalizing_Person_WACV_2024_paper.html"
+      },
+      {
+        "title": "PATROL: Privacy-Oriented Pruning for Collaborative Inference Against Model Inversion Attacks",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Ding_PATROL_Privacy-Oriented_Pruning_for_Collaborative_Inference_Against_Model_Inversion_Attacks_WACV_2024_paper.html"
+      },
+      {
+        "title": "Contrastive Viewpoint-Aware Shape Learning for Long-Term Person Re-Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Nguyen_Contrastive_Viewpoint-Aware_Shape_Learning_for_Long-Term_Person_Re-Identification_WACV_2024_paper.html"
+      },
+      {
+        "title": "WildlifeDatasets: An Open-Source Toolkit for Animal Re-Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Cermak_WildlifeDatasets_An_Open-Source_Toolkit_for_Animal_Re-Identification_WACV_2024_paper.html"
+      },
+      {
+        "title": "Privacy-Enhancing Person Re-Identification Framework - A Dual-Stage Approach",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2024/html/Kansal_Privacy-Enhancing_Person_Re-Identification_Framework_-_A_Dual-Stage_Approach_WACV_2024_paper.html"
+      }
+    ]
+  },
+  {
+    "name": "wacv2025",
+    "url": "https://openaccess.thecvf.com/WACV2025?day=all",
+    "scraped": 929,
+    "shortlisted": 10,
+    "downloaded": 10,
+    "top_matches": [
+      {
+        "title": "Bidirectional Multi-Step Domain Generalization for Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2025/html/Alehdaghi_Bidirectional_Multi-Step_Domain_Generalization_for_Visible-Infrared_Person_Re-Identification_WACV_2025_paper.html"
+      },
+      {
+        "title": "DLCR: A Generative Data Expansion Framework via Diffusion for Clothes-Changing Person Re-ID",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2025/html/Siddiqui_DLCR_A_Generative_Data_Expansion_Framework_via_Diffusion_for_Clothes-Changing_WACV_2025_paper.html"
+      },
+      {
+        "title": "EgoPoints: Advancing Point Tracking for Egocentric Videos",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2025/html/Darkhalil_EgoPoints_Advancing_Point_Tracking_for_Egocentric_Videos_WACV_2025_paper.html"
+      },
+      {
+        "title": "DragonTrack: Transformer-Enhanced Graphical Multi-Person Tracking in Complex Scenarios",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2025/html/Galoaa_DragonTrack_Transformer-Enhanced_Graphical_Multi-Person_Tracking_in_Complex_Scenarios_WACV_2025_paper.html"
+      },
+      {
+        "title": "Re-Identifying People in Video via Learned Temporal Attention and Multi-Modal Foundation Models",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2025/html/Hill_Re-Identifying_People_in_Video_via_Learned_Temporal_Attention_and_Multi-Modal_WACV_2025_paper.html"
+      },
+      {
+        "title": "VILLS : Video-Image Learning to Learn Semantics for Person Re-Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2025/html/Huang_VILLS__Video-Image_Learning_to_Learn_Semantics_for_Person_Re-Identification_WACV_2025_paper.html"
+      },
+      {
+        "title": "Swap Path Network for Robust Person Search Pre-Training",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2025/html/Jaffe_Swap_Path_Network_for_Robust_Person_Search_Pre-Training_WACV_2025_paper.html"
+      },
+      {
+        "title": "ReMix: Training Generalized Person Re-Identification on a Mixture of Data",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2025/html/Mamedov_ReMix_Training_Generalized_Person_Re-Identification_on_a_Mixture_of_Data_WACV_2025_paper.html"
+      },
+      {
+        "title": "DMPT: Decoupled Modality-Aware Prompt Tuning for Multi-Modal Object Re-Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2025/html/Lin_DMPT_Decoupled_Modality-Aware_Prompt_Tuning_for_Multi-Modal_Object_Re-Identification_WACV_2025_paper.html"
+      },
+      {
+        "title": "AnonyNoise: Anonymizing Event Data with Smart Noise to Outsmart Re-Identification and Preserve Privacy",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2025/html/Bendig_AnonyNoise_Anonymizing_Event_Data_with_Smart_Noise_to_Outsmart_Re-Identification_WACV_2025_paper.html"
+      }
+    ]
+  },
+  {
+    "name": "wacv2026",
+    "url": "https://openaccess.thecvf.com/WACV2026?day=all",
+    "scraped": 831,
+    "shortlisted": 12,
+    "downloaded": 12,
+    "top_matches": [
+      {
+        "title": "An improved architecture for part-based animal re-identification through semantic segmentation distillation",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Neto_An_improved_architecture_for_part-based_animal_re-identification_through_semantic_segmentation_WACV_2026_paper.html"
+      },
+      {
+        "title": "Overcoming Fine-Grained Visual Challenges in Animal Re-Identification via Semantic Feature Alignment",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Wu_Overcoming_Fine-Grained_Visual_Challenges_in_Animal_Re-Identification_via_Semantic_Feature_WACV_2026_paper.html"
+      },
+      {
+        "title": "One-Shot Fine-Grained Re-Identification of Paint Marked Honey Bees using Vision Foundation Models",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Meyers_One-Shot_Fine-Grained_Re-Identification_of_Paint_Marked_Honey_Bees_using_Vision_WACV_2026_paper.html"
+      },
+      {
+        "title": "MixER: From Cross-Modal to Mixed-Modal Visible-Infrared Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Alehdaghi_MixER_From_Cross-Modal_to_Mixed-Modal_Visible-Infrared_Re-Identification_WACV_2026_paper.html"
+      },
+      {
+        "title": "VAST-ReID: A Low-Light Benchmark Dataset for Person Re-Identification with Visual and Attribute-Rich Semantic Tracking",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Khan_VAST-ReID_A_Low-Light_Benchmark_Dataset_for_Person_Re-Identification_with_Visual_WACV_2026_paper.html"
+      },
+      {
+        "title": "Low-Rank Expert Merging for Multi-Source Domain Adaptation in Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Nehdi_Low-Rank_Expert_Merging_for_Multi-Source_Domain_Adaptation_in_Person_Re-Identification_WACV_2026_paper.html"
+      },
+      {
+        "title": "Human Pose Aggregation for Multi-View Temporal Video Alignment",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Delattre_Human_Pose_Aggregation_for_Multi-View_Temporal_Video_Alignment_WACV_2026_paper.html"
+      },
+      {
+        "title": "GorillaWatch: An Automated System for In-the-Wild Gorilla Re-Identification and Population Monitoring",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Schall_GorillaWatch_An_Automated_System_for_In-the-Wild_Gorilla_Re-Identification_and_Population_WACV_2026_paper.html"
+      },
+      {
+        "title": "MANTA: Physics-Informed Generalized Underwater Object Tracking",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Srinath_MANTA_Physics-Informed_Generalized_Underwater_Object_Tracking_WACV_2026_paper.html"
+      },
+      {
+        "title": "Broadcast2Pitch: Game State Reconstruction from Unconstrained Soccer Videos",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Oo_Broadcast2Pitch_Game_State_Reconstruction_from_Unconstrained_Soccer_Videos_WACV_2026_paper.html"
+      },
+      {
+        "title": "NeuroBridge: Few-Shot Cross-Modal Neuron Re-identification via Dual-Channel Deep Metric Learning",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Li_NeuroBridge_Few-Shot_Cross-Modal_Neuron_Re-identification_via_Dual-Channel_Deep_Metric_Learning_WACV_2026_paper.html"
+      },
+      {
+        "title": "Advancing Player Identification and Tracking with Global ID Fusion (GIF)",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/WACV2026/html/Wojtulewicz_Advancing_Player_Identification_and_Tracking_with_Global_ID_Fusion_GIF_WACV_2026_paper.html"
+      }
+    ]
+  },
+  {
+    "name": "iccv2023",
+    "url": "https://openaccess.thecvf.com/ICCV2023?day=all",
+    "scraped": 2156,
+    "shortlisted": 19,
+    "downloaded": 19,
+    "top_matches": [
+      {
+        "title": "Identity-Seeking Self-Supervised Representation Learning for Generalizable Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Dou_Identity-Seeking_Self-Supervised_Representation_Learning_for_Generalizable_Person_Re-Identification_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Learning Clothing and Pose Invariant 3D Shape Representation for Long-Term Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Liu_Learning_Clothing_and_Pose_Invariant_3D_Shape_Representation_for_Long-Term_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Towards Grand Unified Representation Learning for Unsupervised Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Yang_Towards_Grand_Unified_Representation_Learning_for_Unsupervised_Visible-Infrared_Person_Re-Identification_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Visible-Infrared Person Re-Identification via Semantic Alignment and Affinity Inference",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Fang_Visible-Infrared_Person_Re-Identification_via_Semantic_Alignment_and_Affinity_Inference_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Unified Pre-Training with Pseudo Texts for Text-To-Image Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Shao_Unified_Pre-Training_with_Pseudo_Texts_for_Text-To-Image_Person_Re-Identification_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Modality Unifying Network for Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Yu_Modality_Unifying_Network_for_Visible-Infrared_Person_Re-Identification_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Camera-Driven Representation Learning for Unsupervised Domain Adaptive Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Lee_Camera-Driven_Representation_Learning_for_Unsupervised_Domain_Adaptive_Person_Re-identification_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Part-Aware Transformer for Generalizable Person Re-identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Ni_Part-Aware_Transformer_for_Generalizable_Person_Re-identification_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Dual Pseudo-Labels Interactive Self-Training for Semi-Supervised Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Shi_Dual_Pseudo-Labels_Interactive_Self-Training_for_Semi-Supervised_Visible-Infrared_Person_Re-Identification_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Person Re-Identification without Identification via Event anonymization",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Ahmad_Person_Re-Identification_without_Identification_via_Event_anonymization_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Pairwise Similarity Learning is SimPLE",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Wen_Pairwise_Similarity_Learning_is_SimPLE_ICCV_2023_paper.html"
+      },
+      {
+        "title": "CTVIS: Consistent Training for Online Video Instance Segmentation",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Ying_CTVIS_Consistent_Training_for_Online_Video_Instance_Segmentation_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Navigating to Objects Specified by Images",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Krantz_Navigating_to_Objects_Specified_by_Images_ICCV_2023_paper.html"
+      },
+      {
+        "title": "DeepChange: A Long-Term Person Re-Identification Benchmark with Clothes Change",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Xu_DeepChange_A_Long-Term_Person_Re-Identification_Benchmark_with_Clothes_Change_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Discrepant and Multi-Instance Proxies for Unsupervised Person Re-Identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Zou_Discrepant_and_Multi-Instance_Proxies_for_Unsupervised_Person_Re-Identification_ICCV_2023_paper.html"
+      },
+      {
+        "title": "LoCUS: Learning Multiscale 3D-consistent Features from Posed Images",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Kloepfer_LoCUS_Learning_Multiscale_3D-consistent_Features_from_Posed_Images_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Learning Concordant Attention via Target-aware Alignment for Visible-Infrared Person Re-identification",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Wu_Learning_Concordant_Attention_via_Target-aware_Alignment_for_Visible-Infrared_Person_Re-identification_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Segmenting Known Objects and Unseen Unknowns without Prior Knowledge",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Gasperini_Segmenting_Known_Objects_and_Unseen_Unknowns_without_Prior_Knowledge_ICCV_2023_paper.html"
+      },
+      {
+        "title": "Tracking without Label: Unsupervised Multiple Object Tracking via Contrastive Similarity Learning",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2023/html/Meng_Tracking_without_Label_Unsupervised_Multiple_Object_Tracking_via_Contrastive_Similarity_ICCV_2023_paper.html"
+      }
+    ]
+  },
+  {
+    "name": "iccv2025",
+    "url": "https://openaccess.thecvf.com/ICCV2025?day=all",
+    "scraped": 2701,
+    "shortlisted": 23,
+    "downloaded": 23,
+    "top_matches": [
+      {
+        "title": "Colors See Colors Ignore: Clothes Changing ReID with Color Disentanglement",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Pathak_Colors_See_Colors_Ignore_Clothes_Changing_ReID_with_Color_Disentanglement_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Weakly Supervised Visible-Infrared Person Re-Identification via Heterogeneous Expert Collaborative Consistency Learning",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Zhang_Weakly_Supervised_Visible-Infrared_Person_Re-Identification_via_Heterogeneous_Expert_Collaborative_Consistency_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Multi-modal Multi-platform Person Re-Identification: Benchmark and Method",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Ha_Multi-modal_Multi-platform_Person_Re-Identification_Benchmark_and_Method_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Bridging the Sky and Ground: Towards View-Invariant Feature Learning for Aerial-Ground Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Khalid_Bridging_the_Sky_and_Ground_Towards_View-Invariant_Feature_Learning_for_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Unsupervised Visible-Infrared Person Re-identification under Unpaired Settings",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Yao_Unsupervised_Visible-Infrared_Person_Re-identification_under_Unpaired_Settings_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Generalizable Object Re-Identification via Visual In-Context Prompting",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Huang_Generalizable_Object_Re-Identification_via_Visual_In-Context_Prompting_ICCV_2025_paper.html"
+      },
+      {
+        "title": "ChatReID: Open-ended Interactive Person Retrieval via Hierarchical Progressive Tuning for Vision Language Models",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Niu_ChatReID_Open-ended_Interactive_Person_Retrieval_via_Hierarchical_Progressive_Tuning_for_ICCV_2025_paper.html"
+      },
+      {
+        "title": "One-Shot Knowledge Transfer for Scalable Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Li_One-Shot_Knowledge_Transfer_for_Scalable_Person_Re-Identification_ICCV_2025_paper.html"
+      },
+      {
+        "title": "VIPerson: Flexibly Generating Virtual Identity for Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Zhang_VIPerson_Flexibly_Generating_Virtual_Identity_for_Person_Re-Identification_ICCV_2025_paper.html"
+      },
+      {
+        "title": "HAMoBE: Hierarchical and Adaptive Mixture of Biometric Experts for Video-based Person ReID",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Su_HAMoBE_Hierarchical_and_Adaptive_Mixture_of_Biometric_Experts_for_Video-based_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Augmented and Softened Matching for Unsupervised Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Pang_Augmented_and_Softened_Matching_for_Unsupervised_Visible-Infrared_Person_Re-Identification_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Semantic versus Identity: A Divide-and-Conquer Approach towards Adjustable Medical Image De-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Tian_Semantic_versus_Identity_A_Divide-and-Conquer_Approach_towards_Adjustable_Medical_Image_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Self-Reinforcing Prototype Evolution with Dual-Knowledge Cooperation for Semi-Supervised Lifelong Person Re-Identification",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Xu_Self-Reinforcing_Prototype_Evolution_with_Dual-Knowledge_Cooperation_for_Semi-Supervised_Lifelong_Person_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Cross-modal Ship Re-Identification via Optical and SAR Imagery: A Novel Dataset and Method",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Wang_Cross-modal_Ship_Re-Identification_via_Optical_and_SAR_Imagery_A_Novel_ICCV_2025_paper.html"
+      },
+      {
+        "title": "GloPER: Unsupervised Animal Pattern Extraction from Local Reconstruction",
+        "score": 2.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Chen_GloPER_Unsupervised_Animal_Pattern_Extraction_from_Local_Reconstruction_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Cross-Category Subjectivity Generalization for Style-Adaptive Sketch Re-ID",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Hu_Cross-Category_Subjectivity_Generalization_for_Style-Adaptive_Sketch_Re-ID_ICCV_2025_paper.html"
+      },
+      {
+        "title": "DeSPITE: Exploring Contrastive Deep Skeleton-Pointcloud-IMU-Text Embeddings for Advanced Point Cloud Human Activity Understanding",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Kreutz_DeSPITE_Exploring_Contrastive_Deep_Skeleton-Pointcloud-IMU-Text_Embeddings_for_Advanced_Point_Cloud_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Towards Robustness of Person Search against Corruptions",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Son_Towards_Robustness_of_Person_Search_against_Corruptions_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Prompt-driven Transferable Adversarial Attack on Person Re-Identification with Attribute-aware Textual Inversion",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Bian_Prompt-driven_Transferable_Adversarial_Attack_on_Person_Re-Identification_with_Attribute-aware_Textual_ICCV_2025_paper.html"
+      },
+      {
+        "title": "OpenAnimals: Revisiting Person Re-Identification for Animals Towards Better Generalization",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Hou_OpenAnimals_Revisiting_Person_Re-Identification_for_Animals_Towards_Better_Generalization_ICCV_2025_paper.html"
+      },
+      {
+        "title": "SCAN: Bootstrapping Contrastive Pre-training for Data Efficiency",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Guo_SCAN_Bootstrapping_Contrastive_Pre-training_for_Data_Efficiency_ICCV_2025_paper.html"
+      },
+      {
+        "title": "VehicleMAE: View-asymmetry Mutual Learning for Vehicle Re-identification Pre-training via Masked AutoEncoders",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Wang_VehicleMAE_View-asymmetry_Mutual_Learning_for_Vehicle_Re-identification_Pre-training_via_Masked_ICCV_2025_paper.html"
+      },
+      {
+        "title": "Leveraging Prior Knowledge of Diffusion Model for Person Search",
+        "score": 1.0,
+        "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Kim_Leveraging_Prior_Knowledge_of_Diffusion_Model_for_Person_Search_ICCV_2025_paper.html"
+      }
+    ]
+  },
+  {
+    "name": "eccv2022",
+    "url": "https://www.ecva.net/papers.php?year=2022",
+    "scraped": 1645,
+    "shortlisted": 22,
+    "downloaded": 22,
+    "top_matches": [
+      {
+        "title": "OIMNet++: Prototypical Normalization and Localization-Aware Learning for Person Search",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/7048_ECCV_2022_paper.php"
+      },
+      {
+        "title": "PASS: Part-Aware Self-Supervised Pre-training for Person Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/1161_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Adaptive Cross-Domain Learning for Generalizable Person Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/1198_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Dynamically Transformed Instance Normalization Network for Generalizable Person Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/2766_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Domain Adaptive Person Search",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/3187_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Unstructured Feature Decoupling for Vehicle Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/3314_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Mimic Embedding via Adaptive Aggregation: Learning Generalizable Person Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/3409_ECCV_2022_paper.php"
+      },
+      {
+        "title": "RVSL: Robust Vehicle Similarity Learning in Real Hazy Scenes Based on Semi-Supervised Learning",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/4395_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Modality Synergy Complement Learning with Cascaded Aggregation for Visible-Infrared Person Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/4495_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Cross-Modality Transformer for Visible-Infrared Person Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/4836_ECCV_2022_paper.php"
+      },
+      {
+        "title": "CAViT: Contextual Alignment Vision Transformer for Video Object Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/6694_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Optimal Transport for Label-Efficient Visible-Infrared Person Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/971_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Negative Samples Are at Large: Leveraging Hard-Distance Elastic Loss for Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/4074_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Counterfactual Intervention Feature Transfer for Visible-Infrared Person Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/3677_ECCV_2022_paper.php"
+      },
+      {
+        "title": "The Caltech Fish Counting Dataset: A Benchmark for Multiple-Object Tracking and Counting",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/5272_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Multi-Domain Multi-Definition Landmark Localization for Small Datasets",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/3780_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Robust Multi-Object Tracking by Marginal Inference",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/317_ECCV_2022_paper.php"
+      },
+      {
+        "title": "S2F2: Single-Stage Flow Forecasting for Future Multiple Trajectories Prediction",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/6002_ECCV_2022_paper.php"
+      },
+      {
+        "title": "An Embedded Feature Whitening Approach to Deep Neural Network Optimization",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/358_ECCV_2022_paper.php"
+      },
+      {
+        "title": "Cross-Domain Ensemble Distillation for Domain Generalization",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/4593_ECCV_2022_paper.php"
+      },
+      {
+        "title": "UFO: Unified Feature Optimization",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/4041_ECCV_2022_paper.php"
+      },
+      {
+        "title": "The One Where They Reconstructed 3D Humans and Environments in TV Shows",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/4525_ECCV_2022_paper.php"
+      }
+    ]
+  },
+  {
+    "name": "eccv2024",
+    "url": "https://www.ecva.net/papers.php?year=2024",
+    "scraped": 2387,
+    "shortlisted": 13,
+    "downloaded": 13,
+    "top_matches": [
+      {
+        "title": "Multi-Memory Matching for Unsupervised Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/2819_ECCV_2024_paper.php"
+      },
+      {
+        "title": "Cross-Platform Video Person ReID: A New Benchmark Dataset and Adaptation Approach",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/3918_ECCV_2024_paper.php"
+      },
+      {
+        "title": "Adaptive High-Frequency Transformer for Diverse Wildlife Re-Identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/6054_ECCV_2024_paper.php"
+      },
+      {
+        "title": "WRIM-Net: Wide-Ranging Information Mining Network for Visible-Infrared Person Re-Identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/6947_ECCV_2024_paper.php"
+      },
+      {
+        "title": "Rethinking Normalization Layers for Domain Generalizable Person Re-identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/8753_ECCV_2024_paper.php"
+      },
+      {
+        "title": "Domain Shifting: A Generalized Solution for Heterogeneous Cross-Modality Person Re-Identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/9119_ECCV_2024_paper.php"
+      },
+      {
+        "title": "Keypoint Promptable Re-Identification",
+        "score": 2.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/10180_ECCV_2024_paper.php"
+      },
+      {
+        "title": "PetFace: A Large-Scale Dataset and Benchmark for Animal Identification",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/2660_ECCV_2024_paper.php"
+      },
+      {
+        "title": "Human-in-the-Loop Visual Re-ID for Population Size Estimation",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/5518_ECCV_2024_paper.php"
+      },
+      {
+        "title": "Privacy-Preserving Adaptive Re-Identification without Image Transfer",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/6850_ECCV_2024_paper.php"
+      },
+      {
+        "title": "Open-Set Biometrics: Beyond Good Closed-Set Models",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/7925_ECCV_2024_paper.php"
+      },
+      {
+        "title": "Seeing Faces in Things: A Model and Dataset for Pareidolia",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/8266_ECCV_2024_paper.php"
+      },
+      {
+        "title": "Möbius Transform for Mitigating Perspective Distortions in Representation Learning",
+        "score": 1.0,
+        "url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/9297_ECCV_2024_paper.php"
+      }
+    ]
+  },
+  {
+    "name": "bmvc2023",
+    "url": "https://proceedings.bmvc2023.org/",
+    "scraped": 267,
+    "shortlisted": 1,
+    "downloaded": 1,
+    "top_matches": [
+      {
+        "title": "Scale Adaptive Network for Partial Person Re-identification: Counteracting Scale Variance",
+        "score": 1.0,
+        "url": "https://papers.bmvc2023.org/0033.pdf"
+      }
+    ]
+  },
+  {
+    "name": "bmvc2024",
+    "url": "https://bmvc2024.org/proceedings/conference-proceedings/",
+    "scraped": 263,
+    "shortlisted": 0,
+    "downloaded": 0,
+    "top_matches": []
+  },
+  {
+    "name": "bmvc2025",
+    "url": "https://bmvc2025.bmva.org/proceedings/conference-proceedings/",
+    "scraped": 276,
+    "shortlisted": 2,
+    "downloaded": 2,
+    "top_matches": [
+      {
+        "title": "Fast Self-Supervised depth and mask aware Association for Multi-Object Tracking",
+        "score": 2.0,
+        "url": "https://bmvc2025.bmva.org/proceedings/333/"
+      },
+      {
+        "title": "Coarse Attribute Prediction with Task Agnostic Distillation for Real World Clothes Changing ReID",
+        "score": 2.0,
+        "url": "https://bmvc2025.bmva.org/proceedings/346/"
+      }
+    ]
+  }
+]

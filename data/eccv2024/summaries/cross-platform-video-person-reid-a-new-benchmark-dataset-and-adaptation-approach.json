@@ -1,0 +1,27 @@
+{
+  "nutshell": "Video person ReID has mostly been studied within a single camera platform (ground surveillance). This paper introduces G2A-VReID, the first ground-to-aerial video ReID benchmark (185,907 images, 5,576 tracklets, 2,788 IDs), and proposes VSLA-CLIP: it adapts CLIP to video ReID by treating a video clip as an unordered set of frames rather than a temporal sequence, using a lightweight Video Set-Level-Adapter plus visual-semantic alignment and platform-specific prompts to bridge the large ground-vs-UAV view/resolution gap.",
+  "contributions": [
+    "G2A-VReID: the first ground-to-aerial video person ReID dataset - 185,907 images, 5,576 tracklets, 2,788 identities across 9 outdoor scenarios, with each identity captured by both a fixed ground camera and a moving UAV at varying altitudes (20-60m).",
+    "Transforms cross-platform visual alignment into visual-semantic alignment via CLIP: extends CLIP-ReID's ID-specific learnable text tokens to video by mean-pooling per-frame embeddings before aligning them to the learned text semantics (their FT-CLIP baseline).",
+    "Video Set-Level-Adapter (VSLA): a parameter-efficient adapter pair (Intra-Frame Adapter for per-frame appearance, Cross-Frame Attention Adapter for inter-frame complementarity) that explicitly treats a video clip as a permutation-invariant set rather than an ordered sequence - matches or beats full fine-tuning with far fewer tunable parameters (14.5M vs 88.0M).",
+    "Platform-Bridge Prompt (PBP): separate learnable prompt tokens injected per-platform (ground vs. UAV) into the image encoder's attention layers to explicitly guide the model toward platform-invariant features."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 3) shows its best configuration (IFA+VSA+CFAA+PBP) reaches 81.29% mAP / 74.27% Rank-1 on G2A-VReID - meaningfully better than the 79.70%/72.55% reported as the headline VSLA-CLIP result in the main SOTA comparison table (Table 2). The paper's actual best model is relegated to the ablation table and never benchmarked against the literature baselines in Table 2.",
+    "Table 2's SOTA comparisons are almost entirely against non-CLIP, ImageNet/scratch-trained architectures (AP3D, STGCN, MGH, TCLNet, etc.) - there's no controlled comparison isolating how much of the reported gain comes from CLIP/ViFi-CLIP pretraining itself versus the paper's specific IFA/CFAA/PBP contributions.",
+    "Table 3 shows the Intra-Frame Adapter alone improves only modestly over the full fine-tuning baseline on LS-VID (77.31% vs. 76.10% mAP) - most of the total gain over baseline (up to 85.20% mAP) comes from also adding visual-semantic alignment and cross-frame attention, so the standalone parameter-efficiency benefit of IFA is a comparatively small slice of the overall improvement.",
+    "Platform-Bridge Prompt is only evaluated on the paper's own new G2A-VReID dataset (Table 3, Fig. 4) - it's never tested on the three established public video ReID benchmarks (MARS/LS-VID/iLIDS), so its generality beyond a literally two-platform dataset is untested."
+  ],
+  "notable": "The Cross-Frame Attention Adapter is explicitly designed and proven permutation-invariant (Eq. 15) - frame order is randomly shuffled during training specifically to enforce this property - which stands out against most video ReID literature that relies on temporal ordering as a useful signal; here the authors argue (and show via ablation) that treating a clip as a disordered set works better for this cross-platform setting.",
+  "results": [
+    {"dataset": "MARS", "metric": "mAP", "value": "88.60", "setting": "VSLA-CLIP‡ (ViFi-CLIP init), Table 2 main comparison"},
+    {"dataset": "MARS", "metric": "Rank-1", "value": "91.82", "setting": "VSLA-CLIP‡ (ViFi-CLIP init), Table 2 main comparison"},
+    {"dataset": "LS-VID", "metric": "mAP", "value": "85.20", "setting": "VSLA-CLIP‡ (ViFi-CLIP init), Table 2 main comparison"},
+    {"dataset": "LS-VID", "metric": "Rank-1", "value": "91.66", "setting": "VSLA-CLIP‡ (ViFi-CLIP init), Table 2 main comparison"},
+    {"dataset": "iLIDS", "metric": "Rank-1", "value": "95.33", "setting": "VSLA-CLIP‡ (ViFi-CLIP init), Table 2 main comparison; no mAP reported for iLIDS"},
+    {"dataset": "G2A-VReID", "metric": "mAP", "value": "79.70", "setting": "VSLA-CLIP‡, Table 2 main SOTA comparison (does not include PBP)"},
+    {"dataset": "G2A-VReID", "metric": "Rank-1", "value": "72.55", "setting": "VSLA-CLIP‡, Table 2 main SOTA comparison (does not include PBP)"},
+    {"dataset": "G2A-VReID", "metric": "mAP", "value": "81.29", "setting": "full model IFA+VSA+CFAA+PBP, Table 3 ablation - the paper's actual best configuration, not used in the main SOTA table"},
+    {"dataset": "G2A-VReID", "metric": "Rank-1", "value": "74.27", "setting": "full model IFA+VSA+CFAA+PBP, Table 3 ablation - the paper's actual best configuration, not used in the main SOTA table"}
+  ]
+}

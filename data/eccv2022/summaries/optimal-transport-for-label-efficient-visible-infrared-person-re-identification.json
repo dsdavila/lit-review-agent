@@ -1,0 +1,35 @@
+{
+  "nutshell": "Visible-infrared person ReID (VI-ReID) normally needs expensive-to-annotate infrared labels. OTLA-ReID instead generates pseudo labels for visible images via unsupervised domain adaptation from external RGB ReID datasets (Market-1501/DukeMTMC/MSMT17), then formulates assigning infrared samples to those pseudo classes as an optimal-transport problem solved with Sinkhorn-Knopp, plus a batch-level prediction-alignment loss to dampen the effect of incorrect pseudo labels.",
+  "contributions": [
+    "A label-efficient VI-ReID training pipeline that needs zero infrared identity labels (and, in the unsupervised variant, zero ground-truth labels of any kind), by bootstrapping visible pseudo-labels from external well-annotated RGB ReID datasets via UDA.",
+    "Optimal-Transport Label Assignment (OTLA): casts infrared-to-pseudo-class assignment as an optimal transport problem with class-wise and sample-wise uniform priors, solved via Sinkhorn-Knopp - explicitly designed to prevent the classifier from collapsing most infrared samples into a few classes (the failure mode of naive self-training/argmax assignment).",
+    "Prediction Alignment Learning (PAL): a batch-level self-attention mixup between visible/infrared softmax predictions using two asymmetric KL losses (visible-to-infrared and infrared-to-infrared, not a symmetric loss) specifically because the infrared predictions are noisier - reduces the negative effect of incorrect pseudo labels.",
+    "A Discrepancy Elimination Network (adversarial modality classifier with a gradient reversal layer) that helps in semi-/unsupervised settings but is shown to hurt in fully-supervised settings, per the paper's own ablation."
+  ],
+  "deficiencies": [
+    "The headline claim of 'significantly outperforming all UDA-ReID methods' (Table 1) is not a fair comparison: the UDA-ReID baselines get zero training signal from the target visible-infrared dataset itself, while OTLA-ReID's SSVI-ReID setting uses ground-truth visible labels directly from that same target dataset plus its infrared images (unlabeled) - a fundamentally easier setup than what the UDA-ReID baselines are given.",
+    "Absolute numbers stay well behind fully-supervised SOTA - SSVI-ReID reaches only 48.2/43.9 Rank-1/mAP on SYSU-MM01 all-search versus 69.9/66.9 (CAJL) and 70.6/68.2 (MPANet) in the same table - a roughly 20-point gap; the method only actually beats the two oldest/weakest fully-supervised baselines listed (JSIA-ReID, Hi-CMD, both 2020), which the framing ('outperforms several fully-supervised methods') doesn't make clear.",
+    "The ablation study (Table 2) is run only on SYSU-MM01, never RegDB, despite the two datasets showing different qualitative patterns in the main results table (e.g. unsupervised RegDB mAP exceeds its own Rank-1 relative to SYSU in a different way) - no evidence the chosen design (which loss combination, δ=25, etc.) is optimal for RegDB too.",
+    "Table 1 mixes originally-reported baseline numbers (marked ‡, copied from a prior paper) with self-reimplemented numbers (marked †) for the same competing methods, without discussing whether the reimplementations are faithful - a plausible confound for the margin-of-improvement claims.",
+    "All experiments run on a single GPU (one NVIDIA TITAN RTX) with no stated multi-seed/variance reporting, despite several ablation rows in Table 2 differing by only 1-3 points."
+  ],
+  "notable": "The modality-classifier (DEN/GRL) component flips behavior across settings - it clearly helps in semi-/unsupervised training but the paper's own supervised ablation (Fig. 3 Left) shows it's not beneficial in the fully-supervised regime, while the PAL loss helps consistently in both - a useful data point if reusing adversarial modality-alignment components in other VI-ReID work under different supervision levels. Also notable: Sinkhorn-based OTLA is nearly free computationally (2.29% and 0.639% of per-epoch training time on SYSU-MM01 and RegDB respectively), which the paper offers as evidence the label-assignment machinery scales cheaply even though it's solving what looks like an expensive combinatorial problem.",
+  "results": [
+    {"dataset": "SYSU-MM01 (All Search)", "metric": "Rank-1", "value": "29.9", "setting": "USVI-ReID (unsupervised, no ground-truth labels at all)"},
+    {"dataset": "SYSU-MM01 (All Search)", "metric": "mAP", "value": "27.1", "setting": "USVI-ReID (unsupervised, no ground-truth labels at all)"},
+    {"dataset": "SYSU-MM01 (Indoor Search)", "metric": "Rank-1", "value": "29.8", "setting": "USVI-ReID (unsupervised, no ground-truth labels at all)"},
+    {"dataset": "SYSU-MM01 (Indoor Search)", "metric": "mAP", "value": "38.8", "setting": "USVI-ReID (unsupervised, no ground-truth labels at all)"},
+    {"dataset": "RegDB (Visible2Thermal)", "metric": "Rank-1", "value": "32.9", "setting": "USVI-ReID (unsupervised, no ground-truth labels at all)"},
+    {"dataset": "RegDB (Visible2Thermal)", "metric": "mAP", "value": "29.7", "setting": "USVI-ReID (unsupervised, no ground-truth labels at all)"},
+    {"dataset": "RegDB (Thermal2Visible)", "metric": "Rank-1", "value": "32.1", "setting": "USVI-ReID (unsupervised, no ground-truth labels at all)"},
+    {"dataset": "RegDB (Thermal2Visible)", "metric": "mAP", "value": "28.6", "setting": "USVI-ReID (unsupervised, no ground-truth labels at all)"},
+    {"dataset": "SYSU-MM01 (All Search)", "metric": "Rank-1", "value": "48.2", "setting": "SSVI-ReID (semi-supervised, ground-truth visible labels only)"},
+    {"dataset": "SYSU-MM01 (All Search)", "metric": "mAP", "value": "43.9", "setting": "SSVI-ReID (semi-supervised, ground-truth visible labels only)"},
+    {"dataset": "SYSU-MM01 (Indoor Search)", "metric": "Rank-1", "value": "47.4", "setting": "SSVI-ReID (semi-supervised, ground-truth visible labels only)"},
+    {"dataset": "SYSU-MM01 (Indoor Search)", "metric": "mAP", "value": "56.8", "setting": "SSVI-ReID (semi-supervised, ground-truth visible labels only)"},
+    {"dataset": "RegDB (Visible2Thermal)", "metric": "Rank-1", "value": "49.9", "setting": "SSVI-ReID (semi-supervised, ground-truth visible labels only)"},
+    {"dataset": "RegDB (Visible2Thermal)", "metric": "mAP", "value": "41.8", "setting": "SSVI-ReID (semi-supervised, ground-truth visible labels only)"},
+    {"dataset": "RegDB (Thermal2Visible)", "metric": "Rank-1", "value": "49.6", "setting": "SSVI-ReID (semi-supervised, ground-truth visible labels only)"},
+    {"dataset": "RegDB (Thermal2Visible)", "metric": "mAP", "value": "42.8", "setting": "SSVI-ReID (semi-supervised, ground-truth visible labels only)"}
+  ]
+}

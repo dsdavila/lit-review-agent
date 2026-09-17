@@ -1,0 +1,34 @@
+{
+  "nutshell": "Visible-infrared person ReID methods that fuse the two modalities into one shared feature space tend to discard modality-specific cues (color, texture) that actually help distinguish identities. MUN instead builds a learned 'auxiliary' third modality via an intra-modality learner (per-modality identity-aware patterns) and a cross-modality learner (shared patterns via spatial pyramid fusion), then uses it as a bridge between visible and infrared features via two new losses: an identity alignment loss (aligns per-identity centers across all three modalities) and a modality alignment loss (aligns modality-level prototypes over training, rather than per-batch).",
+  "contributions": [
+    "An auxiliary generator combining two Intra-Modality Learners (multi-kernel depth-wise convolutions to capture identity-aware patterns per modality) and one Cross-Modality Learner (spatial pyramid pooling + learned transposed convolutions to fuse modality-shared patterns across scales) - producing a learned, semantically rich auxiliary modality instead of prior work's raw pixel-fusion intermediate modalities (X-modality, mixed modality, syncretic modality).",
+    "Identity alignment loss (L_ia): a triplet-style loss that pulls each identity's auxiliary/visible/infrared feature centers together and pushes different identities' centers apart across all three modalities using hardest-pair mining.",
+    "Modality alignment loss (L_ma): aligns modality-level prototypes (accumulated via a temporal running-average across iterations, not just the current batch) between visible/auxiliary and auxiliary/infrared via MMD, addressing the inconsistency of per-batch-only alignment used in prior work.",
+    "New SOTA on SYSU-MM01 and RegDB (Table 4) and on two corrupted-data VI-ReID benchmarks (Table 5), plus a direct ablation (Table 2) showing the learned auxiliary modality clearly outperforms prior pixel-fusion intermediate modalities (X-modality, mixed, syncretic) under the same overall framework."
+  ],
+  "deficiencies": [
+    "Table 3's own ablation shows the 'auxiliary bridge scheme' - the mechanism specific to routing the paper's new auxiliary modality into the alignment loss - contributes far less than the modality prototype mechanism: prototype-alone reaches 74.15/72.10 (SYSU r1/mAP) while adding the auxiliary bridge on top only reaches 76.24/73.81, a marginal +2.09/+1.71 gain, despite the auxiliary modality being the paper's central architectural claim.",
+    "The two proposed losses don't combine cleanly in Table 1's ablation: Aux+L_idc+L_ia (no L_ma) gets 71.35 r1 / 65.54 mAP on SYSU-MM01, while Aux+L_idc+L_ma (no L_ia) gets a lower r1 (69.77) but higher mAP (66.96) - L_ia and L_ma trade off rank-1 against mAP individually, and the paper never explains this crossover, just reports that combining both gives the best of both.",
+    "On RegDB Infrared-to-Visible (Table 4), MUN's own reported rank-1 (91.86%) is marginally below CMT [6]'s (91.97%), while MUN wins on mAP (85.01 vs 84.46) - the text describes RegDB results uniformly as improvement over prior SOTA without acknowledging this specific case where a prior method edges it out on the primary rank-1 metric.",
+    "No parameter count, FLOPs, or inference-time comparison is reported anywhere against the simpler intermediate-modality baselines (X-modality, mixed, syncretic) it's compared against in Table 2, despite MUN adding two IMLs, a CML with multiple transposed convolutions, and a per-identity prototype-tracking mechanism - the added architectural complexity's cost is never quantified."
+  ],
+  "notable": "The learnable layer-scale factors (I_scale, C_scale, bounded in (0,1]) that control how much modality-specific vs. modality-shared information enters the auxiliary feature are a lightweight way to let the network learn its own fusion ratio rather than hand-tuning a fixed mixing coefficient - a reusable pattern for other dual-branch fusion designs. Also worth cross-referencing: this paper and 'MOS: Mitigating Optical-SAR Modality Gap' (a cross-modal ship-ReID paper elsewhere in this batch) tackle structurally similar modality-unification problems in different domains - worth comparing approaches if surveying modality-gap literature broadly.",
+  "results": [
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "76.24", "setting": "All-Search mode, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "97.84", "setting": "All-Search mode, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "73.81", "setting": "All-Search mode, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "79.42", "setting": "Indoor-Search mode, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "98.09", "setting": "Indoor-Search mode, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "82.06", "setting": "Indoor-Search mode, single-shot"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "95.19", "setting": "Visible-to-Infrared, averaged over 10 runs"},
+    {"dataset": "RegDB", "metric": "Rank-10", "value": "98.93", "setting": "Visible-to-Infrared, averaged over 10 runs"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "87.15", "setting": "Visible-to-Infrared, averaged over 10 runs"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "91.86", "setting": "Infrared-to-Visible, averaged over 10 runs"},
+    {"dataset": "RegDB", "metric": "Rank-10", "value": "97.99", "setting": "Infrared-to-Visible, averaged over 10 runs"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "85.01", "setting": "Infrared-to-Visible, averaged over 10 runs"},
+    {"dataset": "SYSU-MM01-C", "metric": "Rank-1", "value": "41.17", "setting": "corrupted test images, averaged over 10 runs"},
+    {"dataset": "SYSU-MM01-C", "metric": "mAP", "value": "38.63", "setting": "corrupted test images, averaged over 10 runs"},
+    {"dataset": "RegDB-C", "metric": "Rank-1", "value": "52.69", "setting": "corrupted test images, averaged over 10 runs"},
+    {"dataset": "RegDB-C", "metric": "mAP", "value": "50.18", "setting": "corrupted test images, averaged over 10 runs"}
+  ]
+}

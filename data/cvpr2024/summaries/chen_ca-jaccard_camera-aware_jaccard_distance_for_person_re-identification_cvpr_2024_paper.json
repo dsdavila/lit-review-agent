@@ -1,0 +1,39 @@
+{
+  "nutshell": "Jaccard distance - used both for re-ranking and for pseudo-label clustering in unsupervised person re-ID - measures similarity via the overlap of 'relevant neighbors' found through k-reciprocal nearest neighbors plus local query expansion. Because camera variation makes intra-camera samples dominate ordinary k-nearest-neighbor lists, this neighbor set gets flooded with intra-camera negatives while excluding informative inter-camera positives, degrading Jaccard distance's reliability. CA-Jaccard fixes this by finding and expanding neighbors separately on the intra-camera and inter-camera ranking lists (with different k values) before combining them, explicitly boosting the representation of informative inter-camera samples.",
+  "contributions": [
+    "Camera-aware k-reciprocal nearest neighbors (CKRNNs): applies the k-reciprocal constraint separately to intra-camera and inter-camera ranking lists with different k values (small k for intra-camera, large k for inter-camera) and unions the results, rather than a single global k-reciprocal search - this also lets them drop the costly 'recall' set-operation step used in vanilla robust KRNNs, since inter-camera positives are recalled directly by construction.",
+    "Camera-aware local query expansion (CLQE): expands each sample's neighbor vector by averaging the weighted CKRNNs vectors of its intra-camera and inter-camera k-nearest neighbors separately, instead of averaging over ordinary (intra-camera-dominated) k-nearest neighbors - up-weighting samples that recur reliably across both camera regimes.",
+    "A drop-in replacement for Jaccard distance usable in both unsupervised clustering-based pseudo-labeling and re-ranking, with lower computational complexity than vanilla Jaccard distance (no recall operation), validated with consistent gains across four SOTA unsupervised methods (CAP, CC, ICE, PPLR) and two re-ranking baselines (BoT, CC) on three datasets (Market1501, MSMT17, VeRi-776).",
+    "A neighbor-accuracy diagnostic (Fig. 3) that directly measures inter-camera proportion, inter-camera total weight, and overall neighbor accuracy over training epochs, showing CKRNNs+CLQE actually improve the underlying neighbor quality mechanism the method is built on, not just the downstream retrieval metrics."
+  ],
+  "deficiencies": [
+    "All four hyperparameters (k1_intra, k1_inter, k2_intra, k2_inter) are tuned via sweeps on the same Market1501/MSMT17 datasets used for the main results (Fig. 4), with no held-out validation set for tuning - the resulting fixed values (5/20 and 2/4) are then applied unchanged to VeRi-776, a vehicle (not person) re-ID dataset, with no separate sensitivity check there.",
+    "The method fundamentally requires ground-truth camera-ID labels for every image (training and gallery), but this dependency is never flagged as a limitation, and there's no experiment testing degradation under noisy, partial, or missing camera metadata - a realistic condition for surveillance networks not originally calibrated with camera IDs.",
+    "Table 2's re-ranking result on VeRi-776 shows a Rank-1 jump for CC*+CAJ (80.3 -> 88.6, +8.3) and Rank-5 jump (85.1 -> 91.1) that are both much larger than the corresponding mAP gain (38.1 -> 42.5, +4.4) - this rank-metric-vs-mAP divergence is the only result of its kind in the paper and isn't discussed, despite being the largest reported single improvement.",
+    "All reported numbers appear to be single runs with no seeds or variance, and the ablation (Table 3, re-ranking scene) shows CLQE alone actually lowering mAP versus CKRNNs alone (94.4 -> 94.3) on Market1501 - a result the text doesn't address, since the narrative frames CLQE as a strictly additive improvement throughout."
+  ],
+  "notable": "The paper deliberately omits the 'recall' operation used in vanilla robust KRNNs (Eq. 3) - not because it doesn't work, but because CKRNNs already achieves the same goal (recovering inter-camera positive samples) more directly by explicitly mining the inter-camera ranking list, letting them skip recall's expensive set-comparison operations entirely. This is a case of a targeted redesign eliminating an expensive component rather than layering new machinery on top, which is worth noting given how much the paper's pitch rests on lower computational cost versus standard Jaccard distance.",
+  "results": [
+    {"dataset": "Market1501", "metric": "mAP", "value": "86.1", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "94.4", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "Market1501", "metric": "Rank-5", "value": "97.9", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "Market1501", "metric": "Rank-10", "value": "98.7", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "44.3", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "75.1", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "MSMT17", "metric": "Rank-5", "value": "84.3", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "MSMT17", "metric": "Rank-10", "value": "87.3", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "VeRi-776", "metric": "mAP", "value": "45.3", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "VeRi-776", "metric": "Rank-1", "value": "90.4", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "VeRi-776", "metric": "Rank-5", "value": "93.9", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "VeRi-776", "metric": "Rank-10", "value": "95.2", "setting": "clustering scene, PPLR+CA-Jaccard (best combo)"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "94.5", "setting": "re-ranking scene, BoT+CA-Jaccard"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "96.2", "setting": "re-ranking scene, BoT+CA-Jaccard"},
+    {"dataset": "Market1501", "metric": "Rank-5", "value": "98.1", "setting": "re-ranking scene, BoT+CA-Jaccard"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "74.1", "setting": "re-ranking scene, BoT+CA-Jaccard"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "86.2", "setting": "re-ranking scene, BoT+CA-Jaccard"},
+    {"dataset": "MSMT17", "metric": "Rank-5", "value": "90.5", "setting": "re-ranking scene, BoT+CA-Jaccard"},
+    {"dataset": "VeRi-776", "metric": "mAP", "value": "81.4", "setting": "re-ranking scene, BoT+CA-Jaccard"},
+    {"dataset": "VeRi-776", "metric": "Rank-1", "value": "97.6", "setting": "re-ranking scene, BoT+CA-Jaccard"},
+    {"dataset": "VeRi-776", "metric": "Rank-5", "value": "98.3", "setting": "re-ranking scene, BoT+CA-Jaccard"}
+  ]
+}

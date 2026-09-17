@@ -1,0 +1,47 @@
+{
+  "nutshell": "Not person ReID - this is an animal re-identification infrastructure paper. It introduces WildlifeDatasets, a Python toolkit that unifies 31 public animal re-id datasets under one API (download, preprocessing, standardized splits, matching), and uses it to train MegaDescriptor, the first general-purpose foundation model for individual animal re-identification across species, which substantially outperforms zero-shot CLIP and DINOv2.",
+  "contributions": [
+    "WildlifeDatasets toolkit: unified Python access to 31 public wildlife re-id datasets with standardized closed-set, open-set, disjoint-set, and time-aware train/test splitting, plus a high-level matching API - addressing a real fragmentation problem where prior work used inconsistent, poorly curated, per-species dataset setups.",
+    "The largest reported empirical comparison in this space: SIFT and Superpoint local descriptors vs. ArcFace and Triplet-loss metric learning (Swin-B vs. EfficientNet-B3 backbones) across 29 datasets, via a 2088-run hyperparameter grid search, establishing ArcFace + Swin-B as the best general-purpose recipe.",
+    "MegaDescriptor: the first foundation model for individual re-identification spanning many animal species (Swin-Small/Medium/Large, ArcFace-trained jointly on all 29 datasets), released publicly on HuggingFace, outperforming ImageNet-, CLIP-, and DINOv2-based zero-shot descriptors on every one of the 29 evaluated datasets.",
+    "A seen/unseen-domain generalization experiment (cattle datasets held out) showing MegaDescriptor retains meaningfully better performance than DINOv2/CLIP even on species/domains excluded from its training data."
+  ],
+  "deficiencies": [
+    "The headline comparison in Table 4 pits MegaDescriptor - explicitly trained/fine-tuned on all 29 evaluation datasets - against CLIP, DINOv2, and ImageNet used purely zero-shot with no wildlife-specific fine-tuning. Calling this an outperformance 'by a significant margin' over those pretrained models is not an apples-to-apples comparison; it mainly shows that in-domain fine-tuning beats out-of-domain zero-shot transfer, which is expected.",
+    "The hyperparameter grid search (Fig. 6) shows the best ArcFace configuration has a 25th/75th percentile accuracy of only 49.2%/96.4% (median 87.3%) across the 29 datasets, and three configurations catastrophically diverged to 4-6.4% mean accuracy - this huge dataset-to-dataset variance is shown but never diagnosed (which datasets/species drive it, why).",
+    "The paper's own Table 3 acknowledges the Giraffes dataset's ground-truth labels were themselves generated using local descriptors, which inflates local-descriptor accuracy on that dataset - yet this known contamination isn't excluded when concluding 'metric learning approaches outperformed local-feature methods on most datasets.'",
+    "Even with the best model (MegaDescriptor-L), several datasets remain quite weak (BelugaID 66.5%, NOAARightWhale 40.3%, LionData 25.2%, HappyWhale 34.3%, NyalaData 36.5%) - the 'consistent state-of-the-art performance on all datasets' framing in the abstract undersells this wide remaining spread."
+  ],
+  "notable": "Useful benchmark-hygiene contribution buried in the results: the paper explicitly identifies several datasets (AerialCattle2017, SMALST, MacaqueFaces, Giraffes, AAUZebraFish) as already solved or near-ceiling and recommends dropping them from future method development/benchmarking - a concrete, actionable recommendation rarely offered this directly in benchmark papers. Also notable: despite metric learning being clearly superior in this paper's own experiments, the tools ecologists actually use in practice (WildID, HotSpotter, I3S) are all still local-feature-based - a real adoption gap between CV research and applied ecology tooling that the paper points out but doesn't attempt to close.",
+  "results": [
+    {"dataset": "AAUZebraFish", "metric": "Accuracy", "value": "99.93", "setting": "MegaDescriptor-L (Swin-L/p4-w12-384), jointly trained/evaluated on all 29 datasets"},
+    {"dataset": "ATRW", "metric": "Accuracy", "value": "94.33", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "AerialCattle2017", "metric": "Accuracy", "value": "100.0", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "BelugaID", "metric": "Accuracy", "value": "66.48", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "BirdIndividualID", "metric": "Accuracy", "value": "97.82", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "CTai", "metric": "Accuracy", "value": "91.10", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "CZoo", "metric": "Accuracy", "value": "99.05", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "Cows2021", "metric": "Accuracy", "value": "99.54", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "FriesianCattle2015", "metric": "Accuracy", "value": "55.00", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "FriesianCattle2017", "metric": "Accuracy", "value": "96.46", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "GiraffeZebraID", "metric": "Accuracy", "value": "83.17", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "Giraffes", "metric": "Accuracy", "value": "91.04", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "HappyWhale", "metric": "Accuracy", "value": "34.30", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "HumpbackWhaleID", "metric": "Accuracy", "value": "77.81", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "HyenaID2022", "metric": "Accuracy", "value": "78.41", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "IPanda50", "metric": "Accuracy", "value": "86.91", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "LeopardID2022", "metric": "Accuracy", "value": "75.58", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "LionData", "metric": "Accuracy", "value": "25.16", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "MacaqueFaces", "metric": "Accuracy", "value": "99.04", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "NDD20", "metric": "Accuracy", "value": "67.42", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "NOAARightWhale", "metric": "Accuracy", "value": "40.26", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "NyalaData", "metric": "Accuracy", "value": "36.45", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "OpenCows2020", "metric": "Accuracy", "value": "100.0", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "SMALST", "metric": "Accuracy", "value": "100.0", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "SeaTurtleIDHeads", "metric": "Accuracy", "value": "91.18", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "SealID", "metric": "Accuracy", "value": "78.66", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "StripeSpotter", "metric": "Accuracy", "value": "98.17", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "WhaleSharkID", "metric": "Accuracy", "value": "62.02", "setting": "MegaDescriptor-L, joint training"},
+    {"dataset": "ZindiTurtleRecall", "metric": "Accuracy", "value": "74.40", "setting": "MegaDescriptor-L, joint training"}
+  ]
+}

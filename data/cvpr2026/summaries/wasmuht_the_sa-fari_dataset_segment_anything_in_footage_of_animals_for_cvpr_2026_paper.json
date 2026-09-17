@@ -1,0 +1,37 @@
+{
+  "nutshell": "Existing multi-animal tracking (MAT) datasets for wildlife are either small, cover very few species, or lack manually-verified segmentation masks. SA-FARI addresses this with the largest open-source MAT dataset to date: 11,609 camera trap videos across 741 sites/4 continents/99 species, with exhaustive, human-corrected spatio-temporal segmentation masks (masklets) built via a SAM 3 pseudo-label + human-review pipeline.",
+  "contributions": [
+    "SA-FARI dataset: 11,609 camera trap videos (~46 annotated hours) across 741 sites, 4 continents, and 99 species, with 16,224 masklet identities and 942,702 boxes/masks - 5x more annotated duration and 2x more species diversity than any prior MAT dataset.",
+    "First large-scale wild-animal MAT dataset with manually verified (not purely automated) segmentation masks, produced via a SAM 3 automatic pseudo-annotation stage followed by multi-round human correction and exhaustivity checking.",
+    "Auto-generated hard/easy negative species labels per video, built by clustering the 99 species into 29 taxonomic groups and sampling absent species from the same group (hard) or a different group (easy) - free negatives derived from the exhaustive positive annotations, no extra labeling cost.",
+    "Benchmarks SOTA open-vocabulary detectors/trackers (SAM 3, GLEE, LLMDet) under species-specific and species-agnostic prompting, plus classic MegaDetector+tracker baselines (ByteTrack, OCSort, BoostTrack++), showing large gains from training/fine-tuning on SA-FARI and five stratified test subsets (challenging/night/multi-masklet/large-masklet/small-masklet) for failure analysis."
+  ],
+  "deficiencies": [
+    "The species distribution is heavily long-tailed (29 of 99 species make up 90% of the data), but no per-species or per-class benchmark breakdown is reported beyond the coarse test subsets - so it's unclear how well the touted '99 species diversity' actually translates into usable signal for the many rare, underrepresented species.",
+    "Only 3 species-specific models (GLEE, LLMDet+tracker, SAM 3 variants) and 4 species-agnostic trackers are benchmarked - no purpose-built wildlife MAT methods (e.g. from the AnimalTrack/BuckTales lineage cited in related work) are evaluated for comparison, leaving it unclear how a SA-FARI-tuned generic open-vocabulary model stacks up against methods designed specifically for animal tracking.",
+    "The annotation pipeline's pseudo-labeling model (SAM 3) and the paper's headline best-performing benchmark model (SAM 3 FT) share several co-authors and the same lab (Meta) - the dataset's labeling tool and its own best-in-class result aren't independent, which isn't flagged as a potential benchmark-neutrality concern.",
+    "Two unresolved LaTeX cross-references ('see??' for the ecoregion map, 'training details in??') appear in the body text of this open-access version, suggesting incomplete proofreading of camera-ready references."
+  ],
+  "notable": "Species-agnostic tracking (generic 'animal' prompt) lags well behind species-specific prompting even for the same SAM 3 (SA-FARI) model (IDF1 71.1 vs. implied much higher species-specific performance), suggesting current open-vocabulary trackers lean heavily on semantic species cues rather than pure motion/appearance to disambiguate individuals - a useful data point for anyone building species-agnostic wildlife trackers. Also notable: fine-tuning on SA-FARI alone produced a reported 'three-fold improvement' over the un-tuned SAM 3 baseline, one of the larger fine-tuning deltas reported in this batch of papers.",
+  "results": [
+    {"dataset": "SA-FARI", "metric": "cgF1", "value": "46.9", "setting": "SAM 3 FT (SA-FARI), species-specific prompting, full test set"},
+    {"dataset": "SA-FARI", "metric": "pHOTA-Total", "value": "68.1", "setting": "SAM 3 FT (SA-FARI), species-specific prompting, full test set"},
+    {"dataset": "SA-FARI", "metric": "pHOTA-Det", "value": "55.4", "setting": "SAM 3 FT (SA-FARI), species-specific prompting, full test set"},
+    {"dataset": "SA-FARI", "metric": "pHOTA-Ass", "value": "84.6", "setting": "SAM 3 FT (SA-FARI), species-specific prompting, full test set"},
+    {"dataset": "SA-FARI", "metric": "TETA", "value": "58.7", "setting": "SAM 3 FT (SA-FARI), species-specific prompting, full test set"},
+    {"dataset": "SA-FARI", "metric": "IDF1", "value": "71.1", "setting": "SAM 3 (SA-FARI), species-agnostic generic 'animal' prompt, full test set"},
+    {"dataset": "SA-FARI", "metric": "HOTA-Total", "value": "64.4", "setting": "SAM 3 (SA-FARI), species-agnostic generic 'animal' prompt, full test set"},
+    {"dataset": "SA-FARI", "metric": "HOTA-Det", "value": "50.0", "setting": "SAM 3 (SA-FARI), species-agnostic generic 'animal' prompt, full test set"},
+    {"dataset": "SA-FARI", "metric": "HOTA-Ass", "value": "83.7", "setting": "SAM 3 (SA-FARI), species-agnostic generic 'animal' prompt, full test set"},
+    {"dataset": "SA-FARI", "metric": "cgF1", "value": "63.4", "setting": "SAM 3 FT (SA-FARI), species-specific, large-masklet test subset"},
+    {"dataset": "SA-FARI", "metric": "pHOTA-Total", "value": "81.4", "setting": "SAM 3 FT (SA-FARI), species-specific, large-masklet test subset"},
+    {"dataset": "SA-FARI", "metric": "cgF1", "value": "25.3", "setting": "SAM 3 FT (SA-FARI), species-specific, small-masklet test subset"},
+    {"dataset": "SA-FARI", "metric": "pHOTA-Total", "value": "52.2", "setting": "SAM 3 FT (SA-FARI), species-specific, small-masklet test subset"},
+    {"dataset": "SA-FARI", "metric": "cgF1", "value": "45.9", "setting": "SAM 3 FT (SA-FARI), species-specific, multi-masklet test subset"},
+    {"dataset": "SA-FARI", "metric": "pHOTA-Total", "value": "67.8", "setting": "SAM 3 FT (SA-FARI), species-specific, multi-masklet test subset"},
+    {"dataset": "SA-FARI", "metric": "cgF1", "value": "36.8", "setting": "SAM 3 FT (SA-FARI), species-specific, 'challenging' (occluded/moving) test subset"},
+    {"dataset": "SA-FARI", "metric": "pHOTA-Total", "value": "61.7", "setting": "SAM 3 FT (SA-FARI), species-specific, 'challenging' (occluded/moving) test subset"},
+    {"dataset": "SA-FARI", "metric": "cgF1", "value": "44.1", "setting": "SAM 3 FT (SA-FARI), species-specific, night test subset"},
+    {"dataset": "SA-FARI", "metric": "pHOTA-Total", "value": "66.0", "setting": "SAM 3 FT (SA-FARI), species-specific, night test subset"}
+  ]
+}

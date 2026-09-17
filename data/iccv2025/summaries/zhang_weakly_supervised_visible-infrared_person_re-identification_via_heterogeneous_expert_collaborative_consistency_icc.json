@@ -1,0 +1,32 @@
+{
+  "nutshell": "Visible-infrared person ReID normally needs labeled cross-modal identity correspondences, which are expensive to annotate. This paper proposes a weakly supervised setting that only requires identity labels within each modality (no cross-modal pairing labels), inferring cross-modal correspondences via 'heterogeneous experts' - classifiers trained separately on each modality that cross-predict identities in the other modality.",
+  "contributions": [
+    "First formulation of VIReID under a weakly supervised setting (single-modal identity labels only, no cross-modal correspondence annotations), with an explicit mechanism for predicting cross-modal sample relationships from single-modality-trained classifiers.",
+    "Cross-modal Relationship Establishment (CRE): rather than only trusting cases where both experts' predictions agree, splits cross-modal identity correspondences into three categories (consistent Mc, unique Ms, conflicting Mw matrices) via a Count Priority Selection-style decision matrix, recovering correspondences that simple agreement would miss.",
+    "Collaborative Consistency Learning (CCL): a shared-classifier cross-modal loss using Mc/Ms as pseudo-labels plus a relaxed constraint for Mw conflicts, combined with a Collaborative Learning Among Experts (CLAE) module that uses entropy-weighted consistency losses between experts (via per-identity prototypes) to iteratively make the two experts agree more.",
+    "On SYSU-MM01 and LLCM, achieves performance comparable to some fully-supervised methods and clearly ahead of prior semi-/unsupervised VIReID methods, despite using no cross-modal correspondence labels."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 3) shows most of the gain over the intra-modal-only baseline comes from the basic cross-modal consistency loss alone (B+CMCL\\CRE: Rank-1 47.8->66.7 all-search) - the two more novel-sounding contributions, CRE (+1.3 Rank-1/+1.8 mAP) and CLAE (+2.4/+2.0), each add only a few points on top, so the headline components contribute far less than the simpler mechanism they're built on.",
+    "Despite the 'weakly supervised' framing, the method still requires every training image to be individually identity-labeled within its own modality - only the cross-modal correspondence step is unsupervised. The paper never quantifies what fraction of total annotation cost this actually saves versus full supervision, so 'reduces annotation cost' is asserted rather than measured.",
+    "Comparisons against SVIReID/SSVIReID/USVIReID baselines span genuinely different label budgets, but there's no annotation-cost-normalized comparison (e.g. total labeling hours or label counts) - so claims like 'comparable to certain fully supervised approaches' aren't backed by a fair cost-adjusted analysis.",
+    "Only two datasets (SYSU-MM01, LLCM), single-run numbers with no variance across seeds, despite the cross-modal correspondence matrices (Mc/Ms/Mw) being built from a heuristic, error-prone matching procedure - no stability or sensitivity analysis for how correspondence-matrix errors propagate to final accuracy."
+  ],
+  "notable": "Table 4's finding that B+CMCL(Mr→v) performs much worse than B+CMCL(Mv→r) - because infrared images lack color information, making the visible-modality expert worse at recognizing infrared samples than vice versa - is a clean, generalizable insight about asymmetric expert reliability across modalities in VIReID, and it's the concrete reason CRE (which uses both directions) beats naively trusting one expert's predictions.",
+  "results": [
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "70.4", "setting": "All Search"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "95.8", "setting": "All Search"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-20", "value": "98.8", "setting": "All Search"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "66.6", "setting": "All Search"},
+    {"dataset": "SYSU-MM01", "metric": "mINP", "value": "52.7", "setting": "All Search"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "76.5", "setting": "Indoor Search"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "97.5", "setting": "Indoor Search"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-20", "value": "99.3", "setting": "Indoor Search"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "80.2", "setting": "Indoor Search"},
+    {"dataset": "SYSU-MM01", "metric": "mINP", "value": "76.6", "setting": "Indoor Search"},
+    {"dataset": "LLCM", "metric": "Rank-1", "value": "55.3", "setting": "VIS to IR"},
+    {"dataset": "LLCM", "metric": "mAP", "value": "58.7", "setting": "VIS to IR"},
+    {"dataset": "LLCM", "metric": "Rank-1", "value": "47.3", "setting": "IR to VIS"},
+    {"dataset": "LLCM", "metric": "mAP", "value": "53.3", "setting": "IR to VIS"}
+  ]
+}

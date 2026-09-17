@@ -1,0 +1,30 @@
+{
+  "nutshell": "Standard person Re-ID assumes the query image itself shows the attributes you're searching for, but real retrieval scenarios (e.g. a witness describing a suspect) often specify attributes that differ from what's visible in the query image. This paper introduces Attribute-Guided Pedestrian Retrieval (AGPR) - retrieving the same identity even when given attributes inconsistent with the query photo - and proposes ATPR, a ViT that splits into a global ID branch and a local attribute branch (patches assigned to attribute groups via nearest OpenPose keypoint), regularized so attributes within a group stay decorrelated while attribute groups themselves stay correlated.",
+  "contributions": [
+    "Introduces the AGPR task itself: retrieval must match both the correct identity and a specified set of target attributes that may differ from the query image's own attributes (simulating witness testimony that updates/corrects what's in an old photo).",
+    "ATPR architecture: a ViT with a global branch (class token, ID + triplet loss) and a local attribute branch, where image patches are assigned to one of 6 manually-defined attribute groups via nearest-OpenPose-keypoint distance, each patch carries a learnable Attribute Embedding, and Attribute-guided Embedding Grouping (AEG) pools patches per attribute group before per-group ID/triplet/binary-attribute losses.",
+    "Inter-Group Attribute Correlation / Intra-Group Attribute Decorrelation (IGAC/IGAD) regularization (Eq. 6): pulls different attribute groups' learned embeddings together (correlation) while pushing attributes within the same group apart (decorrelation) via a single combined loss term.",
+    "A new AGPR evaluation benchmark built on the RAP dataset (2,589 IDs, 26,638 images, 86 of 156 available attributes retained across 6 groups) with a graded test protocol (s0-s5) simulating 0-90% of queries having attributes deliberately changed from the query image's own, on which ATPR beats all compared methods (including the TransReID ViT baseline it's built on) across every severity level."
+  ],
+  "deficiencies": [
+    "The entire AGPR evaluation - the task this paper itself introduces - uses only the single RAP dataset; there's no cross-dataset validation of the benchmark or the method, and the paper's own conclusion concedes 'extending ATPR to a broader range of datasets' is left to future work, meaning the task's generality is essentially unverified.",
+    "The evaluation protocol feeds the model the ground-truth correct target attributes directly (the true attributes of the same-ID gallery image), not attributes as an actual witness would report them - despite the whole motivating scenario (a witness recalling 'a green scarf and a tattoo') implying uncertain or partially wrong testimony. The method is never tested with noisy or incorrect attribute input, which is the realistic version of the problem the introduction sets up.",
+    "The 86-of-156 attribute subset and the 6-group categorization are both manual, unexplained choices (no stated selection criterion for which 70 attributes were dropped), and the patch-to-attribute-group assignment itself is a simple nearest-keypoint heuristic with no reported error rate - in cluttered or partially occluded images this heuristic could easily misassign patches, but that failure mode is never measured.",
+    "In Table 3's robustness comparison, the paper argues ATPR's performance degrades less than PAR/ReIDCaps/TransReID as attribute-change severity increases, but only 3 competing methods are carried over from Table 2's larger comparison (dropping, e.g., IDE-ATT-R and the clothing-change/attribute baselines) with no stated reason - the robustness claim isn't tested against the full method set the paper otherwise benchmarks against."
+  ],
+  "notable": "One of the Table 2 baselines, IDE-ATT-R, is literally the RAP dataset's own creators' baseline method (same reference [32] as the dataset itself) - worth knowing when weighing how strong a comparison point it really is. Also notable: the patch-to-attribute-group assignment via nearest OpenPose keypoint is a lightweight, training-free way to inject spatial-semantic structure into a plain ViT without a dedicated human-parsing/segmentation model - structurally similar in spirit (keypoints as a cheap proxy for body-part localization) to the segmentation-model-prompted-by-keypoints approach used in VILLS (WACV2025, also in this literature set), though ATPR skips the segmentation step entirely and works directly off keypoint-to-patch distance.",
+  "results": [
+    {"dataset": "RAP", "metric": "mAP", "value": "74.26", "setting": "s0: standard Re-ID, no cross-attribute change"},
+    {"dataset": "RAP", "metric": "Rank-1", "value": "86.93", "setting": "s0: standard Re-ID, no cross-attribute change"},
+    {"dataset": "RAP", "metric": "mAP", "value": "70.33", "setting": "s1: AGPR, 10% of queries have cross-attribute change"},
+    {"dataset": "RAP", "metric": "Rank-1", "value": "82.72", "setting": "s1: AGPR, 10% of queries have cross-attribute change"},
+    {"dataset": "RAP", "metric": "mAP", "value": "66.09", "setting": "s2: AGPR, 30% of queries have cross-attribute change"},
+    {"dataset": "RAP", "metric": "Rank-1", "value": "76.41", "setting": "s2: AGPR, 30% of queries have cross-attribute change"},
+    {"dataset": "RAP", "metric": "mAP", "value": "60.28", "setting": "s3: AGPR, 50% of queries have cross-attribute change"},
+    {"dataset": "RAP", "metric": "Rank-1", "value": "70.98", "setting": "s3: AGPR, 50% of queries have cross-attribute change"},
+    {"dataset": "RAP", "metric": "mAP", "value": "53.24", "setting": "s4: AGPR, 70% of queries have cross-attribute change"},
+    {"dataset": "RAP", "metric": "Rank-1", "value": "66.22", "setting": "s4: AGPR, 70% of queries have cross-attribute change"},
+    {"dataset": "RAP", "metric": "mAP", "value": "49.51", "setting": "s5: AGPR, 90% of queries have cross-attribute change"},
+    {"dataset": "RAP", "metric": "Rank-1", "value": "60.33", "setting": "s5: AGPR, 90% of queries have cross-attribute change"}
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "nutshell": "Feature whitening (decorrelating channel features, not just normalizing their mean/variance) improves DNN training but existing methods require expensive per-batch eigendecomposition, extra learnable parameters, and redefining a pretrained model's forward pass. EFW instead folds whitening entirely into the optimizer: it multiplies the weight gradient by a periodically-updated ZCA whitening matrix computed from input-activation statistics, leaving the network's forward/backward pass untouched - so it drops onto SGDM/Adam (as W-SGDM/W-Adam) and works directly on pretrained models.",
+  "contributions": [
+    "Reformulates feature whitening as a pure gradient transformation (right-multiply the weight gradient by a whitening matrix T) instead of a forward-pass module, based on the observation that a pre-whitening layer's 'recovery' transform can be mathematically absorbed into the next layer's weights - so no architecture change, no new parameters, and it works on already-pretrained/well-defined DNNs.",
+    "Makes this practical via momentum-averaged activation statistics and infrequent recomputation (statistics every 50 iterations, SVD-based whitening matrix every 500) instead of per-batch eigendecomposition, adding only 10-20% extra memory.",
+    "Adaptive, per-layer dampening (scaled by each layer's max singular value) to keep the whitening matrix inversion numerically stable without manual per-layer tuning, plus a gradient-norm-recovery step so an existing optimizer's well-tuned learning rate/weight decay can mostly be reused unchanged.",
+    "Validates the resulting W-SGDM/W-Adam optimizers as drop-in replacements across image classification (CIFAR100/10, ImageNet), object detection/segmentation (COCO with Faster/Mask-RCNN and a Swin-T backbone), and person ReID (Market1501, DukeMTMC-ReID)."
+  ],
+  "deficiencies": [
+    "The paper's own Table 3 undercuts its 'no extra hyperparameter tuning needed' pitch: for ResNet50 on ImageNet, weight decay for W-SGDM/W-Adam is explicitly increased over SGDM/AdamW to get the reported gains, contradicting the same-hyperparameters claim for one of the two headline ImageNet results.",
+    "The only comparisons against the directly competing whitening methods (IterNorm, Network Deconvolution) are on small-scale CIFAR100/10 (Table 10) - never on ImageNet, COCO, or ReID - so the central 'EFW is both faster and at least as accurate as prior whitening methods' claim is untested at any scale where the efficiency argument actually matters most.",
+    "Outside the CIFAR tables (which report mean±std over 4 runs), ImageNet, COCO, and ReID results are all single-run numbers, so several reported gains (e.g. Market1501 Rank-1 unchanged at 94.5 for R50, or the 0.1-0.7 point margins in Table 6) can't be distinguished from run-to-run noise.",
+    "All of EFW's own hyperparameters (momentum α, dampening ε, update intervals T_xx/T_svd) are tuned once on CIFAR100 with ResNet18 (Tables 7-9) and then reused unchanged as defaults for every other dataset, model, and task in the paper, including ImageNet-scale training and a Swin-T transformer - with no check that this single configuration is actually near-optimal outside the setting it was tuned on."
+  ],
+  "notable": "The move that makes the whole method possible is a fairly simple linear-algebra observation: a pre-whitening layer's recovery transform Wr can be folded into the very next layer's weights (W' = W ∘ Wr), so the recovery step and its extra parameters can be dropped entirely once whitening is pre- rather than post-layer - this is what licenses treating whitening as a pure gradient-side operation with zero architectural footprint. Also notable: EFW is applied to Swin-T's self-attention layers in Table 5 and still helps, even though ZCA whitening's channel-correlation motivation was developed for conv/FC layers - the paper reports this as a positive result without examining whether the same theoretical justification actually transfers to attention weight matrices.",
+  "results": [
+    {"dataset": "CIFAR100", "metric": "Top-1 Accuracy", "value": "80.90", "setting": "ResNet50 backbone, W-SGDM, 4-run mean"},
+    {"dataset": "CIFAR100", "metric": "Top-1 Accuracy", "value": "80.15", "setting": "ResNet50 backbone, W-Adam, 4-run mean"},
+    {"dataset": "CIFAR10", "metric": "Top-1 Accuracy", "value": "95.80", "setting": "ResNet50 backbone, W-SGDM, 4-run mean"},
+    {"dataset": "ImageNet", "metric": "Top-1 Accuracy", "value": "77.48", "setting": "ResNet50 backbone, W-SGDM, weight decay increased vs. SGDM baseline"},
+    {"dataset": "ImageNet", "metric": "Top-1 Accuracy", "value": "76.83", "setting": "ResNet50 backbone, W-Adam"},
+    {"dataset": "COCO", "metric": "AP (detection, Faster-RCNN)", "value": "41.1", "setting": "ResNet101 backbone, W-SGDM, val2017"},
+    {"dataset": "COCO", "metric": "AP-box (Mask-RCNN)", "value": "41.7", "setting": "ResNet101 backbone, W-SGDM, val2017"},
+    {"dataset": "COCO", "metric": "AP-mask (Mask-RCNN)", "value": "37.9", "setting": "ResNet101 backbone, W-SGDM, val2017"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "95.0", "setting": "ResNet101 backbone, W-Adam, fine-tuned from pretrained"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "87.9", "setting": "ResNet101 backbone, W-Adam, fine-tuned from pretrained"},
+    {"dataset": "DukeMTMC-reID", "metric": "Rank-1", "value": "88.2", "setting": "ResNet101 backbone, W-Adam, fine-tuned from pretrained"},
+    {"dataset": "DukeMTMC-reID", "metric": "mAP", "value": "78.3", "setting": "ResNet101 backbone, W-Adam, fine-tuned from pretrained"}
+  ]
+}

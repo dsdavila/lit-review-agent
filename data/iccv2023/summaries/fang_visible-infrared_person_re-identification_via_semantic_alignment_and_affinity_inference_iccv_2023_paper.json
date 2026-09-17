@@ -1,0 +1,29 @@
+{
+  "nutshell": "Visible-infrared ReID part-based methods usually split feature maps into fixed horizontal strips, which misaligns body parts under irregular pedestrian movement, and most methods match images with plain Euclidean/cosine distance, ignoring similarity structure among gallery images. SAAI instead learns latent semantic parts by matching pixel-wise features to shared learnable prototypes (rather than fixed horizontal bands), and adds an inference-time Affinity Inference Module that revises query-gallery distances using a denoised, smoothed gallery-gallery similarity matrix.",
+  "contributions": [
+    "Semantic-Aligned Feature Learning (SAFL): a set of shared learnable prototypes (used identically for both modalities) that aggregate pixel-wise feature map locations into latent semantic 'parts' by learned similarity rather than fixed horizontal position, aligning parts across the visible/infrared modality gap without needing human part annotations, trained with a part-diversity loss (to keep prototypes distinct) and a center-separation loss.",
+    "Affinity Inference Module (AIM): a training-free, inference-time distance-revision step that computes both a query-gallery and a gallery-gallery cosine-similarity matrix, removes small ('noisy') entries by keeping only the top-k1 values per row, smooths the retained gallery-gallery similarities by averaging each entry's top-k2 nearest neighbors, and subtracts the resulting correction from the raw distance - a continuous-valued generalization of prior binary/Jaccard-distance reranking (e.g., SIM) that is shown to be pluggable into other existing VI-ReID methods (AlignGAN, AGW, MPANet) for a free accuracy boost.",
+    "New SOTA mAP on SYSU-MM01 across all four search/shot settings, and best Rank-1/mAP on RegDB's Infrared-to-Visible setting."
+  ],
+  "deficiencies": [
+    "On SYSU-MM01 all-search/single-shot - the setting most VI-ReID papers treat as the headline number - SAAI's own Table 1 shows MSCLNet actually has a higher Rank-1 (76.99% vs. SAAI's 75.90%); the paper's claim of outperforming SOTA 'in mAP under all test settings' is accurate but sidesteps that it is not the Rank-1 leader in this specific widely-reported setting.",
+    "On RegDB Visible-to-Infrared, SAAI is clearly behind CMT (Rank-1 95.17 vs. SAAI's 91.07) and CIFT (mAP 92.00 vs. SAAI's 91.45); the paper is commendably candid about this ('slightly inferior to SOTAs'), attributing it to RegDB's small size limiting prototype training, but doesn't test this hypothesis (e.g., via a controlled data-scaling experiment) - it remains a plausible but unverified explanation.",
+    "AIM's two hyperparameters (k1, k2 controlling noise-removal and neighbor-averaging) are set very differently across settings with no shared justification - 4/1 for SYSU-MM01 single-shot, 20/6 for SYSU-MM01 multi-shot, 8/2 for RegDB - a roughly 5x swing in k1 with no ablation shown across these values (only the number of prototypes p and loss weight lambda get sensitivity plots), leaving AIM's robustness to this per-dataset tuning unexamined.",
+    "AIM only ever operates at inference time on top of a fixed trained feature extractor; the paper's own Limitations section acknowledges affinity information is 'untapped during the training phase,' meaning the method's second major contribution is essentially a post-hoc reranking step rather than something that shapes representation learning - consistent with the ablation showing AIM's Rank-1 gain alone is small (66.79%->67.88%, ~1 point) even though its mAP gain is large (61.59%->67.78%, ~6 points), the classic signature of a reranking-style correction rather than a genuinely more discriminative feature."
+  ],
+  "notable": "AIM is explicitly positioned as a plug-in module rather than tied to SAAI's own features: Table 5 shows it improves both a generative baseline (AlignGAN) and non-generative baselines (AGW, MPANet) when simply retrained and added, with especially large mAP jumps (e.g., AGW: 41.48->55.18 mAP all-search) - useful for any downstream reader wanting a cheap reranking boost independent of the semantic-alignment part of this paper. Also notable: SAFL's 'part diversity' loss and prototype-count sweep (Figure 4) shows performance peaks at exactly 7 prototypes and degrades beyond that from prototype competition - a concrete, reusable data point for anyone choosing a similar prototype count without ground-truth part supervision.",
+  "results": [
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "75.90", "setting": "all-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "77.03", "setting": "all-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "82.86", "setting": "all-search, multi-shot"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "82.39", "setting": "all-search, multi-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "83.20", "setting": "indoor-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "88.01", "setting": "indoor-search, single-shot"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "90.73", "setting": "indoor-search, multi-shot"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "91.30", "setting": "indoor-search, multi-shot"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "91.07", "setting": "Visible-to-Infrared"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "91.45", "setting": "Visible-to-Infrared"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "92.09", "setting": "Infrared-to-Visible"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "92.01", "setting": "Infrared-to-Visible"}
+  ]
+}

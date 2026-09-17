@@ -1,0 +1,26 @@
+{
+  "nutshell": "Aerial-Ground person ReID (AGPReID) suffers from extreme viewpoint variation between drone and fixed cameras; prior 'view-invariant' methods align shared body parts across views but end up suppressing genuinely discriminative view-specific cues (e.g. legs visible from ground, shoulders visible from air). ViSA instead explicitly disentangles view-invariant and view-specific representations via a mixture-of-experts module (ETGM) that generates viewpoint-aware query tokens, then a graph-based dual-branch module (DLFM) that aligns each query to its most relevant local patches before re-fusing everything with the global [CLS] token.",
+  "contributions": [
+    "A view-aware semantic alignment paradigm motivated by an information-theoretic disentanglement argument (Z = [Zinv, Zspe]) - explicitly preserves view-specific identity cues instead of suppressing them the way prior view-invariant AGPReID methods do.",
+    "Expert-driven Token Generation Module (ETGM): a mixture-of-experts (shared/aerial/ground expert groups, 8 experts each, top-2 routing) that produces adaptive semantic query tokens per viewpoint via cross-attention/self-attention/FFN blocks, built on top of the existing View-Decoupled Transformer (VDT, CVPR'24) backbone's aerial/ground token mechanism.",
+    "Dual-branch Local Fusion Module (DLFM): for each expert query, selects the top-k most cosine-similar local patch tokens to build a query-augmented local graph, then runs a dedicated GCN per branch (view-invariant vs. view-specific) to refine the query before concatenating with the [CLS] token.",
+    "Reports new SOTA on three AGPReID benchmarks (AG-ReID.v2, CARGO, LAGPeR), with up to +10.06% mAP over the prior best method on CARGO's cross-view (A↔G) protocol."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 2) shows DLFM alone contributes by far the largest single jump over the ViT baseline (ALL Rank-1 61.54→67.31, mAP 53.54→62.86) - bigger than ETGM's or the view-aware backbone's individual contributions - so a large share of the gain looks attributable to generic graph-based local fusion rather than the paper's headline 'view-aware disentanglement' framing specifically.",
+    "The only full, verifiable results table in the paper body is for CARGO; the AG-ReID.v2 and LAGPeR numbers that back two of the three 'benchmarks' in the abstract's headline claim are deferred entirely to supplementary material not included here, so those specific claims can't be checked from the paper text itself.",
+    "Table 1 itself shows ViSA is not literally best on every metric - SeCap (CVPR'25) has a higher mAP on the A↔A (aerial-aerial) protocol (68.08 vs. ViSA's 67.78, correctly marked second-best via underline in the paper's own table) - a fair caveat against the abstract/conclusion's blanket 'consistently surpasses state-of-the-art' framing.",
+    "No parameter count, FLOPs, or inference latency comparison is given anywhere against VDT/SeCap/DTST, despite ViSA adding two full expert groups (16 experts total) plus a GCN-based local fusion stage on top of a ViT backbone - the added compute cost of this architecture is unaddressed."
+  ],
+  "notable": "The method is built directly on top of VDT (View-Decoupled Transformer, CVPR 2024) rather than from scratch - it reuses VDT's aerial/ground token subtraction mechanism for the [CLS] token and adds ETGM+DLFM on top, which is clearly stated (Sec 3.2) but worth knowing since 'ViSA vs. VDT' in Table 1 is really 'VDT + two new modules' vs. plain VDT, not two independent architectures. Also notable: the load-balancing loss coefficient λ sweep (Fig. 4c) shows performance is fairly sensitive to this hyperparameter (Avg drops from ~68% to ~62% between λ=0.001 and λ=1.0), so reproducing results may require careful tuning of this term.",
+  "results": [
+    {"dataset": "CARGO", "metric": "Rank-1", "value": "70.51", "setting": "ALL protocol"},
+    {"dataset": "CARGO", "metric": "mAP", "value": "65.46", "setting": "ALL protocol"},
+    {"dataset": "CARGO", "metric": "Rank-1", "value": "71.28", "setting": "A↔G (aerial-ground) cross-view protocol"},
+    {"dataset": "CARGO", "metric": "mAP", "value": "69.00", "setting": "A↔G (aerial-ground) cross-view protocol"},
+    {"dataset": "CARGO", "metric": "Rank-1", "value": "88.39", "setting": "G↔G (ground-ground) protocol"},
+    {"dataset": "CARGO", "metric": "mAP", "value": "83.90", "setting": "G↔G (ground-ground) protocol"},
+    {"dataset": "CARGO", "metric": "Rank-1", "value": "82.50", "setting": "A↔A (aerial-aerial) protocol"},
+    {"dataset": "CARGO", "metric": "mAP", "value": "67.78", "setting": "A↔A (aerial-aerial) protocol - second-best, SeCap higher at 68.08"}
+  ]
+}

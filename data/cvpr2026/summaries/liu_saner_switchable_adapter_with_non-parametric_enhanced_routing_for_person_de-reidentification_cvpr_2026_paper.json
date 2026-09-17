@@ -1,0 +1,53 @@
+{
+  "nutshell": "Person De-ReID (selectively forgetting specific identities in a ReID model while keeping accuracy on everyone else, i.e. machine unlearning applied to open-set retrieval) previously optimized forgetting and retaining objectives in one shared feature space, which the authors argue causes them to conflict and degrade retained-identity accuracy. SANER instead decouples them into two separate LoRA adapters (a forgetting adapter and a retaining adapter) and, since you don't know at test time whether a query belongs to a forgotten or retained identity, routes each query to the right adapter by comparing it against precomputed identity prototypes in the original pretrained feature space rather than training a separate classifier to decide.",
+  "contributions": [
+    "Switchable Adapter (SA): two independent LoRA adapters (F-Adapter, R-Adapter) added in parallel to a frozen pretrained ViT-B's attention and MLP projections. During training, the routing variable is known from the dataset construction (forget-set vs. retain-set), so each sample's loss is applied only through its corresponding adapter - decoupling the two contradictory objectives entirely rather than jointly optimizing them in one space.",
+    "Non-parametric Enhanced Routing (NER): at test time, when the true forgotten/retained status of a query is unknown, NER extracts the query's feature with the frozen pretrained model, compares it via cosine similarity against precomputed per-identity prototypes of the forgotten set, and routes to the F-Adapter only if the max similarity exceeds an adaptive threshold (set to the maximum similarity ever observed between two different identities' prototypes) - avoiding the need to train a separate routing classifier, which the paper shows overfits badly when the forgotten set is small (Table 3).",
+    "Demonstrates the approach on Market-1501 and MSMT17 with up to 100 forgotten identities, achieving the best H-Mean (balancing forgotten-identity Rank-1 suppression against retained-identity Rank-1 preservation) against both generic machine-unlearning baselines adapted to ReID and the one existing De-ReID-specific method (VIS)."
+  ],
+  "deficiencies": [
+    "In Table 1, GS-LoRA and NoMUS report character-for-character identical numbers across all four metrics (R-1T, R-1O, H, and their +RR variants) for both MT=25 and MT=50 on Market-1501, despite being described as distinct unlearning algorithms (continual forgetting via pre-trained-model pruning vs. maximizing a forgetting loss while continuing training). This is either a copy-paste error in the table or an unexplained coincidence that isn't addressed anywhere in the text.",
+    "Most of the comparison baselines (BS, SCRUB, LIRF, GS-LoRA, NoMUS) are machine-unlearning methods originally designed for closed-set classification, adapted by the authors to this open-set retrieval task - only VIS is an actual prior De-ReID-specific method and a genuinely fair comparison point. Framing the result as outperforming 'all previous methods' somewhat overstates the strength of a comparison where most competitors weren't designed for this setting to begin with.",
+    "NER's routing threshold is the maximum similarity ever observed between two *different* identities' prototypes in the forgotten set - as the number of forgotten identities MT grows, this threshold is likely to shrink (more identities means a higher chance some pair happens to look similar), which could push more benign retained queries above the threshold and get misrouted to the F-Adapter. The paper only tests up to MT=100 out of 3,060 MSMT17 test identities (~3.3%), so this failure mode at larger forgetting fractions isn't demonstrated or discussed.",
+    "All results across Tables 1-3 are single-run point estimates with no variance/seed reporting, and the routing ablation (Table 3) is only run at MT=25/50, not the larger MT=75/100 settings used in the main MSMT17 comparison (Table 2) - so it's unclear whether the classifier-based routing alternative's claimed weakness at 'small' forgotten-identity counts also holds, or perhaps reverses, at the larger MT values actually evaluated elsewhere in the paper."
+  ],
+  "notable": "SANER is built directly on top of, and evaluated head-to-head against, VIS ('Person De-reidentification: A Variation-guided Identity Shift Modeling') - a paper already summarized elsewhere in this same literature review batch. The two are directly comparable on the same benchmarks/metric (H-Mean on Market-1501 and MSMT17 at matched MT values), making them a natural paired entry for a cross-paper leaderboard rather than two independent results. Also notable: the retrieval-rank distribution analysis (Fig. 6) - showing forgotten identities end up bimodally distributed at either the very front or very back of gallery rankings, rarely in the middle - is a genuinely useful diagnostic for characterizing what 'successful forgetting' looks like in embedding space, and is a reusable evaluation technique for any embedding-space unlearning task beyond ReID.",
+  "results": [
+    {"dataset": "Market-1501", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "7.3", "setting": "MT=25 forgotten identities"},
+    {"dataset": "Market-1501", "metric": "R-1O (accessible Rank-1)", "value": "95.7", "setting": "MT=25 forgotten identities"},
+    {"dataset": "Market-1501", "metric": "H-Mean", "value": "88.3", "setting": "MT=25 forgotten identities"},
+    {"dataset": "Market-1501", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "7.2", "setting": "MT=25 forgotten identities, with Re-Ranking"},
+    {"dataset": "Market-1501", "metric": "R-1O (accessible Rank-1)", "value": "95.4", "setting": "MT=25 forgotten identities, with Re-Ranking"},
+    {"dataset": "Market-1501", "metric": "H-Mean", "value": "88.2", "setting": "MT=25 forgotten identities, with Re-Ranking"},
+    {"dataset": "Market-1501", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "6.7", "setting": "MT=50 forgotten identities"},
+    {"dataset": "Market-1501", "metric": "R-1O (accessible Rank-1)", "value": "95.3", "setting": "MT=50 forgotten identities"},
+    {"dataset": "Market-1501", "metric": "H-Mean", "value": "91.1", "setting": "MT=50 forgotten identities"},
+    {"dataset": "Market-1501", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "6.9", "setting": "MT=50 forgotten identities, with Re-Ranking"},
+    {"dataset": "Market-1501", "metric": "R-1O (accessible Rank-1)", "value": "95.1", "setting": "MT=50 forgotten identities, with Re-Ranking"},
+    {"dataset": "Market-1501", "metric": "H-Mean", "value": "90.9", "setting": "MT=50 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "4.6", "setting": "MT=25 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "R-1O (accessible Rank-1)", "value": "84.9", "setting": "MT=25 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "H-Mean", "value": "80.0", "setting": "MT=25 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "4.6", "setting": "MT=25 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "R-1O (accessible Rank-1)", "value": "85.0", "setting": "MT=25 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "H-Mean", "value": "80.1", "setting": "MT=25 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "5.4", "setting": "MT=50 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "R-1O (accessible Rank-1)", "value": "83.6", "setting": "MT=50 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "H-Mean", "value": "78.7", "setting": "MT=50 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "5.5", "setting": "MT=50 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "R-1O (accessible Rank-1)", "value": "83.9", "setting": "MT=50 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "H-Mean", "value": "78.9", "setting": "MT=50 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "5.4", "setting": "MT=75 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "R-1O (accessible Rank-1)", "value": "83.0", "setting": "MT=75 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "H-Mean", "value": "78.4", "setting": "MT=75 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "5.4", "setting": "MT=75 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "R-1O (accessible Rank-1)", "value": "83.2", "setting": "MT=75 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "H-Mean", "value": "78.7", "setting": "MT=75 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "4.3", "setting": "MT=100 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "R-1O (accessible Rank-1)", "value": "82.3", "setting": "MT=100 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "H-Mean", "value": "78.6", "setting": "MT=100 forgotten identities"},
+    {"dataset": "MSMT17", "metric": "R-1T (forgotten Rank-1, lower better)", "value": "5.0", "setting": "MT=100 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "R-1O (accessible Rank-1)", "value": "82.3", "setting": "MT=100 forgotten identities, with Re-Ranking"},
+    {"dataset": "MSMT17", "metric": "H-Mean", "value": "78.2", "setting": "MT=100 forgotten identities, with Re-Ranking"}
+  ]
+}

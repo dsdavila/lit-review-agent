@@ -1,0 +1,46 @@
+{
+  "nutshell": "Lifelong person ReID (LReID) must learn from a stream of datasets without forgetting old identities and without storing old images (privacy), but existing rehearsal-free methods rely on strict output-consistency distillation that limits how well the model learns new data. DKP instead represents each identity as a distribution-aware prototype (a per-identity Gaussian built up from each individual image's own learned uncertainty, not a shared class-wide variance) and uses that prototype - instead of stored images - to transfer old-domain knowledge into the new model.",
+  "contributions": [
+    "Instance-level Distribution Modeling (IDM): a dual-branch network predicts both a center and a variance per individual training image (not per class), samples feature candidates from each instance's own Gaussian, and trains with distribution-aware cross-entropy and triplet losses (Eq. 1-3) - capturing that different images of the same identity can have very different intra-instance uncertainty (pose, occlusion, lighting) rather than assuming uniform variance across a class like prior prototype work.",
+    "Distribution-oriented Prototype Generation (DPG): a closed-form aggregation (Eq. 4-5) that folds each instance's own learned variance into the identity-level prototype's variance, rather than just computing the raw sample variance of instance centers (which ignores each instance's individual uncertainty) as done in the compared statistical-distribution prototype baseline (PASS/[46]).",
+    "Prototype-based Knowledge Transfer (PKT): at each new training step, samples synthetic 'prototype features' from the previous step's stored per-identity Gaussians and uses a KL-divergence loss to align the new model's inter-instance affinity structure with a prototype-anchored version of it - transferring relational knowledge about old identities without ever storing or replaying real images.",
+    "State-of-the-art results on the standard 12-dataset LReID benchmark (5 seen-domain training steps x 2 orderings, 7 unseen-domain generalization datasets) against both dedicated LReID methods and adapted class-incremental-learning methods, with +8.1%/9.1% average mAP/R@1 over the next-best LReID method (PatchKD) and stronger unseen-domain generalization."
+  ],
+  "deficiencies": [
+    "The paper's own Table 1 shows PatchKD beats DKP by a substantial margin on the very first dataset in the training sequence (Market1501 mAP: PatchKD 68.5 vs. DKP 60.3), and Section 4.3 attributes this directly to DKP's instance-distribution modeling slowing convergence early on - the headline 8.1%/9.1% average gain is an average across all five seen domains that papers over this weakness on the foundational first step.",
+    "Symmetrically, DKP is not best on the last dataset either - PRAKA beats it substantially on CUHK03 in Training Order-1 (mAP/R@1 54.0/55.6 vs. DKP's 43.6/44.2) - and the paper's own Discussion section (Sec. 4.7) explicitly concedes DKP 'falls short compared to PatchKD and PRAKA on the first and last datasets respectively,' so the SOTA claim rests on average/mid-sequence performance rather than uniform superiority across the whole training order.",
+    "The ablation on stored prototype history (Fig. 6c) shows performance actually *declines* as more historical prototype stages are kept, because older prototypes go stale as the model evolves - so in practice only the immediately-previous step's prototype is used (K=1). The paper's own Discussion section flags this as an unresolved limitation: older distribution knowledge is simply discarded rather than exploited, which undercuts the framing of prototypes as durable long-term memory.",
+    "All comparisons are limited to two fixed training orders with no variance/seed reporting, and the 'unseen-domain generalization' claim rests on an average over seven small legacy benchmarks (e.g. VIPeR, i-LIDS, GRID, PRID - each under ~1,500 images), so the statistical weight behind the generalization numbers is fairly thin."
+  ],
+  "notable": "The final training-step post-processing - simply weight-averaging the new and previous model, M_t <- (M_t + M_{t-1})/2 (Eq. 10) - is a cheap, easy-to-miss addition (related to stochastic weight averaging/model-soup ideas) buried as one line of the training recipe rather than one of the three headline modules, and it's never ablated in isolation, so how much of the reported anti-forgetting performance it alone contributes versus IDM/DPG/PKT is untested. Also notable: the core idea of learning a per-instance variance rather than assuming uniform class variance is explicitly borrowed from data-uncertainty learning in face recognition (ref [5]) and repurposed for lifelong-learning prototypes - a transferable pattern for other prototype-based continual-learning methods beyond ReID.",
+  "results": [
+    {"dataset": "Market1501", "metric": "mAP", "value": "60.3", "setting": "DKP, Training Order-1 (final lifelong step)"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "80.6", "setting": "DKP, Training Order-1 (final lifelong step)"},
+    {"dataset": "CUHK-SYSU", "metric": "mAP", "value": "83.6", "setting": "DKP, Training Order-1 (final lifelong step)"},
+    {"dataset": "CUHK-SYSU", "metric": "Rank-1", "value": "85.4", "setting": "DKP, Training Order-1 (final lifelong step)"},
+    {"dataset": "DukeMTMC", "metric": "mAP", "value": "51.6", "setting": "DKP, Training Order-1 (final lifelong step)"},
+    {"dataset": "DukeMTMC", "metric": "Rank-1", "value": "68.4", "setting": "DKP, Training Order-1 (final lifelong step)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "19.7", "setting": "DKP, Training Order-1 (final lifelong step)"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "41.8", "setting": "DKP, Training Order-1 (final lifelong step)"},
+    {"dataset": "CUHK03", "metric": "mAP", "value": "43.6", "setting": "DKP, Training Order-1 (final lifelong step)"},
+    {"dataset": "CUHK03", "metric": "Rank-1", "value": "44.2", "setting": "DKP, Training Order-1 (final lifelong step)"},
+    {"dataset": "LReID Seen-Avg", "metric": "mAP", "value": "51.8", "setting": "DKP, Training Order-1"},
+    {"dataset": "LReID Seen-Avg", "metric": "Rank-1", "value": "64.1", "setting": "DKP, Training Order-1"},
+    {"dataset": "LReID Unseen-Avg", "metric": "mAP", "value": "59.2", "setting": "DKP, Training Order-1"},
+    {"dataset": "LReID Unseen-Avg", "metric": "Rank-1", "value": "51.6", "setting": "DKP, Training Order-1"},
+    {"dataset": "DukeMTMC", "metric": "mAP", "value": "53.4", "setting": "DKP, Training Order-2 (final lifelong step)"},
+    {"dataset": "DukeMTMC", "metric": "Rank-1", "value": "70.5", "setting": "DKP, Training Order-2 (final lifelong step)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "14.5", "setting": "DKP, Training Order-2 (final lifelong step)"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "33.3", "setting": "DKP, Training Order-2 (final lifelong step)"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "60.6", "setting": "DKP, Training Order-2 (final lifelong step)"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "81.0", "setting": "DKP, Training Order-2 (final lifelong step)"},
+    {"dataset": "CUHK-SYSU", "metric": "mAP", "value": "83.0", "setting": "DKP, Training Order-2 (final lifelong step)"},
+    {"dataset": "CUHK-SYSU", "metric": "Rank-1", "value": "84.9", "setting": "DKP, Training Order-2 (final lifelong step)"},
+    {"dataset": "CUHK03", "metric": "mAP", "value": "45.0", "setting": "DKP, Training Order-2 (final lifelong step)"},
+    {"dataset": "CUHK03", "metric": "Rank-1", "value": "46.1", "setting": "DKP, Training Order-2 (final lifelong step)"},
+    {"dataset": "LReID Seen-Avg", "metric": "mAP", "value": "51.3", "setting": "DKP, Training Order-2"},
+    {"dataset": "LReID Seen-Avg", "metric": "Rank-1", "value": "63.2", "setting": "DKP, Training Order-2"},
+    {"dataset": "LReID Unseen-Avg", "metric": "mAP", "value": "59.0", "setting": "DKP, Training Order-2"},
+    {"dataset": "LReID Unseen-Avg", "metric": "Rank-1", "value": "51.6", "setting": "DKP, Training Order-2"}
+  ]
+}

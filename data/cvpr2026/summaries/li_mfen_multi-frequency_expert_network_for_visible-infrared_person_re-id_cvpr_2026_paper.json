@@ -1,0 +1,36 @@
+{
+  "nutshell": "Visible-infrared person ReID (VI-ReID) suffers a modality gap driven largely by lighting differences (light wavelength and light-source type causing over/underexposure in IR). Frequency-domain representations separate illumination (mostly low-frequency amplitude) from identity detail (mid/high-frequency), but prior frequency-based VI-ReID methods either modulate the whole spectrum uniformly or fix on one band. MFEN instead uses a mixture-of-experts design where each expert handles a distinct frequency band with per-sample adaptive gating, paired with a data augmentation (RFA, swapping only low-frequency amplitude between RGB/IR) and an auxiliary training objective (FAO, adding frequency-domain statistics to the spatial-domain losses).",
+  "contributions": [
+    "Multi-Frequency Expert Network (MFEN): multiple experts each modulate a distinct, non-overlapping frequency band (octave-based partitioning, default 4 experts) via masked-frequency-domain K/Q attention-like modulation, then are combined per-sample by a sigmoid gating network that deliberately does NOT use top-k selection or weight normalization - the bands are treated as complementary rather than competing, since a single sample can need both illumination correction (low-freq) and detail recovery (high-freq) simultaneously.",
+    "Random Frequency Augmentation (RFA): swaps only the low-frequency amplitude component (not the full amplitude, which would introduce artifacts) between an RGB and a randomly-selected IR image, preserving the original phase and high-frequency amplitude, then collapses the augmented RGB to one duplicated channel to strip residual color - simulating cross-modal lighting patterns at the data level.",
+    "Frequency Auxiliary Optimization (FAO): computes a frequency-domain feature statistic (first-order average plus a second-order/energy dispersion term) and applies identity, KL-divergence, and Euclidean-distance losses jointly on the spatial feature and this frequency statistic, concatenating both for the final descriptor at inference.",
+    "Reports new SOTA/comparable results on SYSU-MM01, RegDB, and LLCM, e.g. SYSU-MM01 all-search Rank-1 80.93% / mAP 76.56% (+1.81/+1.29 over prior best DSSF3)."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 3) shows the three proposed modules contribute fairly evenly to the total gain over baseline (RFA +3.16/+2.28, MFEN +3.41/+3.62, FAO +2.51/+1.71 Rank-1/mAP) - the method is named entirely after MFEN, but MFEN itself accounts for only roughly a third of the overall improvement, with RFA and FAO each contributing comparably.",
+    "Despite text stating MFEN 'outperforms existing SOTA methods or achieves comparable performance across all settings,' Table 1 shows FDNM actually beats MFEN outright on two columns - SYSU-MM01 indoor-search mAP (89.1 vs. MFEN's 88.12) and RegDB Visible-to-Infrared Rank-1 (95.5 vs. MFEN's 94.85) - neither exception is acknowledged in the text.",
+    "No parameter count, FLOPs, or inference latency is reported anywhere for MFEN versus the baseline or competing frequency-based methods (FDMNet, FDNM, DSSF3), despite the paper explicitly motivating the expert design as 'lightweight and efficient' (fixed at C'_X=64 channels) and separately arguing MFEN is cheaper than a Non-local block on complexity grounds alone (Sec 4.2) rather than with measured numbers.",
+    "The Non-local block ablation (Table 5, row 3) is only 1.97/0.76 Rank-1/mAP behind full MFEN, a fairly narrow margin for the paper's central architectural contribution, and it is not explained why per-sample adaptive multi-band gating provides a meaningfully different inductive bias than global pairwise attention beyond the efficiency argument."
+  ],
+  "notable": "The gating design deliberately avoids both top-k expert selection and weight normalization - a departure from standard MoE practice - specifically because the frequency bands are argued to be complementary (a single sample can need low-frequency illumination correction AND high-frequency detail recovery at once) rather than competing; Table 5 rows 4-7 support this by showing that reducing to 1-2 experts or fixing on a single high/low-frequency band all underperform the full gated 4-expert ensemble. Also notable: RFA's final step randomly collapses the augmented RGB image to a single duplicated channel specifically to erase residual color bias left over after the frequency-domain amplitude swap - a small but non-obvious detail worth remembering for other cross-spectral augmentation designs.",
+  "results": [
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "80.93", "setting": "all-search"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "97.12", "setting": "all-search"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "76.56", "setting": "all-search"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "87.88", "setting": "indoor-search"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-10", "value": "99.43", "setting": "indoor-search"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "88.12", "setting": "indoor-search (not best - FDNM reports 89.1)"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "94.85", "setting": "Visible-to-Infrared (not best - FDNM reports 95.5)"},
+    {"dataset": "RegDB", "metric": "Rank-10", "value": "99.06", "setting": "Visible-to-Infrared"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "90.06", "setting": "Visible-to-Infrared"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "94.11", "setting": "Infrared-to-Visible"},
+    {"dataset": "RegDB", "metric": "Rank-10", "value": "98.83", "setting": "Infrared-to-Visible"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "90.25", "setting": "Infrared-to-Visible"},
+    {"dataset": "LLCM", "metric": "Rank-1", "value": "67.9", "setting": "Visible-to-Infrared"},
+    {"dataset": "LLCM", "metric": "Rank-10", "value": "91.0", "setting": "Visible-to-Infrared"},
+    {"dataset": "LLCM", "metric": "mAP", "value": "69.8", "setting": "Visible-to-Infrared"},
+    {"dataset": "LLCM", "metric": "Rank-1", "value": "59.0", "setting": "Infrared-to-Visible"},
+    {"dataset": "LLCM", "metric": "Rank-10", "value": "85.6", "setting": "Infrared-to-Visible"},
+    {"dataset": "LLCM", "metric": "mAP", "value": "65.3", "setting": "Infrared-to-Visible"}
+  ]
+}

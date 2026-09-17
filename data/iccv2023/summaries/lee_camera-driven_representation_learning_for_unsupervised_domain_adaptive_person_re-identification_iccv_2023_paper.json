@@ -1,0 +1,42 @@
+{
+  "nutshell": "Unsupervised domain-adaptive (UDA) person ReID clusters target-domain features to generate pseudo ID labels, but the paper shows these pseudo-labels are heavily biased toward camera identity - up to 48.2% of clusters contain images from a single camera only. CaCL addresses this with (1) a camera-driven curriculum that splits the target domain into per-camera subsets and trains on them progressively, ordered by MMD distance to the source domain (most source-like camera first), and (2) a camera-diversity (CD) loss that zeroes out single-camera clusters and up-weights multi-camera clusters during pseudo-label training.",
+  "contributions": [
+    "First curriculum-learning framework for UDA person ReID: splits the target dataset into per-camera subsets and progressively expands the training set across curriculum stages (one camera, then more), instead of adapting to the whole target domain jointly as prior UDA-reID methods do.",
+    "A camera-driven scheduler that orders the curriculum by pairwise MMD between the source domain and each target camera subset - subsets whose distribution is closest to the source are introduced earliest, based on the (untested but explicit) assumption that closer-distribution transfer is easier.",
+    "Camera-diversity (CD) loss: computes the entropy of the camera-label distribution within each pseudo-label cluster, converts it into a weighting factor w_l = log(H_l+1) that discards single-camera ('trivial') clusters entirely and up-weights clusters spanning multiple cameras, applied to both the cross-entropy and triplet loss terms - a much cheaper alternative to prior reliability-weighting schemes (e.g. UGID) that need multiple ReID models for uncertainty estimation.",
+    "New state-of-the-art across 6 standard UDA-reID benchmark pairs spanning real-to-real (MSMT17↔Market1501) and synthetic-to-real (PersonX/Unreal→Market1501/MSMT17) settings, including beating RESL - a prior method that also uses camera labels, but via image-translation networks - without needing any generative/translation component."
+  ],
+  "deficiencies": [
+    "The paper's own Table 4 shows that combining the CD loss with a prior complementary technique (UGID's uncertainty-based reweighting) beats the CD-loss-alone numbers used as the headline results in Tables 1-2 by a real margin (e.g. 38.4/67.9 mAP/rank-1 vs. 36.5/66.6 on Market1501-to-MSMT17) - the paper demonstrates a stronger configuration exists but reports its 'new SOTA' claims using the weaker CD-loss-only setup.",
+    "The random-sequence curriculum baseline (RS+CTL) in Table 3, used to argue that the MMD-based scheduler specifically matters (not just curriculum structure in general), is averaged over only 5 trials with no reported variance - since curriculum ordering is itself a stochastic choice, 5 trials is a thin basis for concluding the ~7-point mAP/rank-1 gap to CaCL's scheduler reflects the scheduling rule rather than trial noise.",
+    "None of the headline SOTA numbers (Tables 1-2) or the main ablation (Table 3, aside from the explicitly-averaged RS row) report variance across random seeds or repeated pseudo-labeling runs, despite the method's core mechanism - DBSCAN clustering re-run every 3 epochs - being inherently stochastic.",
+    "The method's design assumes a moderate, known number of cameras per domain (6 for Market1501, 15 for MSMT17); the paper never discusses how the per-camera curriculum staging or the pairwise source-vs-subset MMD computations would scale to much larger real-world camera networks (hundreds of cameras), or how the scheme behaves when individual camera subsets are too small to cluster reliably on their own in the early curriculum stages."
+  ],
+  "notable": "The CD loss's weighting rule (log-entropy of a cluster's camera distribution, zeroing out single-camera clusters entirely) is a cheap, closed-form pseudo-label trustworthiness signal that needs no extra model or consistency-checking machinery, unlike UGID's multi-model uncertainty estimation - a pattern worth reusing in other clustering-based UDA settings wherever a nuisance grouping variable (not just camera ID) can bias pseudo-label clusters.",
+  "results": [
+    {"dataset": "Market1501", "metric": "mAP", "value": "84.7", "setting": "MSMT17-to-Market1501 (real-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "93.8", "setting": "MSMT17-to-Market1501 (real-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "Rank-5", "value": "97.7", "setting": "MSMT17-to-Market1501 (real-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "Rank-10", "value": "98.6", "setting": "MSMT17-to-Market1501 (real-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "36.5", "setting": "Market1501-to-MSMT17 (real-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "66.6", "setting": "Market1501-to-MSMT17 (real-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "Rank-5", "value": "75.3", "setting": "Market1501-to-MSMT17 (real-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "Rank-10", "value": "80.1", "setting": "Market1501-to-MSMT17 (real-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "82.3", "setting": "PersonX-to-Market1501 (synthetic-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "92.8", "setting": "PersonX-to-Market1501 (synthetic-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "Rank-5", "value": "97.6", "setting": "PersonX-to-Market1501 (synthetic-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "Rank-10", "value": "98.6", "setting": "PersonX-to-Market1501 (synthetic-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "36.2", "setting": "PersonX-to-MSMT17 (synthetic-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "66.9", "setting": "PersonX-to-MSMT17 (synthetic-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "Rank-5", "value": "69.4", "setting": "PersonX-to-MSMT17 (synthetic-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "Rank-10", "value": "80.9", "setting": "PersonX-to-MSMT17 (synthetic-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "84.0", "setting": "Unreal-to-Market1501 (synthetic-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "93.3", "setting": "Unreal-to-Market1501 (synthetic-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "Rank-5", "value": "97.6", "setting": "Unreal-to-Market1501 (synthetic-to-real UDA)"},
+    {"dataset": "Market1501", "metric": "Rank-10", "value": "98.5", "setting": "Unreal-to-Market1501 (synthetic-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "40.3", "setting": "Unreal-to-MSMT17 (synthetic-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "70.0", "setting": "Unreal-to-MSMT17 (synthetic-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "Rank-5", "value": "80.5", "setting": "Unreal-to-MSMT17 (synthetic-to-real UDA)"},
+    {"dataset": "MSMT17", "metric": "Rank-10", "value": "84.0", "setting": "Unreal-to-MSMT17 (synthetic-to-real UDA)"}
+  ]
+}

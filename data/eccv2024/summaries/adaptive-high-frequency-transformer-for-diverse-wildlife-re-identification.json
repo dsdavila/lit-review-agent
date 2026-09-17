@@ -1,0 +1,52 @@
+{
+  "nutshell": "Wildlife re-identification methods are usually hand-tailored to one species (whale-fluke edges, seal pelage patterns, etc.) and don't generalize. This paper argues high-frequency image content (fur texture, scale patterns, contour edges) is a universal cue across species, and proposes an Adaptive High-Frequency Transformer that augments images in the frequency domain, uses the model's own attention to select target-relevant high-frequency tokens (filtering out background noise like leaves/grass), and balances high-frequency and original features with a dedicated loss - evaluated across 8 species spanning terrestrial, aquatic, and aerial wildlife.",
+  "contributions": [
+    "Frequency-Domain Mixed Augmentation (FMA): blends a Gaussian-high-pass-filtered version of an image with its full frequency-domain representation (via FFT/inverse-FFT), rather than mixing in pixel space, specifically to avoid introducing new high-frequency artifacts that pixel-level mixing would create.",
+    "Object-aware Dynamic Selection: reuses the ViT's own class-token attention scores from the original-image branch to rank and select the top-µ fraction of high-frequency tokens most relevant to the animal, filtering environmental high-frequency noise (leaf/grass texture) without needing bounding boxes, segmentation, or any species-specific prior.",
+    "Feature Equilibrium Loss: a smooth-L1-style loss that constrains the high-frequency-branch token embeddings from drifting too far from the corresponding original-branch embeddings, preventing the model from over-relying on high-frequency detail at the expense of holistic appearance.",
+    "Unifies the experimental protocol (70/30 train/test split, no identity overlap) across 8 previously inconsistently-evaluated wildlife datasets (panda, elephant, seal, zebra, shark, tiger, pigeon, giraffe) to enable fair comparison, and demonstrates generalization to unseen species in a domain-generalization setting."
+  ],
+  "deficiencies": [
+    "On the Zebra dataset the reported gain over the strongest baseline is marginal (mAP 16.8 vs. RotTrans's 16.2, Rank-1 27.4 vs. 26.7) - essentially within noise for a single-run comparison, and no variance or repeated-run reporting appears anywhere in the paper.",
+    "The paper's own ablation (Table 4) shows 'Pure High-Frequency Augmentation' alone actually decreases mAP on the pigeon dataset by 1.7% versus the plain ViT baseline - demonstrating raw high-frequency signal can hurt performance - but components are only ever added cumulatively in one fixed order, so no ablation isolates whether Object-aware Selection or the Equilibrium Loss alone (without FMA) would fix the pigeon regression.",
+    "The domain-generalization comparison (Table 3) shows a large Rank-1/mAP divergence versus UniReID (88.5% vs. 63.9% average Rank-1, but only 48.1 vs. 47.6 average mAP) that isn't discussed - this is exactly the 'simple samples inflate Rank-k' pattern the paper itself invokes elsewhere (Sec 4.1) to explain why its own Table 1 Rank-1 numbers look inflated relative to mAP.",
+    "The paper's own Limitations section acknowledges the object-aware selection depends on baseline attention quality and that the optimal selection ratio µ varies unpredictably across datasets - no per-dataset µ values are given in the main results tables, meaning a method framed as 'universal' and 'adaptive' likely still needs per-dataset hyperparameter tuning in practice."
+  ],
+  "notable": "The paper explicitly attributes its own very high Rank-1 but comparatively low mAP scores in Table 1 (e.g. ~87-99% Rank-1 vs. only ~24-74% mAP on several species) to most wildlife datasets lacking camera-ID metadata, meaning many 'different' gallery images are actually near-duplicate frames from the same encounter with the same animal - a useful general caveat for interpreting reported accuracy on wildlife ReID benchmarks beyond just this paper.",
+  "results": [
+    {"dataset": "Panda", "metric": "mAP", "value": "44.5", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Panda", "metric": "Rank-1", "value": "93.1", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Panda", "metric": "mINP", "value": "12.5", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Elephant", "metric": "mAP", "value": "30.4", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Elephant", "metric": "Rank-1", "value": "58.0", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Elephant", "metric": "mINP", "value": "9.3", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Seal", "metric": "mAP", "value": "51.5", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Seal", "metric": "Rank-1", "value": "87.4", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Seal", "metric": "mINP", "value": "14.4", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Zebra", "metric": "mAP", "value": "16.8", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Zebra", "metric": "Rank-1", "value": "27.4", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Zebra", "metric": "mINP", "value": "7.7", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Shark", "metric": "mAP", "value": "24.3", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Shark", "metric": "Rank-1", "value": "68.4", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Shark", "metric": "mINP", "value": "5.6", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Tiger", "metric": "mAP", "value": "66.3", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Tiger", "metric": "Rank-1", "value": "98.5", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Tiger", "metric": "mINP", "value": "33.4", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Pigeon", "metric": "mAP", "value": "73.8", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Pigeon", "metric": "Rank-1", "value": "99.1", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Pigeon", "metric": "mINP", "value": "19.8", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Giraffe", "metric": "mAP", "value": "49.1", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Giraffe", "metric": "Rank-1", "value": "47.8", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Giraffe", "metric": "mINP", "value": "40.2", "setting": "Table 1, single-species supervised"},
+    {"dataset": "Seal", "metric": "mAP", "value": "50.6", "setting": "Table 2, multi-species joint training (elephant+seal+pigeon+panda)"},
+    {"dataset": "Seal", "metric": "Rank-1", "value": "86.2", "setting": "Table 2, multi-species joint training"},
+    {"dataset": "Pigeon", "metric": "mAP", "value": "70.0", "setting": "Table 2, multi-species joint training"},
+    {"dataset": "Pigeon", "metric": "Rank-1", "value": "99.1", "setting": "Table 2, multi-species joint training"},
+    {"dataset": "Elephant", "metric": "mAP", "value": "26.6", "setting": "Table 2, multi-species joint training"},
+    {"dataset": "Elephant", "metric": "Rank-1", "value": "52.6", "setting": "Table 2, multi-species joint training"},
+    {"dataset": "Tiger", "metric": "mAP", "value": "72.3", "setting": "Table 3, domain generalization (trained on Wildlife-71, unseen species)"},
+    {"dataset": "Tiger", "metric": "Rank-1", "value": "98.1", "setting": "Table 3, domain generalization (trained on Wildlife-71, unseen species)"},
+    {"dataset": "Seal", "metric": "mAP", "value": "24.0", "setting": "Table 3, domain generalization (trained on Wildlife-71, unseen species)"},
+    {"dataset": "Seal", "metric": "Rank-1", "value": "78.9", "setting": "Table 3, domain generalization (trained on Wildlife-71, unseen species)"}
+  ]
+}

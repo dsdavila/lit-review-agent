@@ -1,0 +1,29 @@
+{
+  "nutshell": "Ship tracking from low-Earth-orbit satellite constellations needs to re-identify the same ship across optical and SAR (radar) imagery, which have fundamentally different imaging mechanisms and no prior paired dataset. This paper introduces HOSS ReID, the first optical-SAR ship ReID dataset, and TransOSS, a ViT baseline with a dual-head tokenizer, modality and ship-size embeddings, and a two-stage (contrastive pretrain + ID/triplet fine-tune) training recipe.",
+  "contributions": [
+    "HOSS ReID: the first paired optical-SAR ship ReID dataset, built from real Jilin-1 (optical) and TY-MINISAR (SAR) satellite tasking rather than simulation - 13 sequences, 1832 images, 449 real ship tracks plus 163 distractor objects added to the gallery.",
+    "TransOSS: a ViT-based architecture with a cross-modal dual-head tokenizer (separate linear patch embeddings per modality feeding a shared transformer encoder), learnable modality-information embeddings, and a novel ship-size embedding derived directly from GSD-based physical measurements - a cue unique to remote sensing that ordinary ReID pipelines discard when resizing images.",
+    "A two-stage training approach: contrastive (CLIP-style symmetric loss) pretraining on ~56K optical-SAR pairs from SEN1-2/DFC23, then ID+triplet fine-tuning on HOSS ReID, which the ablation shows contributes most of the overall gain."
+  ],
+  "deficiencies": [
+    "The dataset is extremely small for a proposed 'benchmark' - only 13 sequences and 1832 total images, with just 88 query tracks - and no variance or multiple-run reporting is given anywhere in the results, so single-run percentage-point differences between methods are hard to trust as significant.",
+    "The paper's own ablation (Table 3) shows the two headline architectural novelties contribute modestly on their own: the dual-head tokenizer (CDT) adds only +1.9 mAP and modality embeddings (MIE) add +0.6 mAP, while simply adding contrastive pretraining on external optical-SAR data jumps mAP from 44.9% to 52.3% (+7.4) - most of TransOSS's advantage comes from extra pretraining data rather than the proposed architecture.",
+    "All comparison baselines (CM-NAS, LbA, AGW, DEEN, TransReID, VersReID, etc.) were retrained by the authors themselves on their own new dataset with 'original hyperparameters retained' rather than re-tuned for this novel optical-SAR pairing - an inherent home-court-advantage risk whenever a paper both introduces the dataset and controls how every competing method is configured on it.",
+    "Despite being framed as a 'substantial improvement,' the actual cross-modal numbers remain weak in absolute terms - Optical-to-SAR Rank-1 is 33.8% and SAR-to-Optical Rank-1 is only 29.9%, meaning the method still fails to correctly match the queried ship roughly 2 out of 3 times in the harder cross-modal direction the paper itself identifies as the core challenge."
+  ],
+  "notable": "The 163 distractor objects added only to the gallery (not the query set) directly mirrors the junk/distractor image convention from Market-1501 - a sensible protocol borrowed from person ReID rather than invented from scratch. Separately: references [1] and [2] in the bibliography are the exact same paper (Chen et al., 'Beyond appearance...', CVPR 2023) duplicated verbatim under two different numbers - the same duplicate-citation pattern already flagged repeatedly across other papers in this batch, reinforcing that it's likely a common LaTeX/reference-manager artifact across labs rather than an isolated mistake.",
+  "results": [
+    {"dataset": "HOSS ReID", "metric": "mAP", "value": "57.4", "setting": "All (combined optical+SAR query/gallery)"},
+    {"dataset": "HOSS ReID", "metric": "Rank-1", "value": "65.9", "setting": "All (combined optical+SAR query/gallery)"},
+    {"dataset": "HOSS ReID", "metric": "Rank-5", "value": "79.5", "setting": "All (combined optical+SAR query/gallery)"},
+    {"dataset": "HOSS ReID", "metric": "Rank-10", "value": "85.8", "setting": "All (combined optical+SAR query/gallery)"},
+    {"dataset": "HOSS ReID", "metric": "mAP", "value": "48.9", "setting": "Optical-to-SAR cross-modal"},
+    {"dataset": "HOSS ReID", "metric": "Rank-1", "value": "33.8", "setting": "Optical-to-SAR cross-modal"},
+    {"dataset": "HOSS ReID", "metric": "Rank-5", "value": "67.7", "setting": "Optical-to-SAR cross-modal"},
+    {"dataset": "HOSS ReID", "metric": "Rank-10", "value": "80.0", "setting": "Optical-to-SAR cross-modal"},
+    {"dataset": "HOSS ReID", "metric": "mAP", "value": "38.7", "setting": "SAR-to-Optical cross-modal"},
+    {"dataset": "HOSS ReID", "metric": "Rank-1", "value": "29.9", "setting": "SAR-to-Optical cross-modal"},
+    {"dataset": "HOSS ReID", "metric": "Rank-5", "value": "59.7", "setting": "SAR-to-Optical cross-modal"},
+    {"dataset": "HOSS ReID", "metric": "Rank-10", "value": "71.6", "setting": "SAR-to-Optical cross-modal"}
+  ]
+}

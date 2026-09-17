@@ -1,0 +1,30 @@
+{
+  "query": "REPLACE ME - your research topic, e.g. 'diffusion models for 3D scene generation'",
+  "search_terms": [
+    "REPLACE ME - comma-free JSON array of case-insensitive terms/phrases to match in title/abstract",
+    "e.g. diffusion",
+    "3D generation",
+    "NeRF",
+    "Gaussian splatting",
+    "text-to-3D"
+  ],
+  "conferences": [
+    { "name": "cvpr2024", "url": "https://openaccess.thecvf.com/CVPR2024?day=all" },
+    { "name": "cvpr2025", "url": "https://openaccess.thecvf.com/CVPR2025?day=all" },
+    { "name": "cvpr2026", "url": "https://openaccess.thecvf.com/CVPR2026?day=all" },
+
+    { "name": "wacv2024", "url": "https://openaccess.thecvf.com/WACV2024?day=all" },
+    { "name": "wacv2025", "url": "https://openaccess.thecvf.com/WACV2025?day=all" },
+    { "name": "wacv2026", "url": "https://openaccess.thecvf.com/WACV2026?day=all" },
+
+    { "name": "iccv2023", "url": "https://openaccess.thecvf.com/ICCV2023?day=all" },
+    { "name": "iccv2025", "url": "https://openaccess.thecvf.com/ICCV2025?day=all" },
+
+    { "name": "eccv2022", "url": "https://www.ecva.net/papers.php?year=2022" },
+    { "name": "eccv2024", "url": "https://www.ecva.net/papers.php?year=2024" },
+
+    { "name": "bmvc2023", "url": "https://proceedings.bmvc2023.org/" },
+    { "name": "bmvc2024", "url": "https://bmvc2024.org/proceedings/conference-proceedings/" },
+    { "name": "bmvc2025", "url": "https://bmvc2025.bmva.org/proceedings/conference-proceedings/" }
+  ]
+}

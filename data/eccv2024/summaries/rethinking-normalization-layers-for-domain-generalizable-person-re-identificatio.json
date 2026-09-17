@@ -1,0 +1,38 @@
+{
+  "nutshell": "Domain-generalizable person ReID (DG-ReID) trains on multiple labeled source domains and must work on an unseen target domain with no fine-tuning. Prior work combines Batch Normalization (discriminative, but overfits to source domains) with Instance Normalization (removes domain-specific style, but loses discriminative detail) inside one normalization layer - but this combination is only statistically consistent at training time; at test time, IN's per-sample statistics come from the unseen target while BN's statistics are frozen source-domain population averages. ReNorm fixes this by running two forward passes through the same conv weights each training step: one normal pass (Remix Normalization), and one pass (Emulation Normalization) that deliberately simulates the test-time mismatch during training by pairing one source domain's per-sample statistics with a different source domain's stored population statistics - plus freezing the normalization layers' learnable affine parameters entirely.",
+  "contributions": [
+    "Identifies a specific, previously under-examined failure mode in IN+BN normalization for DG-ReID: during training IN and BN statistics come from the same mini-batch/domain, but at test time IN is computed from the unseen target image while BN uses source-only population statistics, and this mismatch alone degrades generalization.",
+    "Emulation Normalization (EN): during training, deliberately pairs one source domain's per-sample IN statistics with a different source domain's stored BN population statistics, directly practicing the domain-mismatch scenario the network will face at real test time - built into the normalization math itself, without adversarial training, meta-learning, or extra networks.",
+    "Domain Frozen (DF): freezes the learnable affine (scale/shift) parameters of the normalization layers rather than continuing to train them (and for EN specifically, sets them outright to identity, γ=1/β=0) - motivated by a visualization (Fig. 3) showing large source-domain-specific divergence in these small-parameter affine weights, which would otherwise propagate confusion into the shared convolutional weights.",
+    "A purely normalization-layer-based framework needing no extra loss functions beyond standard triplet + cross-entropy and no extra learned modules beyond RN/EN's small per-domain balancing weights, reporting new SOTA across three established DG-ReID evaluation protocols on 9 datasets."
+  ],
+  "deficiencies": [
+    "Test-time inference requires running each image through both RN and EN paths, with EN evaluated once per stored source-domain buffer (K times), then averaging all 2*K outputs - multiplying inference cost by 2K relative to a standard single forward pass. This overhead is never quantified (latency, FLOPs) despite ReID being a deployment-sensitive task.",
+    "The ablation (Table 3) shows RN+DF alone already reaches 45.3 mAP/60.6 Rank-1, and adding EN without DF reaches 46.0/61.6, while the full RN+EN+DF combination reaches 47.3/63.1 - the combined gain is less than the sum of the two components' individual contributions over the RN-only baseline, indicating real overlap between what EN and DF are each fixing that the paper doesn't discuss.",
+    "The domain-divergence evidence motivating Domain Frozen (Fig. 3) is generated from a different, non-ReNorm training configuration where 'we establish corresponding RN for each source domain and reinstate the updates of all affine parameters' - i.e., not the actual shipped ReNorm architecture - so the motivating evidence for DF doesn't directly demonstrate the phenomenon inside the final model.",
+    "On Protocol-1 (Table 1), ReNorm is not the best method on the iLIDs target (87.0 mAP/82.2 Rank-1, vs. RaMoE's 90.2/85.0 - a 2021 method) despite leading on average; iLIDs is also the smallest of the four target test sets, so a handful of identities could disproportionately swing this specific comparison, and the regression isn't discussed in the text."
+  ],
+  "notable": "The identity-transform version of Domain Frozen used for Emulation Normalization (setting γ=1, β=0 outright, rather than merely freezing pretrained affine values as done for Remix Normalization) is a stronger, more deliberate design choice than the more common 'freeze at init' trick - reasoning that EN's deliberately mismatched statistics already produce a non-standard-normal output that a learned affine transform would only overfit further. This asymmetric treatment of the two normalization paths' affine parameters is a subtle but consequential implementation detail easy to miss on a first read of Sec. 3.4.",
+  "results": [
+    {"dataset": "PRID", "metric": "mAP", "value": "81.3", "setting": "Protocol-1, trained on Market1501+CUHK-SYSU+CUHK02+CUHK03"},
+    {"dataset": "PRID", "metric": "Rank-1", "value": "73.9", "setting": "Protocol-1, trained on Market1501+CUHK-SYSU+CUHK02+CUHK03"},
+    {"dataset": "GRID", "metric": "mAP", "value": "67.5", "setting": "Protocol-1, trained on Market1501+CUHK-SYSU+CUHK02+CUHK03"},
+    {"dataset": "GRID", "metric": "Rank-1", "value": "59.4", "setting": "Protocol-1, trained on Market1501+CUHK-SYSU+CUHK02+CUHK03"},
+    {"dataset": "VIPeR", "metric": "mAP", "value": "77.0", "setting": "Protocol-1, trained on Market1501+CUHK-SYSU+CUHK02+CUHK03"},
+    {"dataset": "VIPeR", "metric": "Rank-1", "value": "69.1", "setting": "Protocol-1, trained on Market1501+CUHK-SYSU+CUHK02+CUHK03"},
+    {"dataset": "iLIDs", "metric": "mAP", "value": "87.0", "setting": "Protocol-1, trained on Market1501+CUHK-SYSU+CUHK02+CUHK03"},
+    {"dataset": "iLIDs", "metric": "Rank-1", "value": "82.2", "setting": "Protocol-1, trained on Market1501+CUHK-SYSU+CUHK02+CUHK03"},
+    {"dataset": "CUHK03", "metric": "mAP", "value": "43.6", "setting": "Protocol-2 (leave-one-out, source train splits only), trained on Market1501+MSMT17+CUHK-SYSU"},
+    {"dataset": "CUHK03", "metric": "Rank-1", "value": "44.7", "setting": "Protocol-2, trained on Market1501+MSMT17+CUHK-SYSU"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "25.6", "setting": "Protocol-2, trained on Market1501+CUHK-SYSU+CUHK03"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "55.6", "setting": "Protocol-2, trained on Market1501+CUHK-SYSU+CUHK03"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "72.7", "setting": "Protocol-2, trained on MSMT17+CUHK-SYSU+CUHK03"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "89.1", "setting": "Protocol-2, trained on MSMT17+CUHK-SYSU+CUHK03"},
+    {"dataset": "CUHK03", "metric": "mAP", "value": "51.9", "setting": "Protocol-3 (leave-one-out, all images used for training), trained on Market1501+MSMT17+CUHK-SYSU"},
+    {"dataset": "CUHK03", "metric": "Rank-1", "value": "52.5", "setting": "Protocol-3, trained on Market1501+MSMT17+CUHK-SYSU"},
+    {"dataset": "MSMT17", "metric": "mAP", "value": "27.8", "setting": "Protocol-3, trained on Market1501+CUHK-SYSU+CUHK03"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "57.8", "setting": "Protocol-3, trained on Market1501+CUHK-SYSU+CUHK03"},
+    {"dataset": "Market1501", "metric": "mAP", "value": "77.4", "setting": "Protocol-3, trained on MSMT17+CUHK-SYSU+CUHK03"},
+    {"dataset": "Market1501", "metric": "Rank-1", "value": "91.2", "setting": "Protocol-3, trained on MSMT17+CUHK-SYSU+CUHK03"}
+  ]
+}

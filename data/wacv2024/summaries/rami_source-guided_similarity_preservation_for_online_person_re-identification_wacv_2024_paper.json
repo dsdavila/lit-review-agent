@@ -1,0 +1,26 @@
+{
+  "nutshell": "Online Unsupervised Domain Adaptation for person ReID (OUDA-Rid) must adapt a source-trained model to a privacy-constrained target stream where past target images cannot be stored, causing both catastrophic forgetting and domain shift. S2P addresses both jointly by building a 'support set' of source-domain images similar to previously-seen target images (so no target images need to be kept) for knowledge distillation, plus an explicit MMD alignment loss, and plugs into existing UDA methods (MMT, SpCL, IDM) rather than replacing them.",
+  "contributions": [
+    "A source-guided knowledge distillation mechanism: for each target image seen, the most similar source image (by cosine similarity in feature space) is added to a growing 'support set,' and a teacher (EMA of the student) vs. student similarity-matrix distillation loss is computed over that set to fight catastrophic forgetting without ever storing target images (Eq. 1-5).",
+    "An explicit source-target MMD (Maximum Mean Discrepancy) alignment loss used jointly with the KD loss to reduce domain shift (Sec 3.3).",
+    "A model-agnostic wrapper design: S2P is shown to plug into three existing pseudo-labeling UDA methods (MMT, SpCL, IDM) with only a teacher model and the support-set additions, improving all three on 3 real-to-real and 1 synthetic-to-real benchmark configuration (Table 1).",
+    "Ablations isolating each design choice: similarity-based support-set selection beats using the full source domain or a naive Rank-1 nearest-neighbor (Table 3); their KD loss beats two prior distillation losses (LSP, LAT) from the literature; an EMA-of-the-student teacher beats frozen task-specific or EMA-of-task-specific alternatives (Table 4)."
+  ],
+  "deficiencies": [
+    "Table 1's headline numbers are reported only 'at the end of training' (the last of 5 tasks) - the main paper doesn't report full-trajectory summary statistics (e.g. area under the mAP-vs-task curve), even though Fig. 3 shows the per-task curves diverge substantially between methods; a single-endpoint snapshot understates how much of the continual-learning story is actually being conveyed in the main text.",
+    "The support-set construction requires, for every incoming target image, an argmax cosine-similarity search over the entire accumulated source domain S (Eq. 1) - the paper never reports the computational/memory overhead of this repeated search as the source dataset or number of tasks grows, which matters for a method explicitly motivated by 'online' deployment constraints.",
+    "The privacy framing rests entirely on never storing target images, but the accumulated support set of source images is itself selected as a function of previously-seen target data - the paper doesn't discuss whether an adversary could infer information about target identities from which source images/labels get repeatedly selected into the support set, a plausible indirect leakage vector given the paper's own privacy motivation.",
+    "The main paper fixes the number of OUDA-Rid tasks at 5 for all four configurations and explicitly defers experiments with different numbers of tasks to supplementary material, so robustness to coarser/finer task granularity isn't demonstrated where a reader can check it."
+  ],
+  "notable": "Their own ablation (Table 2) shows that for S2P-SpCL on MS→M, the KD loss alone (65.1 mAP) actually outperforms the MMD loss alone (62.4 mAP) - since MMD is the component specifically targeting 'domain shift' and KD targets 'catastrophic forgetting,' this suggests the two problems the paper frames as equally important are not equally addressed by their respective fixes, even though combining both is still best overall. Code is publicly released on GitHub, which is a plus for reproducibility given how many moving pieces (teacher choice, support-set construction, MMD kernel) this method has.",
+  "results": [
+    {"dataset": "MSMT17→Market1501 (S2P-MMT)", "metric": "mAP", "value": "70.0", "setting": "OUDA-Rid, 5 tasks, last task"},
+    {"dataset": "MSMT17→Market1501 (S2P-MMT)", "metric": "Rank-1", "value": "87.1", "setting": "OUDA-Rid, 5 tasks, last task"},
+    {"dataset": "MSMT17→CUHK03 (S2P-MMT)", "metric": "mAP", "value": "40.4", "setting": "OUDA-Rid, 5 tasks, last task"},
+    {"dataset": "MSMT17→CUHK03 (S2P-MMT)", "metric": "Rank-1", "value": "42.4", "setting": "OUDA-Rid, 5 tasks, last task"},
+    {"dataset": "Market1501→MSMT17 (S2P-SpCL)", "metric": "mAP", "value": "20.2", "setting": "OUDA-Rid, 5 tasks, last task"},
+    {"dataset": "Market1501→MSMT17 (S2P-SpCL)", "metric": "Rank-1", "value": "46.1", "setting": "OUDA-Rid, 5 tasks, last task"},
+    {"dataset": "RandPerson→Market1501 (S2P-IDM)", "metric": "mAP", "value": "70.2", "setting": "OUDA-Rid, synthetic-to-real, 5 tasks, last task"},
+    {"dataset": "RandPerson→Market1501 (S2P-IDM)", "metric": "Rank-1", "value": "86.1", "setting": "OUDA-Rid, synthetic-to-real, 5 tasks, last task"}
+  ]
+}

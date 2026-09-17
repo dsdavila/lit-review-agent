@@ -1,0 +1,27 @@
+{
+  "nutshell": "Language-guided referring in long fixed-view videos breaks down when the referent disappears for a while and later re-enters, because frame-wise referring drifts and appearance-based re-ID becomes unreliable over long gaps. AR2-4FV exploits the fact that fixed cameras have a stable background: it distills a text-conditioned 'Anchor Map' from static scene regions that stays informative even while the target is invisible, uses it to prioritize where to search on re-entry, and validates candidate re-detections with a lightweight ReID-Gating step combining appearance similarity, anchor consistency, and spatial displacement.",
+  "contributions": [
+    "AR2-4FV: a zero-shot, frozen-encoder framework for long-term language-guided referring and re-identification in fixed-view video that does not assume the referent is visible in the first frame, built from an offline Anchor Bank (persistent background region masks) and an online, query-conditioned Anchor Map produced by aligning the text query to those regions.",
+    "An anchor-based re-entry prior (EMA-smoothed, redirected toward the last-confirmed anchor) that biases search toward likely re-entry locations after the target has been lost, plus a lightweight ReID-Gating mechanism that accepts/rejects re-detection candidates using a learned combination of appearance similarity, anchor-map evidence, and displacement-from-anchor penalty.",
+    "AR2-4FV-Bench: a new benchmark of 1,684 fixed-view (plus 2 cinematic) long videos (avg. >120s) with explicit visible/occluded/absent frame-wise annotations, re-entry timestamps, anchor-referential and attribute-disambiguation queries, and two new metrics (Re-Capture Rate and Re-Capture Latency) specifically for evaluating disappearance/re-entry behavior."
+  ],
+  "deficiencies": [
+    "The paper's own headline claim (\"+10.3% RCR improvement and -24.2% RCL reduction over the best baseline\") doesn't match its own Table 1: DUTrack is the best baseline on every Table 1 metric (RCR 0.69, RCL 25.8), and AR2-4FV's reported 0.75/20.1 computes to a +8.7% RCR improvement and a -22.1% RCL reduction relative to DUTrack - both short of the stated percentages, with no alternate baseline or computation method explained.",
+    "The ablation in Table 3 has a broken row: the Baseline+Anchor-Map-only configuration shows all dashes instead of numbers, so the standalone contribution of the Anchor Map - the paper's central proposed idea - is never actually isolated; every other reported row already includes ReID-Gating on top of it.",
+    "All baseline methods are explicitly \"trained and tested on the AR2-4FV-Bench,\" while AR2-4FV itself runs zero-shot with entirely frozen encoders (Section 4.4) - a meaningful train/zero-shot asymmetry in the comparison that the paper never flags or discusses, even though it's careful elsewhere to highlight AR2-4FV's training-free property as a strength.",
+    "Several hyperparameters central to the method (anchor-gate threshold η, fusion weight λ, acceptance threshold θ, EMA smoothing β, redirection strength ρ, gate threshold γ, momentum μ) are introduced with no concrete values reported and no sensitivity or ablation analysis in the main paper, limiting reproducibility of the reported numbers."
+  ],
+  "notable": "The core trick - reusing cheap, precomputed static background-region masks, weighted by cosine similarity to the text query, as a persistent 'where to look' spatial prior - is a lightweight alternative to learning explicit motion or long-horizon appearance-invariant embeddings, and should generalize to any fixed-camera surveillance/tracking task, not just referring. Also worth flagging for anyone building a person-ReID-specific literature map: this is fundamentally an open-vocabulary referring/tracking paper (its baselines are R-VOS models like MTTR, ReferFormer, SOC, not ReID methods), with 're-identification' appearing mainly via the ReID-Gating submodule and citations to person-ReID work (TransReID, Instruct-ReID) as related work rather than as its core contribution area.",
+  "results": [
+    {"dataset": "AR2-4FV-Bench", "metric": "IDF1", "value": "64.8", "setting": ""},
+    {"dataset": "AR2-4FV-Bench", "metric": "Re-Capture Rate (RCR)", "value": "0.75", "setting": "higher is better"},
+    {"dataset": "AR2-4FV-Bench", "metric": "Re-Capture Latency (RCL)", "value": "20.1", "setting": "frames, lower is better"},
+    {"dataset": "AR2-4FV-Bench", "metric": "Precision@0.5", "value": "77.3", "setting": ""},
+    {"dataset": "AR2-4FV-Bench", "metric": "Precision@0.6", "value": "72.2", "setting": ""},
+    {"dataset": "AR2-4FV-Bench", "metric": "Precision@0.7", "value": "64.1", "setting": ""},
+    {"dataset": "AR2-4FV-Bench", "metric": "Precision@0.8", "value": "49.2", "setting": ""},
+    {"dataset": "AR2-4FV-Bench", "metric": "Precision@0.9", "value": "2.6", "setting": ""},
+    {"dataset": "AR2-4FV-Bench", "metric": "mAP", "value": "49.2", "setting": "COCO-style, averaged over IoU 0.5-0.95"},
+    {"dataset": "AR2-4FV-Bench", "metric": "mIoU", "value": "66.9", "setting": ""}
+  ]
+}

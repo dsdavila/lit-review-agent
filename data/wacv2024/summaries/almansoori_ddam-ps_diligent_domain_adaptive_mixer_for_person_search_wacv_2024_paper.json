@@ -1,0 +1,26 @@
+{
+  "nutshell": "Person search (joint pedestrian detection + ReID) methods degrade badly when moved to a new unlabeled target domain (unsupervised domain adaptation, UDA). Building on the DAPS baseline, DDAM-PS learns a domain-mixing module that blends source and target RoI features into a 'moderate mixed-domain' representation via two bridge losses and a disparity loss, plus decouples the detection/ReID embedding head to reduce cross-task conflict during adaptation.",
+  "contributions": [
+    "DDAM module: learns softmax domain-constraint weights (c_s, c_t) per RoI to explicitly mix source and target pooled features into F_mix = c_s*F_s + c_t*F_t, replacing DAPS's implicit alignment module with an explicit, learned mixing mechanism.",
+    "Two bridge losses (a cross-entropy loss on a hybrid memory projection, and an L2 feature-distance loss) that pull the mixed representation toward being equidistant from both domains, plus a disparity loss that maximizes the standard deviation of the mixing weights within a batch to prevent the mix from collapsing onto either domain.",
+    "Decoupled norm-aware embedding (NAE): uses separate NAE heads for the detection and ReID subtasks instead of one shared head, specifically to reduce the cross-task conflict that domain adaptation makes worse.",
+    "Reports gains over the DAPS UDA baseline of +2.0 mAP (PRW) and +1.9 mAP (CUHK-SYSU), and the DDAM module is discarded at inference time, so it adds training-time-only cost."
+  ],
+  "deficiencies": [
+    "The paper's own reproduced baseline (Table 3, row 2: 34.4 mAP / 78.4 Top-1 on PRW) is lower than DAPS's originally published numbers (row 1: 34.7 / 80.6) that Table 2's headline '+2.0% mAP over DAPS' comparison is actually measured against - the improvement is reported relative to the official DAPS number rather than their own weaker reproduction, a methodological inconsistency the text doesn't address.",
+    "The ablation (Table 3) shows the decoupled NAE alone (row 8: 35.5 mAP PRW) achieves almost the same gain as the combined bridge+disparity losses (row 7: 35.9 mAP), undercutting the paper's framing of the bridge-loss mixing mechanism as the star contribution - NAE decoupling alone gets most of the way there.",
+    "Table 1 frames the method as 'surprisingly' beating several fully-supervised (FSL) methods, but the FSL methods it beats (DPM, OIM, NPSM, IAN, CTXGraph) are all older/weaker baselines - the method still trails the strongest FSL competitors by a wide margin (e.g. PSTR: 93.5/95.0 vs. their 79.5/81.3 mAP/Top-1 on CUHK-SYSU), which the selective framing doesn't foreground.",
+    "Table 4's reduced-target-data study shows their method at 50% target samples (32.7 mAP, PRW) actually performs worse than the plain 100%-data baseline (34.4 mAP) - i.e. under-sampled DDAM-PS is worse than a fully-trained non-DDAM model - which cuts against the implied claim that DDAM makes adaptation more sample-efficient, and this regression isn't discussed."
+  ],
+  "notable": "The DDAM module is used only during training and is explicitly dropped at inference time ('we utilized DDAM... at the training and relinquish it during the inference time') - it's a training-time-only technique that adds zero extra inference cost or latency, which is a nice practical property not emphasized as a selling point in the text. Also notable: references [41] and [42] (Yan et al., 'Anchor-free person search') look like a preprint/camera-ready split of the same work cited under two numbers - the same duplicate-citation pattern seen repeatedly elsewhere in this batch of papers.",
+  "results": [
+    {"dataset": "PRW", "metric": "mAP", "value": "36.7", "setting": "UDA target domain (source: CUHK-SYSU)"},
+    {"dataset": "PRW", "metric": "Top-1", "value": "81.2", "setting": "UDA target domain (source: CUHK-SYSU)"},
+    {"dataset": "PRW", "metric": "Recall", "value": "93.3", "setting": "UDA target domain, detection recall"},
+    {"dataset": "PRW", "metric": "Detection AP", "value": "88.6", "setting": "UDA target domain"},
+    {"dataset": "CUHK-SYSU", "metric": "mAP", "value": "79.5", "setting": "UDA target domain (source: PRW)"},
+    {"dataset": "CUHK-SYSU", "metric": "Top-1", "value": "81.3", "setting": "UDA target domain (source: PRW)"},
+    {"dataset": "CUHK-SYSU", "metric": "Recall", "value": "76.5", "setting": "UDA target domain, detection recall"},
+    {"dataset": "CUHK-SYSU", "metric": "Detection AP", "value": "68.8", "setting": "UDA target domain"}
+  ]
+}

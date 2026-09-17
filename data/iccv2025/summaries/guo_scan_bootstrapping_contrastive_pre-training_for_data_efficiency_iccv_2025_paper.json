@@ -1,0 +1,39 @@
+{
+  "nutshell": "Contrastive pre-training (CLIP, MoCo) needs huge datasets, but existing data-efficiency methods rely on a static coreset computed once before training starts, so they can't track how sample utility changes during training. SCAN instead dynamically prunes data during pre-training: each round it flags 'redundant' (low in-batch loss, already memorized) and 'ill-matched' (high in-batch loss, poorly aligned image-text pairs) samples, then removes a gradually increasing and periodically reset (cosine-annealed) fraction of them, applied to both CLIP and MoCo.",
+  "contributions": [
+    "A two-stage dynamic bootstrapping pruning method - pruned-data-preparation (flag redundant/low-loss and ill-matched/high-loss in-batch samples) followed by dataset mutation (regenerate the candidate pool every few epochs, prune a cosine-annealed, periodically-increasing fraction of it) - applied across 16 total pre-trained models (7 CLIP variants on two dataset scales, 2 MoCo variants), achieving under 1% average performance degradation at 30-35% data pruning versus full-data training while beating four baselines (Random, SemDeDup, D-Pruning, Info-Batch).",
+    "A loss-stability-based warm-up that delays the start of pruning until the tracked epoch-over-epoch loss change drops below a threshold, avoiding pruning during the unstable early phase of training.",
+    "A static coreset byproduct: intersecting the pruned sets identified by two independently pre-trained models yields a fixed subset that, when used to pre-train a third model from scratch, outperforms existing static coreset-selection baselines (SemDeDup, D-Pruning) by a large margin - useful as a reusable artifact, not just a training-time trick."
+  ],
+  "deficiencies": [
+    "The paper's claim that 'SCAN consistently outperforms the four compared baselines' (Sec 4.2) is contradicted by its own Table 3 (CC3M+): Info-Batch beats SCAN on RN101 zero-shot Top-1 (16.79 vs. 15.59, and both figures also beat the full CLIP model's own 15.72) and on ViT-B/16 zero-shot Top-5 (39.14 vs. 37.20) - real instances where an existing baseline wins outright are not acknowledged in the text.",
+    "All hyperparameter ablations (mutation epoch count, redundant-vs-ill-matched pruning mode, ratio-split variants in Tables 6-8) are run only on the two smallest architectures tested (ViT-S/32, ViT-S/16), never on RN101, ViT-B/16, or Swin-Base - the architectures where the paper's largest claimed gains and time savings actually occur - so it's unverified whether the chosen settings (mutation epoch=3, 20:20 redundant:ill-matched split) are actually optimal for the models that matter most to the headline results.",
+    "The paper's own Limitations section concedes the method has only been tested up to ~10.1M samples (CC12M+) and never validated at the hundreds-of-millions-to-billions scale (e.g. LAION-400M/5B) that motivates the work's framing around reducing compute and carbon footprint at the frontier - plus the method requires storing the full original dataset throughout training, which is exactly the storage burden data pruning is nominally trying to reduce.",
+    "The Random baseline is reported as a lower bound throughout, but no baseline tests whether simply reducing the batch size or number of training steps (rather than any principled sample-selection criterion) would recover similar savings - it's not established that the sophistication of the redundant/ill-matched criterion is doing more work than data quantity reduction alone."
+  ],
+  "notable": "The ill-matched sample scorer is entirely free: it reuses the model's own in-batch InfoNCE loss values already computed during training, rather than requiring an external scorer (e.g. a separately pre-trained CLIP-score model, as prior coreset work uses). A nice side effect shown in Fig. 5: the ill-matched samples SCAN flags include genuinely mislabeled training captions (an image with no city captioned 'a city during a storm', and a stockman/farmer captioned as 'a doctor') - meaning loss-based pruning doubles as a free, incidental data-quality auditing tool on top of its efficiency purpose.",
+  "results": [
+    {"dataset": "ImageNet (zero-shot)", "metric": "Top-1", "value": "23.10", "setting": "SCAN, RN101, CLIP pre-trained on CC12M+ (10.1M pairs), 30% pruning"},
+    {"dataset": "ImageNet (zero-shot)", "metric": "Top-5", "value": "47.52", "setting": "SCAN, RN101, CLIP pre-trained on CC12M+, 30% pruning"},
+    {"dataset": "CIFAR-10", "metric": "Accuracy", "value": "96.08", "setting": "SCAN, RN101, CLIP pre-trained on CC12M+, 30% pruning"},
+    {"dataset": "CIFAR-100", "metric": "Accuracy", "value": "82.28", "setting": "SCAN, RN101, CLIP pre-trained on CC12M+, 30% pruning"},
+    {"dataset": "ImageNet", "metric": "Accuracy (fine-tuned)", "value": "75.66", "setting": "SCAN, RN101, CLIP pre-trained on CC12M+, 30% pruning"},
+    {"dataset": "ImageNet-V2", "metric": "Accuracy", "value": "63.75", "setting": "SCAN, RN101, CLIP pre-trained on CC12M+, 30% pruning"},
+    {"dataset": "ImageNet-R", "metric": "Accuracy", "value": "40.10", "setting": "SCAN, RN101, CLIP pre-trained on CC12M+, 30% pruning"},
+    {"dataset": "ImageNet (zero-shot)", "metric": "Top-1", "value": "15.59", "setting": "SCAN, RN101, CLIP pre-trained on CC3M+ (4.1M pairs), 30% pruning"},
+    {"dataset": "ImageNet (zero-shot)", "metric": "Top-5", "value": "34.77", "setting": "SCAN, RN101, CLIP pre-trained on CC3M+, 30% pruning"},
+    {"dataset": "CIFAR-10", "metric": "Accuracy", "value": "95.77", "setting": "SCAN, RN101, CLIP pre-trained on CC3M+, 30% pruning"},
+    {"dataset": "CIFAR-100", "metric": "Accuracy", "value": "81.95", "setting": "SCAN, RN101, CLIP pre-trained on CC3M+, 30% pruning"},
+    {"dataset": "ImageNet", "metric": "Accuracy (fine-tuned)", "value": "74.61", "setting": "SCAN, RN101, CLIP pre-trained on CC3M+, 30% pruning"},
+    {"dataset": "ImageNet-V2", "metric": "Accuracy", "value": "62.92", "setting": "SCAN, RN101, CLIP pre-trained on CC3M+, 30% pruning"},
+    {"dataset": "ImageNet-R", "metric": "Accuracy", "value": "38.05", "setting": "SCAN, RN101, CLIP pre-trained on CC3M+, 30% pruning"},
+    {"dataset": "ImageNet", "metric": "Top-1", "value": "78.58", "setting": "SCAN, ViT-S/16, MoCo pre-trained on ImageNet, 35% pruning"},
+    {"dataset": "ImageNet", "metric": "Top-5", "value": "94.19", "setting": "SCAN, ViT-S/16, MoCo pre-trained on ImageNet, 35% pruning"},
+    {"dataset": "CIFAR-100", "metric": "Top-1", "value": "86.01", "setting": "SCAN, ViT-S/16, MoCo pre-trained on ImageNet, 35% pruning"},
+    {"dataset": "CIFAR-100", "metric": "Top-5", "value": "97.53", "setting": "SCAN, ViT-S/16, MoCo pre-trained on ImageNet, 35% pruning"},
+    {"dataset": "ImageNet", "metric": "Top-1", "value": "79.15", "setting": "SCAN, ViT-B/16, MoCo pre-trained on ImageNet, 35% pruning"},
+    {"dataset": "ImageNet", "metric": "Top-5", "value": "94.33", "setting": "SCAN, ViT-B/16, MoCo pre-trained on ImageNet, 35% pruning"},
+    {"dataset": "CIFAR-100", "metric": "Top-1", "value": "88.11", "setting": "SCAN, ViT-B/16, MoCo pre-trained on ImageNet, 35% pruning"},
+    {"dataset": "CIFAR-100", "metric": "Top-5", "value": "97.78", "setting": "SCAN, ViT-B/16, MoCo pre-trained on ImageNet, 35% pruning"}
+  ]
+}

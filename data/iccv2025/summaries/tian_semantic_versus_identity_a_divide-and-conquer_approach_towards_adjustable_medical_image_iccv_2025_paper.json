@@ -1,0 +1,34 @@
+{
+  "nutshell": "Medical images (chest X-rays, fundus photos) can be re-identified from anatomical structure alone even after metadata removal, but existing de-identification methods either destroy diagnostic content (blurring) or can't flexibly trade off privacy vs. utility. DCM-DeID separates the problem into identity removal (adjustable-threshold region blocking) and medical semantics preservation (extracting features from frozen medical foundation models, then discarding residual identity leakage via a learned minimum-codelength feature split), then re-synthesizes a usable image with a diffusion model.",
+  "contributions": [
+    "A fair benchmark reproducing 5 prior privacy-protection baselines (Pixel-Blur, Feat-Noise, ID-Adv, Privacy-Net, MAE) across 7 datasets and 3 downstream tasks (classification, captioning, segmentation) spanning X-ray and fundus modalities.",
+    "A divide-and-conquer pipeline: adjustable ID-Blocking via a ReID-similarity threshold (rather than a single jointly-optimized privacy/utility objective as in prior adversarial methods), followed by medical foundation model (MFM) feature extraction and diffusion-based re-synthesis conditioned on both the blocked image and cleaned semantic features.",
+    "A Minimum Description Length (MDL)/rate-distortion-based feature decoupling strategy: learns a discrete, entropy-modeled code space for MFM features, splits codes into identity- vs. semantic-associated via a learned Gumbel-Softmax mask, and discards the identity codes before re-synthesis - explicitly addressing that MFM features themselves leak residual identity information.",
+    "Reports state-of-the-art performance across all tested downstream tasks/datasets at matched attack success rates, including strong generalization to 5 of 7 datasets never seen during training."
+  ],
+  "deficiencies": [
+    "The paper's own analysis (Fig. 6) estimates 42-57% of MFM feature information as identity-related and discards it, but no ablation quantifies what diagnostic information (if any) is lost alongside that large discarded fraction, beyond the headline downstream-task metrics.",
+    "The identity/semantic split relies on a single learned convolution plus Gumbel-Softmax mask with no interpretability check on what it actually captures - the paper offers only end-task performance numbers and one qualitative example (Fig. 5), not evidence that the 'identity' partition doesn't also carry diagnostic signal.",
+    "All baselines (Pixel-Blur, Feat-Noise, ID-Adv, Privacy-Net, MAE) are reimplemented by the authors with narrow hyperparameter sweeps (4-5 discrete values each), while the proposed method has multiple separately-ablated hyperparameters (β, threshold quantiles r, code channel count) - leaving open whether baselines received comparably thorough tuning.",
+    "Inference takes 540ms versus 120-126ms for 3 of the 5 baselines (roughly 4-4.5x slower) due to multi-step diffusion; this is dismissed as 'acceptable' in one sentence without discussing throughput implications for the 88K-377K-image clinical archives the datasets represent."
+  ],
+  "notable": "A genuinely useful cautionary finding buried in Figure 3(a): the jointly-optimized adversarial baselines (ID-Adv, Privacy-Net) actually perform *worse* than simple Gaussian blurring at aggressive privacy settings (AUROC 56.32%/54.21% vs. blur's 61.62% at ID-R=5% on MIMIC-X) - evidence that jointly optimizing conflicting privacy/utility objectives can backfire relative to a naive baseline. Also notable: this paper's own reference [99], 'Towards All-in-One Medical Image Re-Identification,' is the exact same paper already summarized elsewhere in this literature review batch (CVPR2025, same first author Yuan Tian) - the medical ReID attack models used here build directly on that earlier work, indicating a small, active research cluster at Shanghai AI Lab working specifically on this medical-ReID/de-identification niche.",
+  "results": [
+    {"dataset": "MIMIC-X", "metric": "X-ray Classification AUROC", "value": "72.86", "setting": "attack success rate (SR) 10%"},
+    {"dataset": "Chest-XRay", "metric": "X-ray Classification AUROC", "value": "73.66", "setting": "attack success rate (SR) 10%"},
+    {"dataset": "CheXpert", "metric": "X-ray Classification AUROC", "value": "86.12", "setting": "attack success rate (SR) 10%"},
+    {"dataset": "MIMIC-X", "metric": "X-ray Caption BLEU", "value": "0.1750", "setting": "attack success rate (SR) 10%"},
+    {"dataset": "ChestX-Det", "metric": "X-ray Segmentation Dice", "value": "27.98", "setting": "attack success rate (SR) 10%"},
+    {"dataset": "EyePACS", "metric": "Fundus Classification AUROC", "value": "65.23", "setting": "attack success rate (SR) 10%"},
+    {"dataset": "ODIR5K", "metric": "Fundus Classification AUROC", "value": "59.96", "setting": "attack success rate (SR) 10%"},
+    {"dataset": "Refuge2", "metric": "Fundus Segmentation Dice", "value": "54.66", "setting": "attack success rate (SR) 10%"},
+    {"dataset": "MIMIC-X", "metric": "X-ray Classification AUROC", "value": "74.35", "setting": "attack success rate (SR) 20%"},
+    {"dataset": "Chest-XRay", "metric": "X-ray Classification AUROC", "value": "75.01", "setting": "attack success rate (SR) 20%"},
+    {"dataset": "CheXpert", "metric": "X-ray Classification AUROC", "value": "86.32", "setting": "attack success rate (SR) 20%"},
+    {"dataset": "MIMIC-X", "metric": "X-ray Caption BLEU", "value": "0.1859", "setting": "attack success rate (SR) 20%"},
+    {"dataset": "ChestX-Det", "metric": "X-ray Segmentation Dice", "value": "29.49", "setting": "attack success rate (SR) 20%"},
+    {"dataset": "EyePACS", "metric": "Fundus Classification AUROC", "value": "69.59", "setting": "attack success rate (SR) 20%"},
+    {"dataset": "ODIR5K", "metric": "Fundus Classification AUROC", "value": "60.41", "setting": "attack success rate (SR) 20%"},
+    {"dataset": "Refuge2", "metric": "Fundus Segmentation Dice", "value": "62.04", "setting": "attack success rate (SR) 20%"}
+  ]
+}

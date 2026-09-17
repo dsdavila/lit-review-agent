@@ -1,0 +1,34 @@
+{
+  "nutshell": "Visible-infrared person ReID (VI-ReID) needs to close a large cross-modality appearance gap. Prior attention-based methods mine only one dimension (spatial OR channel) and only in the network's deep, modality-shared layers, missing modality-specific cues available earlier in the network. WRIM-Net adds a lightweight attention module (MIIM) placed in both shallow (per-modality) and deep (shared) layers to jointly mine spatial and channel information cheaply, plus a new contrastive loss (CMKIC) that deliberately picks the LEAST similar same-identity cross-modality samples as positives rather than random or single positives.",
+  "contributions": [
+    "MIIM (Multi-dimension Interactive Information Mining) module: compresses features spatially and channel-wise, then runs cross-attention (a higher-resolution query against a lower-resolution key/value, termed Global Region Interaction) to get non-local spatial dependencies cheaply enough to place the module in shallow, per-modality-specific layers - not just the deep shared layers where prior attention-based VI-ReID methods (AGW, DDAG, MPANet) operate.",
+    "Placement strategy: separate (per-modality) MIIM instances after blocks 1-2 to mine modality-specific multi-dimension information, and a shared MIIM after blocks 3-4 to mine modality-shared information - explicitly targeting a gap in prior dual-stream architectures, which split modality-specific parameters in shallow layers but never added multi-dimension attention interaction there.",
+    "CMKIC (Cross-Modality Key-Instance Contrastive) loss: for each anchor, selects the top-K LEAST similar same-ID cross-modality samples as positives (rather than a random or single positive), deliberately increasing task difficulty to force the network toward genuinely modality-invariant features; combined with an auxiliary ID+triplet loss applied to an earlier block's features (AICL).",
+    "Reports new SOTA (or near-SOTA) results across SYSU-MM01, RegDB, and the newer, harder LLCM benchmark, with ablations showing MIIM and CMKIC each independently improve over baseline."
+  ],
+  "deficiencies": [
+    "On RegDB VIS2IR (Table 1), WRIM-Net's Rank-1 (94.5) is actually second-best, trailing MUN's 95.2 - the paper's claim of 'best performance by almost all the metrics on all three benchmarks' glosses over this specific case without discussing it in the results text.",
+    "The ablation (Table 3) shows MIIM alone gives +4.89% Rank-1/+4.51% mAP and AICL alone gives +4.41%/+4.22%, but combined they only reach +7.96%/+7.7% - noticeably less than the naive sum of the two isolated gains (+9.30%/+8.73%). This overlap between what MIIM and CMKIC each capture is not discussed anywhere in the paper.",
+    "The CMKIC top-K ablation (Table 10) shows a real sensitivity: performance peaks at K=4 and declines at K=6 and K=8, with no explanation offered for why an even 'harder' positive set (larger K) would hurt rather than help the model's modality-invariance training. Combined with the separately-tuned spatial/channel compression ratios (Tables 7-8) and ks parameter (Table 9), the full method has at least 6 interacting hyperparameters tuned per-dataset, with only single-run point estimates reported - no variance or repeated-seed results anywhere in the paper.",
+    "All three benchmark comparison tables (1 and 2) report single-run numbers with no standard deviation or multiple-seed reporting, despite some margins over the next-best competitor being fairly close (e.g. RegDB VIS2IR mAP 90.5 vs. CAL's 88.7)."
+  ],
+  "notable": "The CMKIC loss's central design choice - picking the LEAST similar same-ID cross-modality samples as positives, rather than random or easy ones - is the inverse of the usual hard-negative-mining intuition in metric learning (mining hard negatives, not hard positives). The paper's own ablation (Table 10, 'W' vs 'W/O' at top-K=4) isolates this choice and shows it alone contributes a real, measurable gain (56.46 -> 58.38 Rank-1) over randomly selecting the same number of positives - a reusable finding for anyone designing contrastive objectives for cross-modality retrieval tasks beyond ReID.",
+  "results": [
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "77.4", "setting": "All-Search, single-shot gallery"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "75.4", "setting": "All-Search, single-shot gallery"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "83.2", "setting": "All-Search, multi-shot gallery"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "71.1", "setting": "All-Search, multi-shot gallery"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "86.2", "setting": "Indoor-Search, single-shot gallery"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "88.1", "setting": "Indoor-Search, single-shot gallery"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "92.1", "setting": "Indoor-Search, multi-shot gallery"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "84.6", "setting": "Indoor-Search, multi-shot gallery"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "94.5", "setting": "VIS2IR"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "90.5", "setting": "VIS2IR"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "93.7", "setting": "IR2VIS"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "89.7", "setting": "IR2VIS"},
+    {"dataset": "LLCM", "metric": "Rank-1", "value": "58.4", "setting": "IR2VIS"},
+    {"dataset": "LLCM", "metric": "mAP", "value": "64.8", "setting": "IR2VIS"},
+    {"dataset": "LLCM", "metric": "Rank-1", "value": "67.0", "setting": "VIS2IR"},
+    {"dataset": "LLCM", "metric": "mAP", "value": "69.2", "setting": "VIS2IR"}
+  ]
+}

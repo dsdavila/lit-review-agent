@@ -1,0 +1,22 @@
+{
+  "nutshell": "Instance-specific Image Goal Navigation (InstanceImageNav) asks a robot to navigate to the exact object instance shown in a goal image, in a previously-unseen environment. Mod-IIN solves this with a purely modular, zero-fine-tuning pipeline: frontier-based exploration, SuperPoint/SuperGlue keypoint-based instance re-identification, Detic-segmentation-guided goal localization, and fast-marching-method local navigation.",
+  "contributions": [
+    "A modular factorization of InstanceImageNav into exploration, goal instance re-identification, goal localization, and local navigation, instantiated entirely with off-the-shelf components requiring zero fine-tuning or retraining.",
+    "A keypoint-based re-identification method (SuperPoint features + SuperGlue matching, thresholding the sum of match confidence scores) that clearly outperforms ablated alternatives using ResNet-50 or CLIP embedding cosine similarity for the same detection task.",
+    "A goal localization step that uses Detic instance segmentation to mask out background/adjacent-object keypoints before projecting matched points to a map, shown to outperform both a static center-crop ablation and a class-based (semantic segmentation) localization ablation.",
+    "Real-world deployment on a Hello Robot Stretch achieving 88% success (7/8 episodes) across two furnished real environments, demonstrating sim-to-real transfer without any real-world fine-tuning."
+  ],
+  "deficiencies": [
+    "The real-world evaluation is only 8 episodes across 2 environments using 5 unique image goals - a very small sample to support claims of 'effective real-world performance,' and no confidence interval or repeated-trial variance is reported for the 88% figure.",
+    "The paper's own ablation (Table 2, row 7 vs row 8/9) shows that swapping in oracle instance re-identification with the system's own predicted localization does not improve success rate over the full system - an unexplained result the paper attributes only speculatively ('we suspect...shared reliance on keypoint matching') without further diagnosis or a follow-up experiment.",
+    "The comparison against OVRL-v2 (Table 1, the closest prior SOTA baseline) changes multiple variables simultaneously - training dataset (Gibson vs. HM3D), embodiment (LocoBot vs. Stretch-modeled cylinder), and goal definition (image source vs. image subject) - by the paper's own admission, which muddies how much of the reported 2.3x improvement is attributable to the proposed modular method itself versus these confounds.",
+    "The system is explicitly memory-less (stated in Limitations): detection and localization are recomputed independently at each timestep with no persistent scene memory, which caps its applicability to single continuous exploration episodes rather than the kind of long-term, revisit-aware operation implied by framing the motivation around real-world deployment scenarios like package delivery."
+  ],
+  "notable": "The instance re-identification detection threshold is not hand-tuned; it is selected by collecting a held-out pairwise goal-image dataset and picking the threshold that maximizes F-measure on precision-recall curves (Sec 4.1, Fig 3) - a reusable, principled way to calibrate any threshold-based binary classifier embedded in a larger pipeline without needing labeled downstream navigation episodes. Also worth flagging for anyone assembling a person-ReID literature review: this paper's 'instance re-identification' is a generic embodied-vision keypoint-matching subroutine for navigating to objects (chairs, plants, beds), not person re-identification - it was almost certainly pulled into this corpus because the term 're-identification' appears as a named subtask, not because it's about people.",
+  "results": [
+    {"dataset": "HM3D InstanceImageNav (Validation)", "metric": "Success Rate (SR)", "value": "0.561", "setting": "Mod-IIN (Ours), zero fine-tuning"},
+    {"dataset": "HM3D InstanceImageNav (Validation)", "metric": "SPL", "value": "0.233", "setting": "Mod-IIN (Ours)"},
+    {"dataset": "HM3D InstanceImageNav (Validation)", "metric": "Navigation Error (NE)", "value": "3.1", "setting": "Mod-IIN (Ours), lower is better"},
+    {"dataset": "Real-world deployment (Hello Robot Stretch, office + apartment)", "metric": "Success Rate", "value": "88% (7/8 episodes)", "setting": "5 unique image goals across 2 environments"}
+  ]
+}

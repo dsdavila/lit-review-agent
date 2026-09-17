@@ -1,0 +1,50 @@
+{
+  "nutshell": "Person search (joint pedestrian detection + re-identification in scene images) has never been evaluated for robustness to real-world image corruptions. This paper builds two corruption benchmarks (CUHK-SYSU-C, PRW-C; 18 corruption types x 5 severities each) by algorithmically corrupting existing public data, shows both detection and re-id stages degrade sharply under corruption (with the re-id/representation stage and foreground corruption being the most damaging), and proposes a foreground-aware augmentation plus a proposal-consistency regularizer that improves robustness at no extra parameters or inference cost.",
+  "contributions": [
+    "Two new benchmarks, CUHK-SYSU-C and PRW-C, extending the existing CUHK-SYSU and PRW datasets with 18 corruption types at 5 severity levels each, built by algorithmic corruption of existing public images rather than collecting new person data (avoiding added privacy concerns).",
+    "A stage-isolating analysis showing the re-identification/representation stage is far more vulnerable to corruption than the detection stage (Table 2: representation-stage corruption at severity 5 drops search R@1 to 19.3 vs. 69.8 for detection-stage corruption at the same severity), and that corruption localized to the foreground (the person) degrades performance nearly as much as corrupting the whole image, while background-only corruption barely matters (Fig. 3).",
+    "Foreground-aware Augmentation + Robust Proposal Regularizer: augmentation (rotation, shear, translation, solarization, etc. via AugMix) is applied only inside ground-truth person boxes (with a coordinate translation to avoid a training shortcut), and a KL-divergence regularizer pulls IoU-weighted proposal representations of the augmented image toward a mixture representation of the clean image's proposals - added to the existing OIM loss with no added parameters or inference-time cost.",
+    "Validation on manually-annotated real-world corrupted images collected from BDD100K (rain/dark/blur/fog), showing the method's robustness gains transfer beyond the synthetic corruption benchmark it was designed and tuned on."
+  ],
+  "deficiencies": [
+    "The paper's central 'simple integration isn't enough' claim (Table 1, OADG+CIL row) is used to motivate a fully custom method, but the comparison isn't fully controlled: OADG+CIL is evaluated as an off-the-shelf two-step pipeline while the proposed method is tuned end-to-end on top of the same backbones it's compared against, so 'our method beats naive integration of existing robust models' doesn't rule out that a more carefully tuned two-step baseline would close much of the gap.",
+    "The real-world validation (Table 5) rests on only 400 manually-collected/annotated images (100 each for rain, dark, blur, fog) with a single train/test split per scenario - headline claims like the 53.7% relative R@1 gain in the rain scenario are drawn from a small, single-run real-world sample with no reported variance.",
+    "COAT is the one backbone where the method actually hurts clean-data performance (R@1 94.7 -> 92.8); the paper attributes this post-hoc to COAT's existing token-mixup augmentation without any ablation isolating that explanation, so it reads as a plausible guess rather than a verified finding.",
+    "The paper's own Limitations section concedes it never tests multiple simultaneous corruptions (e.g. rain + dark together) or continuous (non-discretized) severity, despite these being the norm rather than the exception in the real outdoor surveillance conditions motivating the work - left entirely to future work."
+  ],
+  "notable": "Buried in an appendix-referenced observation in Sec. 3.1: applying the *same* corruption type to both the query and gallery images sometimes yields *higher* search performance than corrupting only one side, which contradicts the naive intuition that matching two corrupted images should be strictly harder - worth flagging for anyone designing corruption benchmarks with asymmetric query/gallery corruption, since it means benchmark performance can depend on corruption-pairing choices in non-obvious ways.",
+  "results": [
+    {"dataset": "CUHK-SYSU-C", "metric": "R@1", "value": "48.7", "setting": "OIMNet backbone + proposed method (foreground-aware augmentation + robust proposal regularizer)"},
+    {"dataset": "CUHK-SYSU-C", "metric": "mAP", "value": "47.4", "setting": "OIMNet backbone + proposed method"},
+    {"dataset": "CUHK-SYSU-C", "metric": "R@1", "value": "62.2", "setting": "NAE backbone + proposed method"},
+    {"dataset": "CUHK-SYSU-C", "metric": "mAP", "value": "59.7", "setting": "NAE backbone + proposed method"},
+    {"dataset": "CUHK-SYSU-C", "metric": "R@1", "value": "58.8", "setting": "OIMNet++ backbone + proposed method"},
+    {"dataset": "CUHK-SYSU-C", "metric": "mAP", "value": "57.4", "setting": "OIMNet++ backbone + proposed method"},
+    {"dataset": "CUHK-SYSU-C", "metric": "R@1", "value": "66.7", "setting": "SeqNet backbone (primary baseline used in ablations) + proposed method"},
+    {"dataset": "CUHK-SYSU-C", "metric": "mAP", "value": "65.0", "setting": "SeqNet backbone + proposed method"},
+    {"dataset": "CUHK-SYSU-C", "metric": "R@1", "value": "63.9", "setting": "COAT backbone + proposed method"},
+    {"dataset": "CUHK-SYSU-C", "metric": "mAP", "value": "62.0", "setting": "COAT backbone + proposed method"},
+    {"dataset": "CUHK-SYSU-C", "metric": "R@1", "value": "65.6", "setting": "SAT backbone + proposed method"},
+    {"dataset": "CUHK-SYSU-C", "metric": "mAP", "value": "63.0", "setting": "SAT backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "R@1", "value": "40.8", "setting": "OIMNet backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "mAP", "value": "13.0", "setting": "OIMNet backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "R@1", "value": "45.9", "setting": "NAE backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "mAP", "value": "15.5", "setting": "NAE backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "R@1", "value": "47.8", "setting": "OIMNet++ backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "mAP", "value": "16.3", "setting": "OIMNet++ backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "R@1", "value": "47.8", "setting": "SeqNet backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "mAP", "value": "15.9", "setting": "SeqNet backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "R@1", "value": "55.4", "setting": "COAT backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "mAP", "value": "21.4", "setting": "COAT backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "R@1", "value": "57.4", "setting": "SAT backbone + proposed method"},
+    {"dataset": "PRW-C", "metric": "mAP", "value": "22.5", "setting": "SAT backbone + proposed method"},
+    {"dataset": "BDD100K real-world (Rain)", "metric": "R@1", "value": "43.5", "setting": "trained on clean data, SeqNet + proposed method"},
+    {"dataset": "BDD100K real-world (Rain)", "metric": "mAP", "value": "48.1", "setting": "trained on clean data, SeqNet + proposed method"},
+    {"dataset": "BDD100K real-world (Dark)", "metric": "R@1", "value": "43.2", "setting": "trained on clean data, SeqNet + proposed method"},
+    {"dataset": "BDD100K real-world (Dark)", "metric": "mAP", "value": "48.5", "setting": "trained on clean data, SeqNet + proposed method"},
+    {"dataset": "BDD100K real-world (Blur)", "metric": "R@1", "value": "32.9", "setting": "trained on clean data, SeqNet + proposed method"},
+    {"dataset": "BDD100K real-world (Blur)", "metric": "mAP", "value": "31.2", "setting": "trained on clean data, SeqNet + proposed method"},
+    {"dataset": "BDD100K real-world (Fog)", "metric": "R@1", "value": "53.4", "setting": "trained on clean data, SeqNet + proposed method"},
+    {"dataset": "BDD100K real-world (Fog)", "metric": "mAP", "value": "46.2", "setting": "trained on clean data, SeqNet + proposed method"}
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "nutshell": "Standard ReID (and even domain-generalized ReID) assumes train and test data share one object category, requiring a separate model per category (person, vehicle, etc.). This paper introduces Object-Generalized Re-Identification (OG-ReID): learning one category-agnostic identity representation that generalizes across heterogeneous object types. Their MGOR framework treats meta-learning not as adaptation but as distributional regularization - episodes are built with perturbed category mixtures (EDPS), the model must stay discriminative on the perturbed split without adapting (MOIL), and a dual global/category-local supervision head (HSE) balances cross-category invariance against within-category discrimination.",
+  "contributions": [
+    "A new task formulation, OG-ReID, that distinguishes 'category shifts' (fundamentally different identity-defining visual cues across object types - body parts vs. geometric contours vs. texture patterns) from the appearance-level 'domain shifts' that existing DG-ReID work targets.",
+    "Episodic Distribution Perturbation Sampling (EDPS): builds category-balanced mini-batches and splits them into meta-train/meta-test halves with deliberately perturbed category composition per episode, unlike standard P×K sampling which leaves category mixture unconstrained during training.",
+    "Meta-Object Invariance Learning (MOIL): reframes meta-learning as a stability test rather than MAML-style adaptation - a single θ must remain discriminative on the perturbed meta-test split with no adaptation step, plus a Conditional Pairwise Alignment loss (1D sliced Wasserstein distance between meta-train/meta-test positive/negative distance distributions) to keep local discriminative geometry stable across the perturbation.",
+    "Hierarchical Semantic Equilibrium (HSE): two ViT class tokens (global category-agnostic + category-local) trained jointly in meta-train but validated only via the global token in meta-test and at inference, reconciling within-category discrimination and cross-category invariance through label-space factorization rather than explicit/adversarial alignment.",
+    "Trained on 5 single-category datasets (person, vehicle, vessel, two animal species) and evaluated zero-shot (no target-domain adaptation) across 9 diverse datasets spanning 100+ unseen categories - including wildlife, pet faces, generic objects, and even a geo-localization task - beating both domain-specific and domain-generalizable baselines, and a recent category-generalization competitor (VICP) that requires target-domain adaptation samples while MGOR needs none."
+  ],
+  "deficiencies": [
+    "On MSMT17 - the most standard, best-understood benchmark in the whole evaluation suite, and a seen category (person) - a plain domain-specific baseline (CLIP-ReID) outright beats MGOR (Rank-1 43.4 vs. 41.3, mAP 19.4 vs. 18.1). The paper concedes this in the text but frames it as an acceptable trade-off, which means the flagship generalization method isn't the best choice on the single benchmark most readers will already have priors about.",
+    "Table 3's ablation shows nearly all of the improvement over the TransReID baseline comes from the first addition alone (EDPS & MOIL: e.g. MSMT17 mAP 14.2→16.2, PetFace mAP 31.5→40.5), while HSE's further contribution is comparatively small on several datasets (e.g. Wildlife71 mAP 85.3→86.0, ELPephants R1 36.5→38.6) - the text describes HSE as yielding 'the most significant overall improvement,' which overstates its marginal contribution relative to EDPS+MOIL on multiple of the six ablation datasets.",
+    "All five training categories come from a single, fairly narrow benchmark dataset each (Market-1501, VeRi, VesselReID, iPanda-50, ATRW), and much of the unseen-category evaluation also leans on similarly curated settings (PetFace pet portraits, CUTE lab-controlled objects) - there's no evaluation on uncontrolled, cluttered real-world multi-category imagery, so how far the reported generalization extends beyond benchmark-style photography is untested.",
+    "Fig. 5's own parameter analysis shows that increasing EDPS's category-disjoint probability actively hurts the seen-category benchmark (MSMT17) while helping multi-category evaluation - a genuine single-category-vs-multi-category trade-off baked into the method's core sampling hyperparameter - but the main results report only one fixed operating point, without guidance for a deployment that doesn't know in advance whether its test distribution will be single- or multi-category."
+  ],
+  "notable": "The closest prior 'Generalizable Object ReID' competitor, VICP, needs a batch of target-domain images for in-context prompt adaptation and performs reasonably on single-category and even some multi-category settings (e.g. CUTE mAP 30.1) - but its Wildlife71 mAP collapses to just 1.2 (vs. MGOR's 86.0), a far more dramatic failure than the paper's summary phrase ('a pronounced drop in mixed category settings') conveys on its own; worth knowing since it shows target-adaptation-based generalization methods can fail catastrophically rather than gracefully outside their comfort zone.",
+  "results": [
+    {"dataset": "MSMT17", "metric": "mAP", "value": "18.1", "setting": "seen category (person), zero-shot cross-domain, no target adaptation; MGOR trained jointly on Market-1501/VeRi/VesselReID/iPanda-50/ATRW"},
+    {"dataset": "MSMT17", "metric": "mINP", "value": "1.1", "setting": "seen category (person), zero-shot cross-domain, no target adaptation"},
+    {"dataset": "MSMT17", "metric": "Rank-1", "value": "41.3", "setting": "seen category (person), zero-shot cross-domain, no target adaptation"},
+    {"dataset": "UAV-VeID", "metric": "mAP", "value": "38.6", "setting": "seen category (vehicle), drone-view cross-domain, no target adaptation"},
+    {"dataset": "UAV-VeID", "metric": "mINP", "value": "38.6", "setting": "seen category (vehicle), drone-view cross-domain, no target adaptation"},
+    {"dataset": "UAV-VeID", "metric": "Rank-1", "value": "32.0", "setting": "seen category (vehicle), drone-view cross-domain, no target adaptation"},
+    {"dataset": "LeopardID2022", "metric": "mAP", "value": "24.7", "setting": "unseen category (animal), zero-shot, no target adaptation"},
+    {"dataset": "LeopardID2022", "metric": "mINP", "value": "9.2", "setting": "unseen category (animal), zero-shot, no target adaptation"},
+    {"dataset": "LeopardID2022", "metric": "Rank-1", "value": "61.9", "setting": "unseen category (animal), zero-shot, no target adaptation"},
+    {"dataset": "ELPephants", "metric": "mAP", "value": "14.0", "setting": "unseen category (animal), zero-shot, no target adaptation"},
+    {"dataset": "ELPephants", "metric": "mINP", "value": "2.8", "setting": "unseen category (animal), zero-shot, no target adaptation"},
+    {"dataset": "ELPephants", "metric": "Rank-1", "value": "38.6", "setting": "unseen category (animal), zero-shot, no target adaptation"},
+    {"dataset": "University-1652", "metric": "mAP", "value": "19.5", "setting": "unseen task (building geo-localization, satellite-to-drone), zero-shot, no target adaptation"},
+    {"dataset": "University-1652", "metric": "mINP", "value": "3.5", "setting": "unseen task (building geo-localization), zero-shot, no target adaptation"},
+    {"dataset": "University-1652", "metric": "Rank-1", "value": "38.7", "setting": "unseen task (building geo-localization), zero-shot, no target adaptation"},
+    {"dataset": "CUTE", "metric": "mAP", "value": "32.9", "setting": "multi-category (50 object categories, lab-controlled), zero-shot, no target adaptation"},
+    {"dataset": "CUTE", "metric": "mINP", "value": "1.3", "setting": "multi-category, zero-shot, no target adaptation"},
+    {"dataset": "CUTE", "metric": "Rank-1", "value": "87.9", "setting": "multi-category, zero-shot, no target adaptation"},
+    {"dataset": "GZGC", "metric": "mAP", "value": "14.2", "setting": "multi-category (2 categories), zero-shot, no target adaptation"},
+    {"dataset": "GZGC", "metric": "mINP", "value": "7.1", "setting": "multi-category, zero-shot, no target adaptation"},
+    {"dataset": "GZGC", "metric": "Rank-1", "value": "25.2", "setting": "multi-category, zero-shot, no target adaptation"},
+    {"dataset": "PetFace", "metric": "mAP", "value": "41.4", "setting": "multi-category (13 pet species, face recognition task), zero-shot, no target adaptation"},
+    {"dataset": "PetFace", "metric": "mINP", "value": "39.7", "setting": "multi-category, zero-shot, no target adaptation"},
+    {"dataset": "PetFace", "metric": "Rank-1", "value": "38.2", "setting": "multi-category, zero-shot, no target adaptation"},
+    {"dataset": "Wildlife71", "metric": "mAP", "value": "86.0", "setting": "multi-category (67 wildlife species), zero-shot, no target adaptation"},
+    {"dataset": "Wildlife71", "metric": "mINP", "value": "54.5", "setting": "multi-category, zero-shot, no target adaptation"},
+    {"dataset": "Wildlife71", "metric": "Rank-1", "value": "95.8", "setting": "multi-category, zero-shot, no target adaptation"},
+    {"dataset": "Average (9 test sets)", "metric": "mAP", "value": "32.2", "setting": "mean across all 9 evaluation datasets"},
+    {"dataset": "Average (9 test sets)", "metric": "mINP", "value": "17.5", "setting": "mean across all 9 evaluation datasets"},
+    {"dataset": "Average (9 test sets)", "metric": "Rank-1", "value": "51.1", "setting": "mean across all 9 evaluation datasets"}
+  ]
+}

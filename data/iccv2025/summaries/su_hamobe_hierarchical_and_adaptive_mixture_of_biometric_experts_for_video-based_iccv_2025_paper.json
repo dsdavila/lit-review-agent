@@ -1,0 +1,36 @@
+{
+  "nutshell": "Video-based person ReID benefits from combining long-term (body shape), short-term (appearance/clothing), and temporal (gait) cues, but prior methods aggregate them with fixed architectures. HAMoBE applies a two-level Mixture-of-Experts on frozen CLIP features to adaptively weight these three biometric cues per video, plus an optional dual-input gating mode that jointly reasons over the query-gallery pair.",
+  "contributions": [
+    "Two-level hierarchical MoE: 8 first-layer expert MLPs distill low-level CLIP features, which a gating network routes into 3 specialized second-layer experts (long-term/short-term/temporal) producing disentangled biometric features, fused by a softmax-gated combination.",
+    "A dual-input decision gating network that can jointly process query+gallery pairs via multi-head self-attention (not just encode each video independently), applied at inference only to the central q% of ambiguous query-gallery pairs by similarity percentile.",
+    "Three consistency losses (long-term/short-term/temporal, enforcing frame-level and cross-video stability per expert) plus a contrastive loss for dual-input training.",
+    "Reports new SOTA on MARS, LS-VID, CCVID, and MEVID video-based ReID benchmarks, with the largest absolute gains on MEVID's different-clothes protocol."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 5) shows that without the consistency losses, the architecture barely helps or even hurts under clothing change (Vanilla MoE 10.6/14.3 mAP/top-1 on Different-Clothes vs. HAMoBE-no-loss 9.6/13.5 - a regression), meaning essentially all of the headline different-clothes gain (9.6->15.1 mAP) comes from the consistency losses, not the hierarchical MoE architecture that is the paper's primary novelty claim.",
+    "The dual-input inference mechanism - one of two headline contributions - is only applied to 'the central q% of query-gallery pairs' by percentile, but the paper never states what q is set to in the reported experiments, nor ablates sensitivity to it; a load-bearing hyperparameter for the method's most novel inference-time mechanism is unspecified.",
+    "Dual-input mode costs ~10 extra minutes over single-input's ~15 minutes (roughly +67% latency) for a comparatively modest accuracy gain (Single-Input Only: 85.9/86.0 mAP/top-1 general vs. full HAMoBE: 87.2/88.4, per Table 4) - a real deployment cost/benefit tradeoff the paper doesn't discuss.",
+    "All SOTA comparisons re-tabulate published numbers from other papers rather than re-implementing baselines under an identical backbone; HAMoBE uses ViT-L/14 CLIP while several baselines (TriNet, I3D, Non-Local, TCLNet, AP3D) use much smaller/older backbones, so backbone capacity as a confound in the reported gains is not addressed."
+  ],
+  "notable": "The claim that the 8 first-layer experts specialize toward long-term/short-term/temporal cues (Fig. 4) is supported only qualitatively ('although not directly supervised') via eyeballing 8 heatmaps - no quantitative overlap or specialization metric is reported. Also notable: this paper and the earlier BMVC2023 'Scale Adaptive Network' paper in this literature review both use gated/expert-routing ideas (dynamic routing vs. MoE gating) to adaptively weight multi-branch features - a recurring architectural pattern across this corpus rather than a paper-specific novelty.",
+  "results": [
+    {"dataset": "MARS", "metric": "mAP", "value": "91.1", "setting": "video-based ReID, same-clothes protocol"},
+    {"dataset": "MARS", "metric": "top-1", "value": "94.6", "setting": "video-based ReID, same-clothes protocol"},
+    {"dataset": "LS-VID", "metric": "mAP", "value": "85.2", "setting": "video-based ReID, same-clothes protocol"},
+    {"dataset": "LS-VID", "metric": "top-1", "value": "92.1", "setting": "video-based ReID, same-clothes protocol"},
+    {"dataset": "CCVID", "metric": "mAP", "value": "87.2", "setting": "General protocol"},
+    {"dataset": "CCVID", "metric": "top-1", "value": "88.4", "setting": "General protocol"},
+    {"dataset": "CCVID", "metric": "mAP", "value": "85.8", "setting": "Different-Clothes protocol"},
+    {"dataset": "CCVID", "metric": "top-1", "value": "87.6", "setting": "Different-Clothes protocol"},
+    {"dataset": "MEVID", "metric": "mAP", "value": "54.3", "setting": "Same-Clothes protocol"},
+    {"dataset": "MEVID", "metric": "top-1", "value": "74.0", "setting": "Same-Clothes protocol"},
+    {"dataset": "MEVID", "metric": "top-5", "value": "84.7", "setting": "Same-Clothes protocol"},
+    {"dataset": "MEVID", "metric": "top-10", "value": "86.1", "setting": "Same-Clothes protocol"},
+    {"dataset": "MEVID", "metric": "top-20", "value": "88.2", "setting": "Same-Clothes protocol"},
+    {"dataset": "MEVID", "metric": "mAP", "value": "15.1", "setting": "Different-Clothes protocol"},
+    {"dataset": "MEVID", "metric": "top-1", "value": "20.1", "setting": "Different-Clothes protocol"},
+    {"dataset": "MEVID", "metric": "top-5", "value": "29.2", "setting": "Different-Clothes protocol"},
+    {"dataset": "MEVID", "metric": "top-10", "value": "38.4", "setting": "Different-Clothes protocol"},
+    {"dataset": "MEVID", "metric": "top-20", "value": "48.9", "setting": "Different-Clothes protocol"}
+  ]
+}

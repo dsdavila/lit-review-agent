@@ -1,0 +1,34 @@
+{
+  "nutshell": "Fully-supervised visible-infrared person ReID (VI-ReID) needs expensive cross-modality identity labels. This paper defines two cheaper settings - uni-semi-supervised (only visible images labeled) and bi-semi-supervised (both modalities partially labeled) - and proposes DPIS, which fuses two pseudo-labeling methods into a hybrid pseudo-label for the unlabeled data, then uses three modules to handle the inevitable label noise.",
+  "contributions": [
+    "Formalizes two practical low-annotation VI-ReID settings (uni-semi-supervised: only visible labels available; bi-semi-supervised: partial labels in both modalities) and proposes DPIS as one framework for both.",
+    "Combines two independent pseudo-label sources - density clustering (infrared-only) and OTLA optimal-transport assignment (aligned to labeled visible data) - into a single hybrid pseudo-label via GMM-based per-sample confidence comparison, rather than relying on one pseudo-labeling method as prior work does.",
+    "Introduces three complementary noise-handling modules: Noise Label Penalty (confidence-weighted loss down-weighting likely-noisy labels), Noise Correspondence Calibration (recovers false positive/negative pairs among high-confidence 'clear' anchors before a triplet-style loss), and Unreliable Anchor Learning (repurposes low-confidence anchors for contrastive learning instead of discarding them).",
+    "First to report results under a bi-semi-supervised setting (10/25/50% labeled ratio in both modalities) for VI-ReID, benchmarked against five re-implemented fully-supervised methods at matched label rates."
+  ],
+  "deficiencies": [
+    "The paper's own Table 1 (SL rows) shows DPIS is still behind the strongest fully-supervised competitors (LUPI, MPANet, CAJ) on nearly every SYSU-MM01/RegDB metric; the text frames this as 'surprisingly outperforms several fully-supervised methods' by highlighting only the older/weaker SL baselines (JSIA-ReID, DDAG, AGW, NFS, LbA) it beats, while conceding in the same paragraph that 'there is still a large gap' with true SOTA - a somewhat self-serving framing of the same numbers.",
+    "The comparison against unsupervised domain adaptation (UDA) baselines is not apples-to-apples: those UDA methods get zero visible-image identity labels, while DPIS's uni-semi-supervised setting gets full visible-image labels. The large reported margin over UDA methods is presented as a DPIS strength without flagging that the two approaches have fundamentally different supervision budgets.",
+    "The ablation (Table 3) never isolates whether combining two pseudo-label sources (clustering + OTLA) actually beats just picking the better single source with the same downstream modules - every ablation row already starts from the hybridized label, so the paper's core 'dual pseudo-label' claim is not directly tested against a single-pseudo-label control.",
+    "The headline bi-semi-supervised result (50% labeled) is essentially 'half the data fully labeled in both modalities' - a much easier regime than the 'semi-supervised' framing suggests - and the paper never analyzes where the labeled-ratio curve saturates relative to 100% supervision, so it's unclear how much annotation is actually being saved at the labeled ratios it reports."
+  ],
+  "notable": "Table 1 lists two different numeric rows for DPIS itself - once under the 'SL' method group (Rank-1 68.2 on SYSU all-search) and again under the 'USSL' group (Rank-1 58.4 on the same dataset/split) - for what should be the same trained model. Only the USSL-row numbers are consistent with the paper's own prose (the stated '+10.2% Rank-1 / +11.7% mAP improvement over OTLA' matches 48.2->58.4 and 43.9->55.6 exactly), so the SL-row DPIS entry looks like an inconsistency or copy-paste duplication bug in the table rather than a second real result - worth flagging if citing the SL-row numbers specifically. Section 4.1 also explicitly acknowledges its own uni-semi-supervised setting 'is essentially a special unsupervised domain adaptation (UDA) problem,' which is useful context for placing this work relative to the broader UDA-ReID literature.",
+  "results": [
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "58.4", "setting": "uni-semi-supervised (USSL), all-search mode"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "55.6", "setting": "uni-semi-supervised (USSL), all-search mode"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "63.0", "setting": "uni-semi-supervised (USSL), indoor-search mode"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "70.0", "setting": "uni-semi-supervised (USSL), indoor-search mode"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "62.3", "setting": "uni-semi-supervised (USSL), Visible2Thermal"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "53.2", "setting": "uni-semi-supervised (USSL), Visible2Thermal"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "61.5", "setting": "uni-semi-supervised (USSL), Thermal2Visible"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "52.7", "setting": "uni-semi-supervised (USSL), Thermal2Visible"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "67.89", "setting": "bi-semi-supervised, 50% labels, all-search mode"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "64.16", "setting": "bi-semi-supervised, 50% labels, all-search mode"},
+    {"dataset": "SYSU-MM01", "metric": "Rank-1", "value": "71.78", "setting": "bi-semi-supervised, 50% labels, indoor-search mode"},
+    {"dataset": "SYSU-MM01", "metric": "mAP", "value": "76.60", "setting": "bi-semi-supervised, 50% labels, indoor-search mode"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "85.58", "setting": "bi-semi-supervised, 50% labels, Visible2thermal"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "76.73", "setting": "bi-semi-supervised, 50% labels, Visible2thermal"},
+    {"dataset": "RegDB", "metric": "Rank-1", "value": "81.41", "setting": "bi-semi-supervised, 50% labels, Thermal2visible"},
+    {"dataset": "RegDB", "metric": "mAP", "value": "74.13", "setting": "bi-semi-supervised, 50% labels, Thermal2visible"}
+  ]
+}

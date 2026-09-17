@@ -1,0 +1,30 @@
+{
+  "nutshell": "One-stage person search (joint pedestrian detection + re-ID in a single backbone) suffers from a conflict: detection wants shared, common features while re-ID wants identity-specific ones. FSLoRA resolves this by inserting a LoRA-based adapter at every backbone layer that decouples task-specific features both spatially (a mixture-of-experts router, SLM) and in the frequency domain (a router that separately weights low- vs high-frequency components, FLM), instead of only decoupling at late/high-level embeddings or via loss re-weighting as prior work does.",
+  "contributions": [
+    "Full-backbone task decoupling: unlike prior work confined to late-stage/high-level embeddings or the loss function, FSLoRA inserts adapters at every backbone layer to progressively separate detection- and re-ID-specific features starting from early stages.",
+    "Spatial-Level Module (SLM): a LoRA + mixture-of-experts spatial router that dynamically activates different low-rank expert paths per spatial location, producing task-aware feature masks for detection vs. re-ID.",
+    "Frequency-Level Module (FLM): converts backbone features to the frequency domain via FFT, splits them into low/high frequency components with fixed cutoff filters, and learns per-task weights emphasizing low-frequency (detection) vs. high-frequency (re-ID) content before an inverse FFT back to the spatial domain.",
+    "New SOTA on CUHK-SYSU, PRW, and PoseTrack21 with a VMamba backbone, plus a plug-and-play demonstration: adding FSLoRA to three different existing one-stage baselines (NAE, AlignPS, ROI-AlignPS) gives consistent ~2 percentage-point gains on PRW."
+  ],
+  "deficiencies": [
+    "The ablation (Table 2) shows SLM alone contributes +2.25pp mAP and FLM alone +2.37pp mAP, while the combined FSLoRA only reaches +3.08pp total - the two modules' gains look closer to overlapping/redundant than the paper's 'complementary dual adaptation' framing suggests.",
+    "The frequency cutoffs (30 for low-pass, 40 for high-pass) are hand-tuned via a grid search (Fig. 7) on a single dataset (PRW) and then reused as fixed constants on CUHK-SYSU and PoseTrack21 without any evidence they transfer, despite those datasets differing substantially in scale and domain.",
+    "The headline SOTA comparison (Table 4) reports FSLoRA on a VMamba backbone (M) against competitors mostly using ResNet (R) or Transformer (T) backbones - part of the reported gain over prior SOTA (e.g. vs. SPNet-L, PSDiff, SOLIDER) is confounded with this backbone change, and no same-backbone ablation isolates the adapter's own contribution against the strongest transformer-based competitors.",
+    "No inference latency, FLOPs, or memory overhead is reported anywhere despite adding an MoE router plus FFT/iFFT operations to every backbone layer - the paper claims 'less than 2% extra parameters' but never measures the runtime cost of the added frequency-domain computation."
+  ],
+  "notable": "The FLM-position ablation (Table 3) shows inserting the frequency module between the LoRA low-rank projection A and the spatial module (order: A -> FLM -> SLM) not only performs best but also uses fewer parameters than the two alternative orderings tested - a concrete placement detail worth remembering when designing similar frequency-domain adapters elsewhere. This paper also directly compares against and outperforms two other papers already read in this project's batch - SPNet-L (Jaffe & Zakhor, WACV 2025, 'Swap Path Network for Robust Person Search Pre-Training') and PSDiff - giving a useful cross-paper anchor point within this literature review's own corpus.",
+  "results": [
+    {"dataset": "PRW", "metric": "mAP", "value": "61.3", "setting": "VMamba (M) backbone, main SOTA comparison"},
+    {"dataset": "PRW", "metric": "Top-1", "value": "89.5", "setting": "VMamba (M) backbone, main SOTA comparison"},
+    {"dataset": "CUHK-SYSU", "metric": "mAP", "value": "96.6", "setting": "VMamba (M) backbone, main SOTA comparison"},
+    {"dataset": "CUHK-SYSU", "metric": "Top-1", "value": "97.0", "setting": "VMamba (M) backbone, main SOTA comparison"},
+    {"dataset": "PRW", "metric": "mAP", "value": "60.7", "setting": "Transformer (T) backbone variant"},
+    {"dataset": "PRW", "metric": "Top-1", "value": "88.1", "setting": "Transformer (T) backbone variant"},
+    {"dataset": "CUHK-SYSU", "metric": "mAP", "value": "96.0", "setting": "Transformer (T) backbone variant"},
+    {"dataset": "CUHK-SYSU", "metric": "Top-1", "value": "96.5", "setting": "Transformer (T) backbone variant"},
+    {"dataset": "PRW", "metric": "mAP", "value": "58.6", "setting": "multi-view gallery setting"},
+    {"dataset": "PRW", "metric": "Top-1", "value": "81.3", "setting": "multi-view gallery setting"},
+    {"dataset": "PoseTrack21", "metric": "mAP", "value": "70.25", "setting": ""},
+    {"dataset": "PoseTrack21", "metric": "Top-1", "value": "90.10", "setting": ""}
+  ]
+}

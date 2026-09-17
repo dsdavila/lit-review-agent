@@ -1,0 +1,8 @@
+{
+  "item_selector": "div.paper-entry",
+  "title_selector": "h3.title a",
+  "link_selector": "h3.title a",
+  "abstract_selector": "div.abstract-content",
+  "abstract_page": true,
+  "pdf_suffix": ".pdf"
+}

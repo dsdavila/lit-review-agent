@@ -1,0 +1,30 @@
+{
+  "nutshell": "Multi-modal (RGB/NIR/TIR) object re-identification methods typically fully fine-tune a large pre-trained backbone to fuse the modalities, which is expensive. DMPT instead freezes the backbone (CLIP/ViT) and only trains lightweight prompts: it explicitly decouples visual prompts into modality-specific prompts (derived from text descriptions like 'a near-infrared photo of a person') and modality-independent semantic prompts, then lets the semantic prompts exchange information across modalities through a shared 'bind prompt' (PromptIBind) rather than fusing raw features directly.",
+  "contributions": [
+    "A prompt-tuning framework for multi-modal object ReID that trains only ~6.5% of backbone parameters (17.9M of ~275M) by freezing CLIP/ViT and injecting learnable prompts, instead of full fine-tuning.",
+    "Explicit decoupling of visual prompts into modality prompts (derived from text embeddings of modality-attribute words, e.g. 'near-infrared') and modality-independent semantic prompts, motivated by the argument that direct fusion of raw multi-modal features can contaminate modality-specific information.",
+    "PromptIBind: an 'inverse bind' interaction where a single shared bind-prompt token (the mean of the three modalities' semantic prompts) exchanges information with each modality's semantic prompt via cross-attention, as an alternative to prior binding approaches (LanguageBind, ImageBind) that bind everything to one designated anchor modality.",
+    "Matches or beats several full-fine-tuning SOTA methods (e.g. beats HTT-CLIP by 3.2 mAP on RGBNT201 and 5.3 mAP on Market1501-MM) while updating far fewer parameters, and reports up to 93.5% lower training memory usage."
+  ],
+  "deficiencies": [
+    "The paper's own ablation (Table 3) shows PromptIBind - one of only two headline methodological contributions - contributes the least of the three added components: +1.8 mAP (71.7→73.5) from adding the bind prompt vs. +3.2 mAP (73.5→76.7) from adding modality-decoupling prompts and +1.8 mAP from text prompts. The modality-decoupling idea, not the more heavily marketed PromptIBind mechanism, does most of the ablation-table work.",
+    "On the vehicle re-ID benchmarks (Table 2), DMPT's headline mAP wins are on the margin (81.7 vs. TOP-ReID's 81.2 on RGBNT100; 36.6 vs. CCNet's 36.4 on MSVR310) while its Rank-1 accuracy is actually lower than full fine-tuning competitors on both (94.1 vs. TOP-ReID's 96.4 on RGBNT100; 52.1 vs. CCNet's 55.2 on MSVR310) - the 'outperforms full fine-tuning' framing is supported mainly by mAP, not consistently by Rank-1.",
+    "The interaction-layer-depth ablation (Table 4) reports that 2 layers perform worse than 1 layer ('weakens decoupling behavior, potentially contaminating cross-modal information'), but this is asserted rather than mechanistically explained or diagnosed - no analysis of what actually degrades (e.g. attention entropy, gradient norms) is given.",
+    "All results are single-run point estimates on all four benchmarks with no variance/multiple-seed reporting, which matters given some of the vehicle-dataset margins over prior SOTA are under 1 mAP point."
+  ],
+  "notable": "Reference [23], self-cited by the first author (Minghui Lin) in the related-work list of prior fusion methods, is titled 'SANet: Selective Aggregation Network for unsupervised object re-identification' (CVIU 2024) - an unrelated method that happens to share the exact acronym 'SANet' with a different BMVC 2023 paper ('Scale Adaptive Network') on partial person ReID. Anyone cross-referencing 'SANet' across a person-ReID literature review should be careful not to conflate the two - same acronym, different authors, different methods, different years.",
+  "results": [
+    {"dataset": "RGBNT201", "metric": "mAP", "value": "78.5", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "RGBNT201", "metric": "Rank-1", "value": "81.3", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "RGBNT201", "metric": "Rank-5", "value": "90.4", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "RGBNT201", "metric": "Rank-10", "value": "93.5", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "Market1501-MM", "metric": "mAP", "value": "82.7", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "Market1501-MM", "metric": "Rank-1", "value": "92.0", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "Market1501-MM", "metric": "Rank-5", "value": "97.1", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "Market1501-MM", "metric": "Rank-10", "value": "98.5", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "RGBNT100", "metric": "mAP", "value": "81.7", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "RGBNT100", "metric": "Rank-1", "value": "94.1", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "MSVR310", "metric": "mAP", "value": "36.6", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"},
+    {"dataset": "MSVR310", "metric": "Rank-1", "value": "52.1", "setting": "DMPT*, CLIP backbone, 6.5% of parameters tuned"}
+  ]
+}

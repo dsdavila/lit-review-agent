@@ -1,0 +1,40 @@
+{
+  "nutshell": "Online 3D instance segmentation (segmenting/tracking objects from streaming RGB-D, not offline scans) using SAM's 2D masks suffers two compounding problems: SAM's part-level masks fragment single objects into disconnected pieces, and naive IoU-based tracking of those fragments over time causes identity drift under occlusion. SAMosaic3D reframes both as one learnable composition problem: a differentiable Fragment-to-Instance module assembles SAM fragments into coherent instances via soft-gated attention, and an Instance-to-Scene module maintains identities over time using a two-tier memory with cascaded learned-semantic then geometric-IoU matching - all trained end-to-end rather than patched together with hand-crafted heuristics.",
+  "contributions": [
+    "A fully differentiable Fragment-to-Instance Adaptive Assembly module: scene-adaptive soft clustering (predicts instance count and a soft fragment-to-center assignment matrix via distance-based softmax, avoiding the non-differentiable argmax of hard clustering) combined with soft-gated attention that biases self-attention in log-space using a learned co-instance affinity matrix, so intra-instance fragments aggregate while cross-instance interference is suppressed - replacing hand-crafted geometric clustering heuristics with an end-to-end learned grouping.",
+    "Instance-to-Scene Online Merging with a two-tier memory (FIFO-bounded short-term + unbounded long-term) and cascaded matching: Stage 1 uses learned semantic/spatial cross-attention to merge new, geometrically-sparse detections against recently active short-term memory; Stage 2 falls back to geometric IoU verification against long-term memory for re-identifying objects after re-emergence - explicitly modeling the asymmetry between sparse new detections and geometrically-rich accumulated instances that prior uniform-matching methods ignore.",
+    "Assignment-weighted instance supervision (loss weighted by each instance's strongest fragment-assignment confidence) plus explicit BCE merge supervision against ground-truth identity correspondence, directly supervising both the differentiable grouping and the learned temporal association rather than relying only on indirect gradients from downstream segmentation loss.",
+    "State-of-the-art results among online methods on ScanNet, ScanNet200, and SceneNN, plus zero-shot cross-dataset generalization (trained only on ScanNet200, evaluated directly on SceneNN and 3RScan), while running in real time (11.2 FPS with FastSAM; full latency breakdown reported: 69ms/frame excluding the 2D foundation model itself)."
+  ],
+  "deficiencies": [
+    "On 3RScan - the paper's own hardest generalization test (fast-moving cameras, motion blur) - SAMosaic3D is only 'comparable to' the prior AutoSeg3D-E (16.3 vs. 16.8 AP with the SAM backbone) and the FastSAM variant barely edges it out (17.0 vs. 16.8). This is the single toughest robustness setting reported, and it's exactly where the paper's central 'learned composition beats heuristic patching' claim shows its smallest, least convincing margin.",
+    "The paper's own ablation (Table 6) shows explicit merge supervision (the ground-truth-ID BCE loss, one of the more novel contributions) adds only +0.9 AP on top of the cascaded S1+S2 merging (48.2→49.1), while the two-tier memory architecture alone contributes far more (+3.1 AP, 43.8→46.9) - most of the temporal-merging benefit comes from the memory structure itself, not the explicit supervision mechanism that gets comparable billing as a contribution.",
+    "The paper explicitly scopes out independently moving objects ('independently moving objects remain outside our current scope') and lacks open-vocabulary semantics (noted in the conclusion as future work) - two capabilities central to real embodied deployment (dynamic scenes, semantic/language queries) are both left undemonstrated, so the abstract's framing as 'critical for embodied agents' outruns what's actually shown.",
+    "The instance-count cap (Nmax=50) and short-term memory budget (Nshort=50) are tuned and validated only on ScanNet-scale indoor scenes; the paper asserts 'indoor scenes contain a bounded number of instances' but never tests scenes approaching or exceeding these caps (e.g. large open-plan offices, warehouses), leaving degradation behavior in denser real-world scenes unverified."
+  ],
+  "notable": "The ablation in Table 5 shows the co-instance affinity matrix W alone is the single most impactful component (+2.2 AP), outweighing the soft-gated attention mechanism built on top of it (which adds further gains via max-pooling weighting) - suggesting most of the value comes from simply having a differentiable, learned notion of 'which fragments likely belong together,' with the specific log-space attention-biasing as a secondary refinement. Also notable: Table 8's full latency breakdown (41ms 3D backbone / 20ms fragment assembly / 8ms instance merging = 69ms/frame, excluding the 2D VFM) is an unusually transparent systems-level disclosure for a method paper, useful for anyone estimating real deployment cost of a similar online 3D pipeline.",
+  "results": [
+    {"dataset": "ScanNet", "metric": "AP", "value": "45.3", "setting": "SAMosaic3D, SAM backbone"},
+    {"dataset": "ScanNet", "metric": "AP50", "value": "65.9", "setting": "SAMosaic3D, SAM backbone"},
+    {"dataset": "ScanNet", "metric": "AP25", "value": "78.5", "setting": "SAMosaic3D, SAM backbone"},
+    {"dataset": "ScanNet", "metric": "AP", "value": "46.5", "setting": "SAMosaic3D, FastSAM backbone"},
+    {"dataset": "ScanNet", "metric": "AP50", "value": "67.7", "setting": "SAMosaic3D, FastSAM backbone"},
+    {"dataset": "ScanNet", "metric": "AP25", "value": "80.1", "setting": "SAMosaic3D, FastSAM backbone"},
+    {"dataset": "SceneNN", "metric": "AP", "value": "33.2", "setting": "SAMosaic3D, SAM backbone, within-dataset"},
+    {"dataset": "SceneNN", "metric": "AP50", "value": "56.5", "setting": "SAMosaic3D, SAM backbone, within-dataset"},
+    {"dataset": "SceneNN", "metric": "AP25", "value": "69.3", "setting": "SAMosaic3D, SAM backbone, within-dataset"},
+    {"dataset": "SceneNN", "metric": "AP", "value": "35.1", "setting": "SAMosaic3D, FastSAM backbone, within-dataset"},
+    {"dataset": "SceneNN", "metric": "AP50", "value": "58.2", "setting": "SAMosaic3D, FastSAM backbone, within-dataset"},
+    {"dataset": "SceneNN", "metric": "AP25", "value": "71.8", "setting": "SAMosaic3D, FastSAM backbone, within-dataset"},
+    {"dataset": "ScanNet200", "metric": "AP", "value": "46.1", "setting": "SAMosaic3D, SAM backbone, 0.7 FPS"},
+    {"dataset": "ScanNet200", "metric": "AP50", "value": "68.5", "setting": "SAMosaic3D, SAM backbone, 0.7 FPS"},
+    {"dataset": "ScanNet200", "metric": "AP25", "value": "84.2", "setting": "SAMosaic3D, SAM backbone, 0.7 FPS"},
+    {"dataset": "ScanNet200", "metric": "AP", "value": "48.7", "setting": "SAMosaic3D, FastSAM backbone, 11.2 FPS"},
+    {"dataset": "ScanNet200", "metric": "AP50", "value": "69.3", "setting": "SAMosaic3D, FastSAM backbone, 11.2 FPS"},
+    {"dataset": "ScanNet200", "metric": "AP25", "value": "85.4", "setting": "SAMosaic3D, FastSAM backbone, 11.2 FPS"},
+    {"dataset": "ScanNet200→SceneNN", "metric": "AP", "value": "31.7", "setting": "SAMosaic3D, SAM backbone, zero-shot cross-dataset"},
+    {"dataset": "ScanNet200→SceneNN", "metric": "AP", "value": "32.4", "setting": "SAMosaic3D, FastSAM backbone, zero-shot cross-dataset"},
+    {"dataset": "ScanNet200→3RScan", "metric": "AP", "value": "16.3", "setting": "SAMosaic3D, SAM backbone, zero-shot cross-dataset (fast camera motion)"},
+    {"dataset": "ScanNet200→3RScan", "metric": "AP", "value": "17.0", "setting": "SAMosaic3D, FastSAM backbone, zero-shot cross-dataset (fast camera motion)"}
+  ]
+}

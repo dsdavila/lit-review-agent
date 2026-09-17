@@ -1,0 +1,29 @@
+{
+  "nutshell": "Triplet loss represents each group of positive/negative samples with a single (averaged or hard-mined) point, which stops scaling well once a training scheme provides a very large pool of negatives. This paper pairs a MoCo-style momentum dictionary (MoReID, supplying up to 8192 negative samples per query) with a new Hard-distance Elastic (HE) loss that instead uses however many samples currently lie on the 'wrong side' of an optimally-placed decision boundary to represent each group, and shows the two only work well together.",
+  "contributions": [
+    "MoReID: adapts MoCo's momentum-encoder-plus-dictionary architecture to supervised person/vehicle ReID, deliberately using only negative samples from the dictionary (discarding past positives, an empirically-justified design choice) to scale negative sample count during training far beyond what fits in one mini-batch.",
+    "Hard-distance Elastic (HE) loss: for each query, computes an optimal boundary t* (the point where the number of hard positives equals the number of hard negatives - proven to be the unique minimizer of a convex loss) and sums per-sample boundary-crossing penalties, so more than one hard sample can represent each side instead of Triplet loss's single representative.",
+    "Explicitly demonstrates the two components are synergistic rather than independently useful: MoReID with ordinary Triplet loss actually performs worse than the no-dictionary baseline, and HE loss alone (without the enlarged negative pool) only marginally helps - the paper's core claim is about this interaction, not either piece in isolation.",
+    "New reported SOTA (no re-ranking, no external data) on VeRi-776, Market-1501, and all three VeRi-Wild splits, plus an empirical log-linear rule relating optimal learning rate to dataset size."
+  ],
+  "deficiencies": [
+    "Several headline 'SOTA' margins are small - e.g. +0.2 mAP over HRC on VeRi-776, +0.5 mAP over CAL on Market-1501, with R-1 described only as 'comparable' (not better) on two of the three benchmarks - yet the paper's framing ('consistently outperforms the baseline and all previous methods... in terms of both mAP and R-1') reads stronger than that, and no variance or multi-seed results are reported anywhere to support that these margins are not noise.",
+    "The central synergy claim (Table 3: neither MoReID nor HE loss alone helps, only together) is demonstrated on VeRi-776 only - it is never replicated on Market-1501 or VeRi-Wild, so the paper's key mechanistic argument rests on a single dataset's ablation.",
+    "The learning-rate-vs-dataset-size scaling rule (Eq. 4) is fit from just 4 points (3 synthetic VeRi-776 subsets plus the full set) and then only checked qualitatively - a single plotted point each - against Market-1501 and VeRi-Wild, rather than being validated as an actual out-of-sample predictive rule.",
+    "The paper reports an unresolved training instability (loss spikes at higher learning rates) and explicitly states a known mitigation (initial-layer freezing) did not work in their setting, leaving 'more studies are needed' as the answer - a real practical risk for anyone trying to reproduce or retune this method on a new dataset.",
+    "The 'negative samples are at large' framing undersells that positive samples are never scaled at all (past positives are discarded, only current-batch positives are used) - this is a reasonable, empirically-motivated simplification, but the method only actually solves the negative-sample scalability problem, not the positive side."
+  ],
+  "notable": "HE loss's optimal boundary has a clean, cheap-to-compute characterization: the loss is provably convex in the boundary t, and the optimum is exactly the point where the count of hard positives equals the count of hard negatives - found by a single sorted-distance scan (Algorithm 1), no iterative optimization needed. Also notable: the paper found InfoNCE (the workhorse loss of most modern self-supervised contrastive learning) clearly underperforms HE loss and even a properly hard-mined Triplet loss once adapted to supervised multi-positive ReID - a useful negative result against reflexively porting SSL losses into supervised metric-learning setups.",
+  "results": [
+    {"dataset": "VeRi-776", "metric": "mAP", "value": "83.3", "setting": "vehicle ReID, no re-ranking, no external datasets"},
+    {"dataset": "VeRi-776", "metric": "Rank-1", "value": "97.3", "setting": "vehicle ReID, no re-ranking, no external datasets"},
+    {"dataset": "Market-1501", "metric": "mAP", "value": "90.0", "setting": "person ReID, no re-ranking, no external datasets"},
+    {"dataset": "Market-1501", "metric": "Rank-1", "value": "96.1", "setting": "person ReID, no re-ranking, no external datasets"},
+    {"dataset": "VeRi-Wild (small)", "metric": "mAP", "value": "86.1", "setting": "vehicle ReID, no re-ranking, no external datasets"},
+    {"dataset": "VeRi-Wild (small)", "metric": "Rank-1", "value": "96.1", "setting": "vehicle ReID, no re-ranking, no external datasets"},
+    {"dataset": "VeRi-Wild (medium)", "metric": "mAP", "value": "81.2", "setting": "vehicle ReID, no re-ranking, no external datasets"},
+    {"dataset": "VeRi-Wild (medium)", "metric": "Rank-1", "value": "94.5", "setting": "vehicle ReID, no re-ranking, no external datasets"},
+    {"dataset": "VeRi-Wild (large)", "metric": "mAP", "value": "74.1", "setting": "vehicle ReID, no re-ranking, no external datasets"},
+    {"dataset": "VeRi-Wild (large)", "metric": "Rank-1", "value": "91.7", "setting": "vehicle ReID, no re-ranking, no external datasets"}
+  ]
+}

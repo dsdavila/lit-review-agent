@@ -1,0 +1,25 @@
+{
+  "query": "efficient inference for large language models via sparse mixture-of-experts routing",
+  "search_terms": [
+    "mixture of experts",
+    "mixture-of-experts",
+    "MoE",
+    "sparse routing",
+    "expert routing",
+    "conditional computation"
+  ],
+  "conferences": [
+    {
+      "name": "iclr2024",
+      "url": "https://openreview.net/group?id=ICLR.cc/2024/Conference"
+    },
+    {
+      "name": "acl2024-long",
+      "url": "https://aclanthology.org/events/acl-2024/"
+    },
+    {
+      "name": "arxiv-cs-cl-2024-06",
+      "url": "https://arxiv.org/list/cs.CL/2024-06"
+    }
+  ]
+}

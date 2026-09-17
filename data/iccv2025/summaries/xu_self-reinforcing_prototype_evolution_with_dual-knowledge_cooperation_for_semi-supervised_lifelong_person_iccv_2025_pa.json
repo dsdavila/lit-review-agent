@@ -1,0 +1,30 @@
+{
+  "nutshell": "Lifelong person ReID (learning across a sequence of domains without forgetting old ones) typically assumes every domain is fully labeled, which is unrealistic given ReID annotation costs. This paper formalizes Semi-Supervised LReID (Semi-LReID, partial labeling per domain) and proposes SPRED: a self-reinforcing cycle between learnable identity prototypes that generate pseudo-labels and a dual old-model/new-model clustering scheme that purifies those pseudo-labels, plus a prototype-structure distillation loss to resist forgetting.",
+  "contributions": [
+    "First formalization of the Semi-LReID task, with a new large-scale benchmark (12 ReID datasets: 5 training domains, 7 unseen test-only domains) evaluated at variable label rates (10%, 20%, 50%).",
+    "Self-Reinforcing Prototype Evolution (SPE): learnable per-identity prototypes trained with a prototype-contrastive loss on labeled plus pseudo-labeled data, combined with a 'Neighbor Prototype Labeling' rule that pseudo-labels based on the relative confidence between the top-2 nearest prototypes rather than a raw top-1 threshold, reducing the informative-sample discarding that plain thresholding causes.",
+    "Dual-Knowledge Cooperation Pseudo-label Purification (DKCP): clusters new-domain data twice - once with the old model (after aligning feature distributions via a DANet) and once with the current model - and keeps a pseudo-label only if it's consistent with either clustering (via a Jaccard-style set-consistency score), taking the union rather than the intersection of the two purified sets since these were found empirically complementary.",
+    "A prototype-structure KL-divergence distillation loss (comparing old-model-vs-old-prototype affinity distributions against new-model-vs-old-prototype distributions) added on top of standard triplet loss to mitigate catastrophic forgetting."
+  ],
+  "deficiencies": [
+    "Since this is presented as the first Semi-LReID study, there are no independently-published Semi-LReID baselines to compare against - the 'SSL+LReID' comparison methods are all constructed by the authors themselves (bolting the SOTA LReID anti-forgetting method LSTKC onto existing SSL algorithms), so every comparison is against combinations the authors designed, leaving open whether a differently-assembled baseline would close some of the reported gap.",
+    "The advantage shrinks and partially reverses at the highest tested label rate: at 50%, SPRED beats HDC by +2.6% Seen-Avg mAP but loses by -0.4% Seen-Avg R@1 (Table 1) - the method's benefit is concentrated at low label rates (10-20%), and no label rates above 50% are tested to see whether the advantage persists as full supervision is approached.",
+    "On MSMT17 specifically - typically the hardest/most realistic ReID benchmark - SPRED underperforms several baselines at every tested label rate (e.g. at 50%: SPRED mAP 17.4 vs. ShrinkM's 21.7 and HDC's 22.2; at 20%: SPRED 16.1 vs. ShrinkM's 17.5), a per-dataset weakness the paper's aggregate 'Seen-Avg' framing obscures.",
+    "Four hyperparameters (α, Tc, To, Tp) are each swept independently while holding the others at their tuned defaults (Fig. 6); this doesn't rule out sensitive interactions between them, and no experiment checks whether the same default values transfer across the three tested label rates or were implicitly re-tuned per rate."
+  ],
+  "notable": "The reference list makes clear this is a tightly-knit research lineage from a single lab (Jiahuan Zhou's group, Peking University) - refs [8], [9], [25], [52]-[57] are the authors' own prior LReID papers (DKP, LSTKC, DKC, etc.), several of which serve as baselines here. Two of those - DKP ('Distribution-aware Knowledge Prototyping') and 'Learning Continual Compatible Representation for Re-indexing Free Lifelong Person Re-identification' (CVPR2024) - were already independently summarized earlier in this same literature review batch, so this group is visibly iterating on its own baseline stack paper-over-paper - useful context for weighing how independent these successive 'state-of-the-art' claims really are.",
+  "results": [
+    {"dataset": "Seen-Avg (Semi-LReID benchmark)", "metric": "mAP", "value": "50.1", "setting": "label rate 50%, SPRED"},
+    {"dataset": "Seen-Avg (Semi-LReID benchmark)", "metric": "R@1", "value": "60.8", "setting": "label rate 50%, SPRED"},
+    {"dataset": "UnSeen-Avg (Semi-LReID benchmark)", "metric": "mAP", "value": "57.8", "setting": "label rate 50%, SPRED"},
+    {"dataset": "UnSeen-Avg (Semi-LReID benchmark)", "metric": "R@1", "value": "50.3", "setting": "label rate 50%, SPRED"},
+    {"dataset": "Seen-Avg (Semi-LReID benchmark)", "metric": "mAP", "value": "46.5", "setting": "label rate 20%, SPRED"},
+    {"dataset": "Seen-Avg (Semi-LReID benchmark)", "metric": "R@1", "value": "57.5", "setting": "label rate 20%, SPRED"},
+    {"dataset": "UnSeen-Avg (Semi-LReID benchmark)", "metric": "mAP", "value": "55.7", "setting": "label rate 20%, SPRED"},
+    {"dataset": "UnSeen-Avg (Semi-LReID benchmark)", "metric": "R@1", "value": "48.4", "setting": "label rate 20%, SPRED"},
+    {"dataset": "Seen-Avg (Semi-LReID benchmark)", "metric": "mAP", "value": "43.2", "setting": "label rate 10%, SPRED"},
+    {"dataset": "Seen-Avg (Semi-LReID benchmark)", "metric": "R@1", "value": "54.4", "setting": "label rate 10%, SPRED"},
+    {"dataset": "UnSeen-Avg (Semi-LReID benchmark)", "metric": "mAP", "value": "51.7", "setting": "label rate 10%, SPRED"},
+    {"dataset": "UnSeen-Avg (Semi-LReID benchmark)", "metric": "R@1", "value": "44.6", "setting": "label rate 10%, SPRED"}
+  ]
+}

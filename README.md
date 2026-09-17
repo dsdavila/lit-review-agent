@@ -211,9 +211,15 @@ API call/billing path entirely - ask it to.
 ## Building the leaderboard page
 
 `build_gallery_page.py` turns every cached summary into one interactive HTML
-page - "Gallery Set" - a leaderboard (filter to a dataset+metric, see who
-reported what, ranked) plus a searchable literature browser (every paper,
-expandable to its full summary):
+page - "Gallery Set": a searchable, filterable list of every paper, one card
+each, showing its benchmark pills (dataset + headline metric values) up
+front. Filter by task/dataset/metric/year and search by title/author; pick a
+dataset *and* metric to rank the list by that specific benchmark value
+instead of by relevance/year/title. Every card expands to the paper's full
+critical summary. (Earlier versions had a separate row-per-result leaderboard
+table - dropped in favor of one paper-per-card view, since a paper reporting
+several settings/protocols on the same benchmark produced a noisy repeated
+row per variant there.)
 
 ```bash
 python build_gallery_page.py                                # writes data/gallery_set.html

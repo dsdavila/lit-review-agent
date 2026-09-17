@@ -83,25 +83,7 @@
   .stat .n{font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:22px; font-weight:600; color:var(--ink);}
   .stat .l{font-size:11.5px; color:var(--ink-3); margin-top:2px;}
 
-  /* ---------- tabs ---------- */
-  .tabs{display:flex; gap:4px; border-bottom:1px solid var(--border); margin-bottom:20px;}
-  .tab{
-    font-family:var(--sans); font-weight:600; font-size:14.5px; color:var(--ink-3);
-    background:none; border:none; padding:10px 4px; cursor:pointer; position:relative;
-    border-bottom:2px solid transparent; margin-right:22px;
-  }
-  .tab:hover{color:var(--ink);}
-  .tab.active{color:var(--ink); border-bottom-color:var(--accent);}
-
-  .view{display:none;}
-  .view.active{display:block;}
-
   /* ---------- filter bar ---------- */
-  .filterbar{
-    display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;
-    background:var(--surface); border:1px solid var(--border); border-radius:12px;
-    padding:14px; margin-bottom:16px; box-shadow:var(--shadow-card);
-  }
   .field{display:flex; flex-direction:column; gap:5px; min-width:0;}
   .field label{font-size:11px; font-weight:600; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em;}
   select, input[type="search"]{
@@ -113,28 +95,13 @@
   .field.grow{flex:1 1 200px;}
   .field.dataset-f{flex:1 1 240px;}
   .field.task-f{flex:1 1 220px;}
-  .field.metric-f{flex:1 1 160px;}
+  .field.metric-f{flex:1 1 190px;}
   .hint-count{font-size:11px; color:var(--ink-3); font-family:var(--mono);}
 
-  /* ---------- leaderboard table ---------- */
-  .board-note{font-size:12.5px; color:var(--ink-3); line-height:1.5; margin:0 0 14px; max-width:74ch;}
+  .board-note{font-size:12.5px; color:var(--ink-3); line-height:1.5; margin:0 0 16px; max-width:74ch;}
   .board-note b{color:var(--ink-2); font-weight:600;}
-  table.board{width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:var(--shadow-card);}
-  table.board thead th{
-    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; font-weight:600;
-    color:var(--ink-3); padding:10px 12px; border-bottom:1px solid var(--border); background:var(--surface-sunken);
-  }
-  table.board td{padding:10px 12px; border-bottom:1px solid var(--border); font-size:13.5px; vertical-align:top;}
-  table.board tbody tr:last-child td{border-bottom:none;}
-  table.board tbody tr:hover{background:var(--surface-sunken); cursor:pointer;}
-  td.rank{font-family:var(--mono); color:var(--ink-3); width:34px;}
-  td.val{font-family:var(--mono); font-variant-numeric:tabular-nums; font-weight:600; font-size:15px; width:70px;}
-  td.paper-cell{max-width:0;}
-  .paper-title-link{font-weight:600; color:var(--ink); background:none; border:none; text-align:left; padding:0; font-family:var(--sans); font-size:13.5px; cursor:pointer; text-decoration:none;}
-  .paper-title-link:hover{color:var(--accent);}
   .venue-tag{font-family:var(--mono); font-size:11.5px; color:var(--ink-3); white-space:nowrap;}
-  .setting-txt{color:var(--ink-3); font-size:12px;}
-  .row-empty{padding:36px 12px; text-align:center; color:var(--ink-3); font-size:13.5px;}
+  .row-empty{padding:36px 12px; text-align:center; color:var(--ink-3); font-size:13.5px; background:var(--surface); border:1px solid var(--border); border-radius:12px;}
 
   /* ---------- chips ---------- */
   .chip{
@@ -152,6 +119,8 @@
   }
   .paper-card:hover{border-color:var(--border-strong);}
   .pc-head{display:flex; justify-content:space-between; gap:12px; align-items:baseline;}
+  .pc-title-row{display:flex; align-items:baseline; gap:10px;}
+  .pc-rank{font-family:var(--mono); font-variant-numeric:tabular-nums; font-weight:600; font-size:15px; color:var(--accent-strong); flex:none;}
   .pc-title{font-family:var(--serif); font-weight:600; font-size:16.5px; line-height:1.3;}
   .pc-meta{font-size:12px; color:var(--ink-3); margin-top:4px;}
   .pc-nutshell{font-size:13px; color:var(--ink-2); margin-top:8px; line-height:1.5;}
@@ -165,6 +134,8 @@
   }
   .bench-pill .bp-dataset{font-weight:600; color:var(--ink);}
   .bench-pill b{font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--accent-strong); font-weight:600;}
+  .bench-pill.bp-active{background:var(--accent-soft); border-color:var(--accent);}
+  .bench-pill.bp-active .bp-dataset{color:var(--accent-ink);}
 
   /* ---------- detail panel ---------- */
   .detail{
@@ -184,71 +155,17 @@
   .detail-link{font-size:12px; margin-top:12px; display:inline-block;}
 
   footer.pagefoot{margin-top:40px; padding-top:16px; border-top:1px solid var(--border); font-size:12px; color:var(--ink-3); line-height:1.6; max-width:70ch;}
-
-  @media (max-width:640px){
-    table.board thead{display:none;}
-    table.board, table.board tbody, table.board tr, table.board td{display:block; width:100%;}
-    table.board tr{border-bottom:1px solid var(--border); padding:10px 12px;}
-    table.board td{border:none; padding:2px 0;}
-  }
 </style>
 
 <div class="wrap">
   <header class="top">
     <div class="eyebrow">Person Re-Identification &middot; Literature Tracker</div>
     <h1 class="title">Gallery Set</h1>
-    <p class="dek">A leaderboard and literature browser for <span id="stat-papers-inline">&mdash;</span> person/object re-identification papers pulled from CVPR, ICCV, ECCV, WACV, and BMVC (2022&ndash;2026). Filter to a benchmark and metric to see what's been reported against it, or search the full set and read the critical summary behind any single result.</p>
+    <p class="dek">A literature browser for <span id="stat-papers-inline">&mdash;</span> person/object re-identification papers pulled from CVPR, ICCV, ECCV, WACV, and BMVC (2022&ndash;2026). Filter to a task, benchmark, or year; pick a dataset and metric to rank papers by what they reported. Every card expands to the paper's full critical summary.</p>
     <div class="stats" id="stats"></div>
   </header>
 
-  <nav class="tabs">
-    <button class="tab active" data-view="leaderboard">Leaderboard</button>
-    <button class="tab" data-view="browse">Browse papers</button>
-  </nav>
-
-  <section class="view active" id="view-leaderboard">
-    <div class="filterbar">
-      <div class="field task-f">
-        <label for="f-task">Task</label>
-        <select id="f-task"></select>
-      </div>
-      <div class="field dataset-f">
-        <label for="f-dataset">Dataset</label>
-        <select id="f-dataset"></select>
-      </div>
-      <div class="field metric-f">
-        <label for="f-metric">Metric</label>
-        <select id="f-metric"></select>
-      </div>
-      <div class="field">
-        <label for="f-year">Year</label>
-        <select id="f-year"></select>
-      </div>
-      <div class="field">
-        <label>&nbsp;</label>
-        <span class="hint-count" id="board-count"></span>
-      </div>
-    </div>
-    <p class="board-note"><b>Auto-extracted, not ground truth.</b> Values come straight from each paper's own results table via an LLM read &mdash; protocols, backbones, and splits vary even within one dataset+metric pair. Check the setting column, and the paper itself, before citing across rows. Dataset/metric names are normalized for exact-match spelling variants only (e.g. &ldquo;Market-1501&rdquo; / &ldquo;Market1501&rdquo;); genuinely different protocols are kept separate on purpose.</p>
-    <div style="overflow-x:auto;">
-      <table class="board">
-        <thead>
-          <tr>
-            <th style="width:34px;">#</th>
-            <th style="width:90px;" id="value-col-head">Value</th>
-            <th id="metric-col-head">Metric</th>
-            <th id="dataset-col-head">Dataset</th>
-            <th>Paper</th>
-            <th>Venue</th>
-            <th>Setting</th>
-          </tr>
-        </thead>
-        <tbody id="board-body"></tbody>
-      </table>
-    </div>
-  </section>
-
-  <section class="view" id="view-browse">
+  <section>
     <div class="browse-toolbar">
       <div class="field grow">
         <label for="b-search">Search title or author</label>
@@ -257,6 +174,14 @@
       <div class="field task-f">
         <label for="b-task">Task</label>
         <select id="b-task"></select>
+      </div>
+      <div class="field dataset-f">
+        <label for="b-dataset">Dataset</label>
+        <select id="b-dataset"></select>
+      </div>
+      <div class="field metric-f">
+        <label for="b-metric">Metric</label>
+        <select id="b-metric"></select>
       </div>
       <div class="field">
         <label for="b-year">Year</label>
@@ -268,6 +193,7 @@
           <option value="score">Relevance score</option>
           <option value="year">Year, newest</option>
           <option value="title">Title, A&ndash;Z</option>
+          <option value="bench">Benchmark value (pick a dataset + metric)</option>
         </select>
       </div>
       <div class="field">
@@ -275,6 +201,7 @@
         <span class="hint-count" id="browse-count"></span>
       </div>
     </div>
+    <p class="board-note"><b>Auto-extracted, not ground truth.</b> Benchmark numbers come straight from each paper's own results table via an LLM read &mdash; protocols, backbones, and splits vary even within one dataset+metric pair, so ranking by value is a starting point, not a citable leaderboard. Dataset/metric names are normalized for exact-match spelling variants only (e.g. &ldquo;Market-1501&rdquo; / &ldquo;Market1501&rdquo;); genuinely different protocols are kept separate on purpose.</p>
     <div class="paper-list" id="paper-list"></div>
   </section>
 
@@ -345,8 +272,10 @@
   // One pill per benchmark a paper reports against, with its first 1-2 headline
   // metrics - answers "what is this sub-field actually benchmarking against"
   // at a glance without opening every paper. Settings/variants beyond the
-  // first occurrence per metric are left for the expanded detail view.
-  function benchmarkPills(p){
+  // first occurrence per metric are left for the expanded detail view. The
+  // pill for the currently-selected dataset (if any) is highlighted so it's
+  // clear which number put this paper where it is in the list.
+  function benchmarkPills(p, activeDataset){
     const byDataset = new Map();
     (p.results||[]).forEach(r=>{
       if(!byDataset.has(r.dataset)) byDataset.set(r.dataset, new Map());
@@ -356,7 +285,8 @@
     if(!byDataset.size) return '';
     const pills = [...byDataset.entries()].map(([dataset, metrics])=>{
       const metricStr = [...metrics.entries()].slice(0,2).map(([m,v])=>`${esc(m)} <b>${esc(v)}</b>`).join(' &middot; ');
-      return `<span class="bench-pill"><span class="bp-dataset">${esc(dataset)}</span> ${metricStr}</span>`;
+      const active = activeDataset && dataset===activeDataset;
+      return `<span class="bench-pill${active?' bp-active':''}"><span class="bp-dataset">${esc(dataset)}</span> ${metricStr}</span>`;
     });
     return `<div class="bench-pills">${pills.join('')}</div>`;
   }
@@ -380,26 +310,18 @@
   ];
   document.getElementById('stats').innerHTML = stats.map(([n,l])=>`<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
 
-  // ---------------- tabs ----------------
-  document.querySelectorAll('.tab').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-      document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('view-'+btn.dataset.view).classList.add('active');
-    });
-  });
+  // ---------------- filters ----------------
+  const bSearch = document.getElementById('b-search');
+  const bTask = document.getElementById('b-task');
+  const bDataset = document.getElementById('b-dataset');
+  const bMetric = document.getElementById('b-metric');
+  const bYear = document.getElementById('b-year');
+  const bSort = document.getElementById('b-sort');
 
-  // ---------------- leaderboard ----------------
-  const fTask = document.getElementById('f-task');
-  const fDataset = document.getElementById('f-dataset');
-  const fMetric = document.getElementById('f-metric');
-
-  fTask.innerHTML = `<option value="">All tasks</option>` + taskOrder.map(t=>`<option value="${esc(t)}">${esc(t)} (${taskCounts[t]})</option>`).join('');
+  bTask.innerHTML = `<option value="">All tasks</option>` + taskOrder.map(t=>`<option value="${esc(t)}">${esc(t)} (${taskCounts[t]})</option>`).join('');
 
   const distinctYears = [...new Set(DATA.map(p=>p.year).filter(Boolean))].sort((a,b)=>b-a);
-  const fYear = document.getElementById('f-year');
-  fYear.innerHTML = `<option value="">All years</option>` + distinctYears.map(y=>`<option value="${y}">${y}</option>`).join('');
+  bYear.innerHTML = `<option value="">All years</option>` + distinctYears.map(y=>`<option value="${y}">${y}</option>`).join('');
 
   function datasetOptionsFor(task, year){
     const counts = {};
@@ -424,117 +346,87 @@
   }
 
   function refreshDatasetOptions(preferred){
-    const year = fYear.value ? Number(fYear.value) : null;
-    const opts = datasetOptionsFor(fTask.value, year);
-    fDataset.innerHTML = `<option value="">All datasets</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
-    if(preferred && opts.some(o=>o[0]===preferred)) fDataset.value = preferred;
+    const year = bYear.value ? Number(bYear.value) : null;
+    const opts = datasetOptionsFor(bTask.value, year);
+    bDataset.innerHTML = `<option value="">All datasets</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
+    if(preferred && opts.some(o=>o[0]===preferred)) bDataset.value = preferred;
   }
   function refreshMetricOptions(preferred){
-    const year = fYear.value ? Number(fYear.value) : null;
-    const opts = metricOptionsFor(fTask.value, fDataset.value, year);
-    fMetric.innerHTML = `<option value="">All metrics</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
-    if(preferred && opts.some(o=>o[0]===preferred)) fMetric.value = preferred;
+    const year = bYear.value ? Number(bYear.value) : null;
+    const opts = metricOptionsFor(bTask.value, bDataset.value, year);
+    bMetric.innerHTML = `<option value="">All metrics</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
+    if(preferred && opts.some(o=>o[0]===preferred)) bMetric.value = preferred;
   }
 
-  function renderBoard(){
-    const task = fTask.value, dataset = fDataset.value, metric = fMetric.value;
-    const year = fYear.value ? Number(fYear.value) : null;
-    const rows = [];
-    DATA.forEach(p=>{
-      if(task && p.task!==task) return;
-      if(year && p.year!==year) return;
-      (p.results||[]).forEach(r=>{
-        if(dataset && r.dataset!==dataset) return;
-        if(metric && r.metric!==metric) return;
-        rows.push({p, r});
-      });
-    });
-    rows.sort((a,b)=>{
-      const av=a.r.value_numeric, bv=b.r.value_numeric;
-      if(av==null && bv==null) return 0;
-      if(av==null) return 1;
-      if(bv==null) return -1;
-      return bv-av;
-    });
-    document.getElementById('metric-col-head').style.display = metric ? 'none' : '';
-    document.getElementById('value-col-head').textContent = metric || 'Value';
-    document.getElementById('dataset-col-head').style.display = dataset ? 'none' : '';
-    const colCount = 5 + (metric?0:1) + (dataset?0:1);
-    document.getElementById('board-count').textContent = `${rows.length} result${rows.length===1?'':'s'}`;
-    const tbody = document.getElementById('board-body');
-    if(!rows.length){
-      tbody.innerHTML = `<tr><td colspan="${colCount}" class="row-empty">No extracted results match this filter yet.</td></tr>`;
-      return;
-    }
-    tbody.innerHTML = rows.map(({p,r}, i)=>{
-      const idx = DATA.indexOf(p);
-      return `<tr data-idx="${idx}" class="board-row">
-        <td class="rank">${i+1}</td>
-        <td class="val">${esc(r.value)}</td>
-        ${metric ? '' : `<td class="setting-txt">${esc(r.metric)}</td>`}
-        ${dataset ? '' : `<td class="setting-txt">${esc(r.dataset)}</td>`}
-        <td class="paper-cell"><button class="paper-title-link">${esc(p.title)}</button></td>
-        <td class="venue-tag">${esc(venueYear(p))}</td>
-        <td class="setting-txt">${esc(r.setting||'')}</td>
-      </tr>
-      <tr class="detail-row" data-detail-for="${idx}" style="display:none;"><td colspan="${colCount}"><div class="detail">${renderDetail(p)}</div></td></tr>`;
-    }).join('');
-
-    tbody.querySelectorAll('tr.board-row').forEach(tr=>{
-      tr.addEventListener('click', ()=>{
-        const idx = tr.dataset.idx;
-        const dr = tbody.querySelector(`tr.detail-row[data-detail-for="${idx}"]`);
-        dr.style.display = dr.style.display==='none' ? '' : 'none';
-      });
-    });
+  // Ranking by a specific benchmark value only makes sense once both a
+  // dataset AND a metric are pinned down - auto-switch Sort into that mode
+  // the moment both are set, and back out the moment either is cleared.
+  function maybeAutoSortByBench(){
+    if(bDataset.value && bMetric.value) bSort.value = 'bench';
+    else if(bSort.value === 'bench') bSort.value = 'score';
   }
-
-  fTask.addEventListener('change', ()=>{ refreshDatasetOptions(); refreshMetricOptions(); renderBoard(); });
-  fYear.addEventListener('change', ()=>{ refreshDatasetOptions(fDataset.value); refreshMetricOptions(fMetric.value); renderBoard(); });
-  fDataset.addEventListener('change', ()=>{ refreshMetricOptions(); renderBoard(); });
-  fMetric.addEventListener('change', renderBoard);
-
-  refreshDatasetOptions('Market1501');
-  refreshMetricOptions('Rank-1');
-  renderBoard();
-
-  // ---------------- browse ----------------
-  const bSearch = document.getElementById('b-search');
-  const bTask = document.getElementById('b-task');
-  const bYear = document.getElementById('b-year');
-  const bSort = document.getElementById('b-sort');
-  bTask.innerHTML = `<option value="">All tasks</option>` + taskOrder.map(t=>`<option value="${esc(t)}">${esc(t)} (${taskCounts[t]})</option>`).join('');
-  bYear.innerHTML = `<option value="">All years</option>` + distinctYears.map(y=>`<option value="${y}">${y}</option>`).join('');
 
   function renderBrowse(){
     const q = bSearch.value.trim().toLowerCase();
     const task = bTask.value;
     const year = bYear.value ? Number(bYear.value) : null;
-    let list = DATA.filter(p=>{
+    const dataset = bDataset.value;
+    const metric = bMetric.value;
+    const benchActive = bSort.value === 'bench' && Boolean(dataset && metric);
+
+    let list = DATA.map(p=>{
+      let benchValue = null, hasBenchRow = false;
+      if(dataset){
+        (p.results||[]).forEach(r=>{
+          if(r.dataset!==dataset) return;
+          if(metric && r.metric!==metric) return;
+          hasBenchRow = true;
+          if(r.value_numeric!=null && (benchValue==null || r.value_numeric>benchValue)) benchValue = r.value_numeric;
+        });
+      }
+      return {p, benchValue, hasBenchRow};
+    }).filter(({p, hasBenchRow})=>{
       if(task && p.task!==task) return false;
       if(year && p.year!==year) return false;
+      if(dataset && !hasBenchRow) return false;
       if(!q) return true;
       const hay = (p.title + ' ' + (p.authors||[]).join(' ')).toLowerCase();
       return hay.includes(q);
     });
-    const sort = bSort.value;
-    if(sort==='year') list = list.slice().sort((a,b)=> (b.year||0)-(a.year||0));
-    else if(sort==='title') list = list.slice().sort((a,b)=> a.title.localeCompare(b.title));
-    else list = list.slice().sort((a,b)=> (b.score||0)-(a.score||0));
+
+    if(benchActive){
+      list.sort((a,b)=>{
+        if(a.benchValue==null && b.benchValue==null) return 0;
+        if(a.benchValue==null) return 1;
+        if(b.benchValue==null) return -1;
+        return b.benchValue - a.benchValue;
+      });
+    } else if(bSort.value==='year'){
+      list.sort((a,b)=> (b.p.year||0)-(a.p.year||0));
+    } else if(bSort.value==='title'){
+      list.sort((a,b)=> a.p.title.localeCompare(b.p.title));
+    } else {
+      list.sort((a,b)=> (b.p.score||0)-(a.p.score||0));
+    }
 
     document.getElementById('browse-count').textContent = `${list.length} paper${list.length===1?'':'s'}`;
     const container = document.getElementById('paper-list');
-    container.innerHTML = list.map(p=>{
+    if(!list.length){
+      container.innerHTML = `<div class="row-empty">No papers match this filter yet.</div>`;
+      return;
+    }
+    container.innerHTML = list.map(({p}, i)=>{
       const idx = DATA.indexOf(p);
+      const rankBadge = benchActive ? `<span class="pc-rank">#${i+1}</span>` : '';
       return `<div class="paper-card" data-idx="${idx}">
         <div class="pc-head">
-          <div class="pc-title">${esc(p.title)}</div>
+          <div class="pc-title-row">${rankBadge}<div class="pc-title">${esc(p.title)}</div></div>
           <div class="result-count">${(p.results||[]).length} result row${(p.results||[]).length===1?'':''}</div>
         </div>
         <div class="pc-meta">${esc((p.authors||[]).map(a=>splitAuthor(a).name).join(', '))} &middot; ${esc(venueYear(p))}</div>
         <div style="margin-top:8px;">${chip(p.task)}</div>
         <div class="pc-nutshell">${esc(p.nutshell)}</div>
-        ${benchmarkPills(p)}
+        ${benchmarkPills(p, dataset)}
         <div class="detail" data-detail-for="${idx}" style="display:none; margin-top:12px;">${renderDetail(p)}</div>
       </div>`;
     }).join('');
@@ -547,10 +439,16 @@
       });
     });
   }
+
   bSearch.addEventListener('input', renderBrowse);
-  bTask.addEventListener('change', renderBrowse);
-  bYear.addEventListener('change', renderBrowse);
+  bTask.addEventListener('change', ()=>{ refreshDatasetOptions(bDataset.value); refreshMetricOptions(bMetric.value); maybeAutoSortByBench(); renderBrowse(); });
+  bYear.addEventListener('change', ()=>{ refreshDatasetOptions(bDataset.value); refreshMetricOptions(bMetric.value); maybeAutoSortByBench(); renderBrowse(); });
+  bDataset.addEventListener('change', ()=>{ refreshMetricOptions(); maybeAutoSortByBench(); renderBrowse(); });
+  bMetric.addEventListener('change', ()=>{ maybeAutoSortByBench(); renderBrowse(); });
   bSort.addEventListener('change', renderBrowse);
+
+  refreshDatasetOptions();
+  refreshMetricOptions();
   renderBrowse();
 })();
 </script>

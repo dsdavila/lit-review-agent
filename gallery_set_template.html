@@ -235,7 +235,7 @@
         <thead>
           <tr>
             <th style="width:34px;">#</th>
-            <th style="width:70px;">Value</th>
+            <th style="width:90px;" id="value-col-head">Value</th>
             <th id="metric-col-head">Metric</th>
             <th id="dataset-col-head">Dataset</th>
             <th>Paper</th>
@@ -457,6 +457,7 @@
       return bv-av;
     });
     document.getElementById('metric-col-head').style.display = metric ? 'none' : '';
+    document.getElementById('value-col-head').textContent = metric || 'Value';
     document.getElementById('dataset-col-head').style.display = dataset ? 'none' : '';
     const colCount = 5 + (metric?0:1) + (dataset?0:1);
     document.getElementById('board-count').textContent = `${rows.length} result${rows.length===1?'':'s'}`;

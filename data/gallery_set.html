@@ -157,6 +157,15 @@
   .pc-nutshell{font-size:13px; color:var(--ink-2); margin-top:8px; line-height:1.5;}
   .result-count{font-family:var(--mono); font-size:11px; color:var(--ink-3); white-space:nowrap;}
 
+  .bench-pills{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;}
+  .bench-pill{
+    font-size:11.5px; color:var(--ink-2); background:var(--surface-sunken);
+    border:1px solid var(--border); border-radius:7px; padding:4px 8px;
+    font-family:var(--sans); white-space:nowrap;
+  }
+  .bench-pill .bp-dataset{font-weight:600; color:var(--ink);}
+  .bench-pill b{font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--accent-strong); font-weight:600;}
+
   /* ---------- detail panel ---------- */
   .detail{
     margin-top:8px; padding:16px 18px; background:var(--surface-sunken);
@@ -212,6 +221,10 @@
         <select id="f-metric"></select>
       </div>
       <div class="field">
+        <label for="f-year">Year</label>
+        <select id="f-year"></select>
+      </div>
+      <div class="field">
         <label>&nbsp;</label>
         <span class="hint-count" id="board-count"></span>
       </div>
@@ -224,6 +237,7 @@
             <th style="width:34px;">#</th>
             <th style="width:70px;">Value</th>
             <th id="metric-col-head">Metric</th>
+            <th id="dataset-col-head">Dataset</th>
             <th>Paper</th>
             <th>Venue</th>
             <th>Setting</th>
@@ -243,6 +257,10 @@
       <div class="field task-f">
         <label for="b-task">Task</label>
         <select id="b-task"></select>
+      </div>
+      <div class="field">
+        <label for="b-year">Year</label>
+        <select id="b-year"></select>
       </div>
       <div class="field">
         <label for="b-sort">Sort</label>
@@ -324,6 +342,25 @@
     return html;
   }
 
+  // One pill per benchmark a paper reports against, with its first 1-2 headline
+  // metrics - answers "what is this sub-field actually benchmarking against"
+  // at a glance without opening every paper. Settings/variants beyond the
+  // first occurrence per metric are left for the expanded detail view.
+  function benchmarkPills(p){
+    const byDataset = new Map();
+    (p.results||[]).forEach(r=>{
+      if(!byDataset.has(r.dataset)) byDataset.set(r.dataset, new Map());
+      const metrics = byDataset.get(r.dataset);
+      if(!metrics.has(r.metric)) metrics.set(r.metric, r.value);
+    });
+    if(!byDataset.size) return '';
+    const pills = [...byDataset.entries()].map(([dataset, metrics])=>{
+      const metricStr = [...metrics.entries()].slice(0,2).map(([m,v])=>`${esc(m)} <b>${esc(v)}</b>`).join(' &middot; ');
+      return `<span class="bench-pill"><span class="bp-dataset">${esc(dataset)}</span> ${metricStr}</span>`;
+    });
+    return `<div class="bench-pills">${pills.join('')}</div>`;
+  }
+
   // ---------------- stats ----------------
   const uniqueDatasets = new Set(); let totalRows = 0; const years = [];
   const confSet = new Set();
@@ -360,18 +397,24 @@
 
   fTask.innerHTML = `<option value="">All tasks</option>` + taskOrder.map(t=>`<option value="${esc(t)}">${esc(t)} (${taskCounts[t]})</option>`).join('');
 
-  function datasetOptionsFor(task){
+  const distinctYears = [...new Set(DATA.map(p=>p.year).filter(Boolean))].sort((a,b)=>b-a);
+  const fYear = document.getElementById('f-year');
+  fYear.innerHTML = `<option value="">All years</option>` + distinctYears.map(y=>`<option value="${y}">${y}</option>`).join('');
+
+  function datasetOptionsFor(task, year){
     const counts = {};
     DATA.forEach(p=>{
       if(task && p.task!==task) return;
+      if(year && p.year!==year) return;
       (p.results||[]).forEach(r=>{ counts[r.dataset]=(counts[r.dataset]||0)+1; });
     });
     return Object.entries(counts).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]));
   }
-  function metricOptionsFor(task, dataset){
+  function metricOptionsFor(task, dataset, year){
     const counts = {};
     DATA.forEach(p=>{
       if(task && p.task!==task) return;
+      if(year && p.year!==year) return;
       (p.results||[]).forEach(r=>{
         if(dataset && r.dataset!==dataset) return;
         counts[r.metric]=(counts[r.metric]||0)+1;
@@ -381,22 +424,25 @@
   }
 
   function refreshDatasetOptions(preferred){
-    const opts = datasetOptionsFor(fTask.value);
-    fDataset.innerHTML = opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
+    const year = fYear.value ? Number(fYear.value) : null;
+    const opts = datasetOptionsFor(fTask.value, year);
+    fDataset.innerHTML = `<option value="">All datasets</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
     if(preferred && opts.some(o=>o[0]===preferred)) fDataset.value = preferred;
-    else if(opts.length) fDataset.value = opts[0][0];
   }
   function refreshMetricOptions(preferred){
-    const opts = metricOptionsFor(fTask.value, fDataset.value);
+    const year = fYear.value ? Number(fYear.value) : null;
+    const opts = metricOptionsFor(fTask.value, fDataset.value, year);
     fMetric.innerHTML = `<option value="">All metrics</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
     if(preferred && opts.some(o=>o[0]===preferred)) fMetric.value = preferred;
   }
 
   function renderBoard(){
     const task = fTask.value, dataset = fDataset.value, metric = fMetric.value;
+    const year = fYear.value ? Number(fYear.value) : null;
     const rows = [];
     DATA.forEach(p=>{
       if(task && p.task!==task) return;
+      if(year && p.year!==year) return;
       (p.results||[]).forEach(r=>{
         if(dataset && r.dataset!==dataset) return;
         if(metric && r.metric!==metric) return;
@@ -411,10 +457,12 @@
       return bv-av;
     });
     document.getElementById('metric-col-head').style.display = metric ? 'none' : '';
+    document.getElementById('dataset-col-head').style.display = dataset ? 'none' : '';
+    const colCount = 5 + (metric?0:1) + (dataset?0:1);
     document.getElementById('board-count').textContent = `${rows.length} result${rows.length===1?'':'s'}`;
     const tbody = document.getElementById('board-body');
     if(!rows.length){
-      tbody.innerHTML = `<tr><td colspan="6" class="row-empty">No extracted results match this filter yet.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="${colCount}" class="row-empty">No extracted results match this filter yet.</td></tr>`;
       return;
     }
     tbody.innerHTML = rows.map(({p,r}, i)=>{
@@ -423,11 +471,12 @@
         <td class="rank">${i+1}</td>
         <td class="val">${esc(r.value)}</td>
         ${metric ? '' : `<td class="setting-txt">${esc(r.metric)}</td>`}
+        ${dataset ? '' : `<td class="setting-txt">${esc(r.dataset)}</td>`}
         <td class="paper-cell"><button class="paper-title-link">${esc(p.title)}</button></td>
         <td class="venue-tag">${esc(venueYear(p))}</td>
         <td class="setting-txt">${esc(r.setting||'')}</td>
       </tr>
-      <tr class="detail-row" data-detail-for="${idx}" style="display:none;"><td colspan="6"><div class="detail">${renderDetail(p)}</div></td></tr>`;
+      <tr class="detail-row" data-detail-for="${idx}" style="display:none;"><td colspan="${colCount}"><div class="detail">${renderDetail(p)}</div></td></tr>`;
     }).join('');
 
     tbody.querySelectorAll('tr.board-row').forEach(tr=>{
@@ -440,6 +489,7 @@
   }
 
   fTask.addEventListener('change', ()=>{ refreshDatasetOptions(); refreshMetricOptions(); renderBoard(); });
+  fYear.addEventListener('change', ()=>{ refreshDatasetOptions(fDataset.value); refreshMetricOptions(fMetric.value); renderBoard(); });
   fDataset.addEventListener('change', ()=>{ refreshMetricOptions(); renderBoard(); });
   fMetric.addEventListener('change', renderBoard);
 
@@ -450,14 +500,18 @@
   // ---------------- browse ----------------
   const bSearch = document.getElementById('b-search');
   const bTask = document.getElementById('b-task');
+  const bYear = document.getElementById('b-year');
   const bSort = document.getElementById('b-sort');
   bTask.innerHTML = `<option value="">All tasks</option>` + taskOrder.map(t=>`<option value="${esc(t)}">${esc(t)} (${taskCounts[t]})</option>`).join('');
+  bYear.innerHTML = `<option value="">All years</option>` + distinctYears.map(y=>`<option value="${y}">${y}</option>`).join('');
 
   function renderBrowse(){
     const q = bSearch.value.trim().toLowerCase();
     const task = bTask.value;
+    const year = bYear.value ? Number(bYear.value) : null;
     let list = DATA.filter(p=>{
       if(task && p.task!==task) return false;
+      if(year && p.year!==year) return false;
       if(!q) return true;
       const hay = (p.title + ' ' + (p.authors||[]).join(' ')).toLowerCase();
       return hay.includes(q);
@@ -479,6 +533,7 @@
         <div class="pc-meta">${esc((p.authors||[]).map(a=>splitAuthor(a).name).join(', '))} &middot; ${esc(venueYear(p))}</div>
         <div style="margin-top:8px;">${chip(p.task)}</div>
         <div class="pc-nutshell">${esc(p.nutshell)}</div>
+        ${benchmarkPills(p)}
         <div class="detail" data-detail-for="${idx}" style="display:none; margin-top:12px;">${renderDetail(p)}</div>
       </div>`;
     }).join('');
@@ -493,6 +548,7 @@
   }
   bSearch.addEventListener('input', renderBrowse);
   bTask.addEventListener('change', renderBrowse);
+  bYear.addEventListener('change', renderBrowse);
   bSort.addEventListener('change', renderBrowse);
   renderBrowse();
 })();

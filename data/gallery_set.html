@@ -190,7 +190,6 @@
       <div class="field">
         <label for="b-sort">Sort</label>
         <select id="b-sort">
-          <option value="score">Relevance score</option>
           <option value="year">Year, newest</option>
           <option value="title">Title, A&ndash;Z</option>
           <option value="bench">Benchmark value (pick a dataset + metric)</option>
@@ -249,7 +248,7 @@
     let html = '';
     if(names) html += `<div class="authors">${esc(names)}</div>`;
     if(institutions) html += `<div class="institutions">${esc(institutions)}</div>`;
-    html += `<div style="margin-top:8px;">${chip(p.task)} <span class="venue-tag">${esc(venueYear(p))}</span>${p.score!=null ? ` <span class="venue-tag">&middot; relevance ${p.score.toFixed ? p.score.toFixed(1) : p.score}</span>` : ''}</div>`;
+    html += `<div style="margin-top:8px;">${chip(p.task)} <span class="venue-tag">${esc(venueYear(p))}</span></div>`;
     html += `<h4>Nutshell</h4><p>${esc(p.nutshell)}</p>`;
     if(p.contributions && p.contributions.length){
       html += `<h4>Contributions</h4><ul>${p.contributions.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>`;
@@ -363,7 +362,7 @@
   // the moment both are set, and back out the moment either is cleared.
   function maybeAutoSortByBench(){
     if(bDataset.value && bMetric.value) bSort.value = 'bench';
-    else if(bSort.value === 'bench') bSort.value = 'score';
+    else if(bSort.value === 'bench') bSort.value = 'year';
   }
 
   function renderBrowse(){
@@ -401,12 +400,11 @@
         if(b.benchValue==null) return -1;
         return b.benchValue - a.benchValue;
       });
-    } else if(bSort.value==='year'){
-      list.sort((a,b)=> (b.p.year||0)-(a.p.year||0));
     } else if(bSort.value==='title'){
       list.sort((a,b)=> a.p.title.localeCompare(b.p.title));
     } else {
-      list.sort((a,b)=> (b.p.score||0)-(a.p.score||0));
+      // default: year, newest first
+      list.sort((a,b)=> (b.p.year||0)-(a.p.year||0));
     }
 
     document.getElementById('browse-count').textContent = `${list.length} paper${list.length===1?'':'s'}`;

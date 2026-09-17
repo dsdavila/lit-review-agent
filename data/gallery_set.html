@@ -322,12 +322,17 @@
   const distinctYears = [...new Set(DATA.map(p=>p.year).filter(Boolean))].sort((a,b)=>b-a);
   bYear.innerHTML = `<option value="">All years</option>` + distinctYears.map(y=>`<option value="${y}">${y}</option>`).join('');
 
+  // Counts are PAPERS, not result rows - a paper reporting several
+  // settings/metrics on the same benchmark (e.g. General vs. Clothes-Changing
+  // splits) must only count once here, or the dropdown number stops matching
+  // how many papers actually show up once you filter to it.
   function datasetOptionsFor(task, year){
     const counts = {};
     DATA.forEach(p=>{
       if(task && p.task!==task) return;
       if(year && p.year!==year) return;
-      (p.results||[]).forEach(r=>{ counts[r.dataset]=(counts[r.dataset]||0)+1; });
+      const seen = new Set((p.results||[]).map(r=>r.dataset));
+      seen.forEach(d=>{ counts[d]=(counts[d]||0)+1; });
     });
     return Object.entries(counts).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]));
   }
@@ -336,10 +341,8 @@
     DATA.forEach(p=>{
       if(task && p.task!==task) return;
       if(year && p.year!==year) return;
-      (p.results||[]).forEach(r=>{
-        if(dataset && r.dataset!==dataset) return;
-        counts[r.metric]=(counts[r.metric]||0)+1;
-      });
+      const seen = new Set((p.results||[]).filter(r=>!dataset || r.dataset===dataset).map(r=>r.metric));
+      seen.forEach(m=>{ counts[m]=(counts[m]||0)+1; });
     });
     return Object.entries(counts).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]));
   }
@@ -347,13 +350,13 @@
   function refreshDatasetOptions(preferred){
     const year = bYear.value ? Number(bYear.value) : null;
     const opts = datasetOptionsFor(bTask.value, year);
-    bDataset.innerHTML = `<option value="">All datasets</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
+    bDataset.innerHTML = `<option value="">All datasets</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt} paper${cnt===1?'':'s'})</option>`).join('');
     if(preferred && opts.some(o=>o[0]===preferred)) bDataset.value = preferred;
   }
   function refreshMetricOptions(preferred){
     const year = bYear.value ? Number(bYear.value) : null;
     const opts = metricOptionsFor(bTask.value, bDataset.value, year);
-    bMetric.innerHTML = `<option value="">All metrics</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt})</option>`).join('');
+    bMetric.innerHTML = `<option value="">All metrics</option>` + opts.map(([name,cnt])=>`<option value="${esc(name)}">${esc(name)} (${cnt} paper${cnt===1?'':'s'})</option>`).join('');
     if(preferred && opts.some(o=>o[0]===preferred)) bMetric.value = preferred;
   }
 
